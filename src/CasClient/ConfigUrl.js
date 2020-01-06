@@ -1,21 +1,19 @@
-
-
-
 ///Dominio LocalHost Prueba
 export let CONFIG = {
-    Settings: {
-        CASLOGIN: 'https://seguridad.espoch.edu.ec/cas/login?',
-        CASLOGOUT: 'https://seguridad.espoch.edu.ec/cas/logout?',
-        CASVALIDATE: 'https://seguridad.espoch.edu.ec/cas/p3/serviceValidate?',
-        //REDIRECT_URI: 'https://pruebacomprobante.espoch.edu.ec:8080/',
-        REDIRECT_URI: 'http://localhost:3000',
-        LOGOUT_REDIRECT: 'https://pruebacomprobante.espoch.edu.ec:8080/logout/',
-        LOGOUT_CORREO: 'https://login.microsoftonline.com/common/oauth2/logout?',
-        VALIDATEJAVA:'https://pruebas.espoch.edu.ec:8181/ServicioWebComprobantes/ServiciosComprobantes/ValidateCas/'
-        }
+  Settings: {
+    CASLOGIN: "https://seguridad.espoch.edu.ec/cas/login?",
+    CASLOGOUT: "https://seguridad.espoch.edu.ec/cas/logout?",
+    CASVALIDATE: "https://seguridad.espoch.edu.ec/cas/p3/serviceValidate?",
+    //REDIRECT_URI: 'https://pruebacomprobante.espoch.edu.ec:8080/',
+    REDIRECT_URI: "http://localhost:3000/",
+    LOGOUT_REDIRECT: "https://pruebacomprobante.espoch.edu.ec:8080/logout/",
+    LOGOUT_CORREO: "https://login.microsoftonline.com/common/oauth2/logout?",
+    VALIDATEPHP:
+      "http://localhost/proyectosinvestigacion/public/api/validateCAS?"
+    // VALIDATEJAVA:
+    // "https://pruebas.espoch.edu.ec:8181/ServicioWebComprobantes/ServiciosComprobantes/ValidateCas/"
+  }
 };
-
-
 
 ///Dominio Pruebas
 /*export let CONFIG = {
@@ -44,11 +42,6 @@ export let CONFIG = {
         }
 };*/
 
-
-
-
-
-
 /*export let CONFIG = {
     Settings: {
        CLIENT_ID: 'fdc35fe1-2393-45cf-98b4-d75b2a383bec', // https://apps.dev.microsoft.com’
@@ -66,4 +59,3 @@ export let CONFIG = {
         ADMIN_CONSENT: true
     }
 };*/
-
