@@ -9,9 +9,10 @@ export let CONFIG = {
     LOGOUT_REDIRECT: "https://pruebacomprobante.espoch.edu.ec:8080/logout/",
     LOGOUT_CORREO: "https://login.microsoftonline.com/common/oauth2/logout?",
     VALIDATEPHP:
+      //"https://cimogsys.espoch.edu.ec/proyectosinvestigacion/public/api/validateCAS?"
       "http://localhost/proyectosinvestigacion/public/api/validateCAS?"
     // VALIDATEJAVA:
-    // "https://pruebas.espoch.edu.ec:8181/ServicioWebComprobantes/ServiciosComprobantes/ValidateCas/"
+    //"https://pruebas.espoch.edu.ec:8181/ServicioWebComprobantes/ServiciosComprobantes/ValidateCas/"
   }
 };
 

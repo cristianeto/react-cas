@@ -16,6 +16,8 @@ export default class App extends Component {
         ClientCAS.saveTicket();
         await ClientCAS.verificaLogin().then();
       }
+      console.log("Pasando...");
+
       if (ClientCAS.isAuthenticated() && ClientCAS.getLogin()) {
         this.ObtenerDatosCentralizada();
       }

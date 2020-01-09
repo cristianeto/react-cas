@@ -45,38 +45,40 @@ export class CasClient {
   }
 
   async validateLogin() {
-    var service = CONFIG2.REDIRECT_URI; //encodeURIComponent(CONFIG2.REDIRECT_URI);
+    var service = encodeURIComponent(CONFIG2.REDIRECT_URI);
     var ticket = sessionStorage.getItem("ticketUser");
     var urlvalidate =
       CONFIG2.VALIDATEPHP + "service=" + service + "&ticket=" + ticket;
     console.log("url: ", urlvalidate);
     console.log("sesion TikectUSer: ", sessionStorage.getItem("ticketUser"));
 
-    /* let promise = new Promise(async (resolve, reject) => {
-      //  this.http.doGetUrlXML(urlvalidate).subscribe(res => this.validation(resolve, reject, res), reject)
-     
-      this.http.doGetUrlXML(urlvalidate).subscribe(
-        res => {
-          console.log(res);
+    let promise = new Promise(async (resolve, reject) => {
+      axios
+        .get(urlvalidate)
+        .then(res => {
+          console.log("Holaaaaaa", res);
           this.validation(resolve, reject, res);
-        },
-        err => {
-          console.log("Error" + err.message);
-          this.Logout();
-        },
-        () => {
-          console.log("completed");
-        }
-      ); 
-    });*/
-    // return promise;
+        })
+        .catch(error => {
+          console.log("Error: " + error.message);
+          //this.Logout();
+        })
+        .finally(() => {
+          console.log("La promesa fue ejecutada completamente!");
+        });
+    });
+    return promise;
   }
 
   validation(resolve, reject, res) {
-    x2js.parseString(res, function(err, resultado) {
+    console.log("validation...");
+    x2js.parseString(res.data, function(err, resultado) {
+      console.log("parseString...");
       let sucesso =
         resultado["cas:serviceResponse"]["cas:authenticationSuccess"];
       if (sucesso !== undefined) {
+        console.log("success...");
+
         var sucess =
           resultado["cas:serviceResponse"]["cas:authenticationSuccess"];
         let user = sucess[0]["cas:user"];
