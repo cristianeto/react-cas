@@ -1,5 +1,12 @@
 import React, { Component } from "react";
+import { Route, Redirect, Switch } from "react-router-dom";
+
 import { CasClient } from "./CasClient/CasClient";
+import NavBar from "./Components/navBar";
+import NotFound from "./Components/notFound";
+import ResearchGroups from "./Components/researchGroups";
+import Welcome from "./Components/welcome";
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +17,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     //if (this.props.location.pathname === '/callback') return;
-    let ClientCAS = new CasClient();
+    /*  let ClientCAS = new CasClient();
     try {
       if (!ClientCAS.getLogin()) {
         ClientCAS.saveTicket();
@@ -24,10 +31,25 @@ export default class App extends Component {
       //this.forceUpdate();
     } catch (err) {
       if (err.error !== "login_required") console.log("error: " + err);
-    }
+    } */
   }
 
   render() {
-    return <div>Redirigiendo...</div>;
+    return (
+      <div>
+        <NavBar />
+        <Switch>
+          {/* <Route path="/login" component={LoginForm} />
+            <Route path="/movies/:id" component={MovieForm} />
+            <Route path="/customers" component={Customers} />
+          <Route path="/rentals" component={Rentals} /> */}
+          <Route path="/welcome" component={Welcome} />
+          <Route path="/grupos-investigacion" component={ResearchGroups} />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect from="/" exact to="/welcome" />
+          <Redirect to="/not-found" />
+        </Switch>
+      </div>
+    );
   }
 }
