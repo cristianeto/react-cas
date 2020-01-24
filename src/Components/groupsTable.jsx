@@ -74,10 +74,15 @@ const headCells = [
     disablePadding: true,
     label: "Code"
   },
-  { id: "name_group", numeric: true, disablePadding: false, label: "Name" },
-  { id: "fat", numeric: true, disablePadding: false, label: "Fat (g)" },
-  { id: "carbs", numeric: true, disablePadding: false, label: "Carbs (g)" },
-  { id: "protein", numeric: true, disablePadding: false, label: "Protein (g)" }
+  { id: "name_group", numeric: false, disablePadding: false, label: "Name" },
+  {
+    id: "dependency/.acronym_dependency",
+    numeric: false,
+    disablePadding: false,
+    label: "Facultad (Acrónimo)"
+  }
+  /*  { id: "carbs", numeric: true, disablePadding: false, label: "Carbs (g)" },
+  { id: "protein", numeric: true, disablePadding: false, label: "Protein (g)" } */
 ];
 
 function EnhancedTableHead(props) {
@@ -233,7 +238,7 @@ const useStyles = makeStyles(theme => ({
 export default function EnhancedTable(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("name_group");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -344,13 +349,13 @@ export default function EnhancedTable(props) {
                       >
                         {row.code_group}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">
                         {row.name_group} {` `}
                         {row.acronym_group}
                       </TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="left">
+                        {row.dependency.acronym_dependency}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
