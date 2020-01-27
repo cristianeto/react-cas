@@ -18,13 +18,17 @@ class ResearchGroups extends Component {
     console.log("grupos", groups);
   }
 
+  getGroup(id) {
+    return this.state.groups.find(g => g.id_group === id);
+  }
+
   render() {
     return (
       <main>
         <Container maxWidth="xl">
           <h1>Grupos de Investigación</h1>
 
-          <GroupsTable datas={this.state.groups} />
+          <GroupsTable datas={this.state.groups} onGetGroup={this.getGroup} />
         </Container>
       </main>
     );
