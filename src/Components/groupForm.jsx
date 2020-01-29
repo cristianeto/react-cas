@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Breadcrumb from "./breadcum";
+
 import { Container, TextField } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -7,6 +9,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Button from "@material-ui/core/Button";
+
 class GroupForm extends Component {
   state = {
     data: {
@@ -81,8 +84,15 @@ class GroupForm extends Component {
 
   render() {
     const { data } = this.state;
+    const listBreadcrumbs = [
+      {
+        path: "grupos-investigación",
+        label: "Grupos Investigación"
+      }
+    ];
     return (
       <Container maxWidth="xl">
+        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
         <h1>
           Grupo: <small>{data.acronym_group}</small>
         </h1>
@@ -122,7 +132,7 @@ class GroupForm extends Component {
             onChange={this.handleChange}
           />
           <TextField
-            id="standard-multiline-flexible"
+            id="mission_group"
             label="Misión"
             name="mission_group"
             multiline
@@ -132,7 +142,7 @@ class GroupForm extends Component {
             onChange={this.handleChange}
           />
           <TextField
-            id="standard-multiline-flexible"
+            id="vision_group"
             label="Visión"
             name="vision_group"
             multiline
