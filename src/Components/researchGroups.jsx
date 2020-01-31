@@ -27,7 +27,6 @@ class ResearchGroups extends Component {
       <main>
         <Container maxWidth="xl">
           <h1>Grupos de Investigación</h1>
-
           <GroupsTable datas={this.state.groups} onGetGroup={this.getGroup} />
         </Container>
       </main>

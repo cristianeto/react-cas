@@ -107,6 +107,8 @@ class GroupForm extends Component {
               style={{ marginRight: "1em" }}
               margin="normal"
               onChange={this.handleChange}
+              variant="outlined"
+              size="small"
             />
             <TextField
               required
@@ -117,6 +119,8 @@ class GroupForm extends Component {
               style={{ marginRight: "1em" }}
               margin="normal"
               onChange={this.handleChange}
+              variant="outlined"
+              size="small"
             />
           </div>
           <TextField
@@ -130,6 +134,8 @@ class GroupForm extends Component {
             fullWidth
             margin="normal"
             onChange={this.handleChange}
+            variant="outlined"
+            size="small"
           />
           <TextField
             id="mission_group"
@@ -140,6 +146,9 @@ class GroupForm extends Component {
             value={data.mission_group}
             style={{ width: "100%" }}
             onChange={this.handleChange}
+            variant="outlined"
+            required
+            size="small"
           />
           <TextField
             id="vision_group"
@@ -150,24 +159,29 @@ class GroupForm extends Component {
             value={data.vision_group}
             style={{ marginTop: "1em", width: "100%" }}
             onChange={this.handleChange}
+            variant="outlined"
+            required
+            size="small"
           />
           <FormControl
             required
-            style={{ marginTop: "1em", marginRight: "1em", width: "20m" }}
+            variant="outlined"
+            style={{ marginTop: "2em", marginRight: "1em", width: "50%" }}
+            size="small"
           >
-            <InputLabel id="demo-simple-select-required-label">
-              Dependencia
+            <InputLabel id="demo-simple-select-outlined-label">
+              Facultad
             </InputLabel>
             <Select
-              labelId="demo-simple-select-required-label"
+              labelId="demo-simple-select-outlined-label"
               id="id_dependency"
               name="id_dependency"
               value={data.id_dependency}
               onChange={this.handleChange}
-              style={{ marginTop: "1em" }}
+              labelWidth={75}
             >
               <MenuItem value="">
-                <em>None</em>
+                <em>Seleccione una dependencia</em>
               </MenuItem>
               {this.state.dependencies.map(dependency => (
                 <MenuItem
