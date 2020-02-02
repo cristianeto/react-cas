@@ -2,10 +2,12 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 
 const Input = ({ name, label, placeHolder, error, ...rest }) => {
+  let validation;
+  error === undefined ? (validation = false) : (validation = true);
   return (
     <TextField
+      error={validation}
       {...rest}
-      required
       id={name}
       name={name}
       label={label}
@@ -14,8 +16,8 @@ const Input = ({ name, label, placeHolder, error, ...rest }) => {
       fullWidth
       variant="outlined"
       size="small"
+      helperText={error}
     />
-    //   {error && <div className="alert alert-danger">{error}</div>}
   );
 };
 

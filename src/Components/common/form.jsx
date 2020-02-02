@@ -12,60 +12,66 @@ class Form extends Component {
     // errors: {}
   };
 
-  /* validate = () => {
+  validate = () => {
     const options = { abortEarly: false };
-    const { error } = Joi.validate(this.state.data, this.schema, options);
+    const { error } = this.schema.validate(this.state.data, options);
     if (!error) return null;
     const errors = {};
     for (let item of error.details) errors[item.path[0]] = item.message;
     return errors;
-  }; */
+  };
 
-  /*  validateProperty = ({ name, value }) => {
+  validateProperty = ({ name, value }) => {
     const obj = { [name]: value };
-    const schema = { [name]: this.schema[name] };
-    const { error } = Joi.validate(obj, schema);
+    const { error } = this.schema.validate(obj);
     return error ? error.details[0].message : null;
-  }; */
+  };
 
   handleSubmit = e => {
     e.preventDefault();
-    /*  const errors = this.validate();
-    console.log(errors);
+    const errors = this.validate();
 
     this.setState({ errors: errors || {} });
-    if (errors) return; */
+    if (errors) return;
 
     this.doSubmit();
   };
 
   handleChange = ({ target: input }) => {
     //Retornando un error
-    /* const errors = { ...this.state.errors };
+    const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
     if (errorMessage) errors[input.name] = errorMessage;
-    else delete errors[input.name]; */
+    else delete errors[input.name];
 
     const data = { ...this.state.data };
     data[input.name] = input.value;
-    this.setState({ data });
-    //this.setState({ data, errors });
+    this.setState({ data, errors });
   };
 
   renderButton(label) {
+    let validation;
+    this.validate() === null ? (validation = false) : (validation = true);
+
     return (
       // <button disabled={this.validate()} className="btn btn-primary">
       //   {label}
       // </button>
-      <Button type="submit" size="medium" variant="contained" color="primary">
+
+      <Button
+        disabled={validation}
+        type="submit"
+        size="medium"
+        variant="contained"
+        color="primary"
+      >
         {label}
       </Button>
     );
   }
 
   renderInput(name, label, type = "text") {
-    const { data } = this.state;
-    //const { data, errors } = this.state;
+    const { data, errors } = this.state;
 
     return (
       <Input
@@ -74,14 +80,13 @@ class Form extends Component {
         value={data[name]}
         label={label}
         onChange={this.handleChange}
-        // error={errors[name]}
+        error={errors[name]}
       />
     );
   }
 
   renderTextarea(name, label) {
-    const { data } = this.state;
-    //const { data, errors } = this.state;
+    const { data, errors } = this.state;
 
     return (
       <Textarea
@@ -89,22 +94,22 @@ class Form extends Component {
         value={data[name]}
         label={label}
         onChange={this.handleChange}
-        // error={errors[name]}
+        error={errors[name]}
       />
     );
   }
-  renderSelect(name, label, options) {
-    const { data } = this.state;
-    //const { data, errors } = this.state;
+  renderSelect(name, label, property, options) {
+    const { data, errors } = this.state;
 
     return (
       <MySelect
         name={name}
         value={data[name]}
         label={label}
+        property={property}
         options={options}
         onChange={this.handleChange}
-        // error={errors[name]}
+        error={errors[name]}
       />
     );
   }

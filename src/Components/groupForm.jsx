@@ -1,7 +1,9 @@
 import React from "react";
+import Joi from "@hapi/joi";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
 import { getDependencies } from "../services/dependencyService";
+import { getGroupTypes } from "../services/groupTypeService";
 import { getGroup, saveGroup } from "../services/groupService";
 import { Container } from "@material-ui/core";
 
@@ -9,25 +11,41 @@ class GroupForm extends Form {
   state = {
     data: {
       acronym_group: "",
-      active_group: "1",
       code_group: "",
-      created_at: "",
-      id_dependency: "",
-      id_group: "",
-      id_groupType: "",
-      id_researchCenter: "",
-      mission_group: "",
       name_group: "",
-      updated_at: "",
-      vision_group: ""
+      mission_group: "",
+      vision_group: "",
+      id_dependency: "",
+      id_groupType: ""
     },
-    dependencies: []
-    // errors: {}
+    dependencies: [],
+    groupTypes: [],
+    errors: {}
   };
+
+  schema = Joi.object({
+    id_group: Joi.number(),
+    code_group: Joi.string()
+      .label("Código")
+      .max(10),
+    acronym_group: Joi.string()
+      .alphanum()
+      .label("Siglas")
+      .max(10),
+    name_group: Joi.string(),
+    mission_group: Joi.string(),
+    vision_group: Joi.string(),
+    id_dependency: Joi.number(),
+    id_groupType: Joi.number()
+  });
 
   async populateDependencies() {
     const { data: dependencies } = await getDependencies();
     this.setState({ dependencies });
+  }
+  async populateGroupTypes() {
+    const { data: groupTypes } = await getGroupTypes();
+    this.setState({ groupTypes });
   }
 
   async populateGroup() {
@@ -44,23 +62,20 @@ class GroupForm extends Form {
 
   async componentDidMount() {
     await this.populateDependencies();
+    await this.populateGroupTypes();
     await this.populateGroup();
   }
 
   mapToViewModel(group) {
     return {
-      acronym_group: group.acronym_group,
-      active_group: group.active_group,
-      code_group: group.code_group,
-      created_at: group.created_at,
-      id_dependency: group.id_dependency,
       id_group: group.id_group,
-      id_groupType: group.id_groupType,
-      id_researchCenter: group.id_researchCenter,
-      mission_group: group.mission_group,
+      code_group: group.code_group,
+      acronym_group: group.acronym_group,
       name_group: group.name_group,
-      updated_at: group.updated_at,
-      vision_group: group.vision_group
+      mission_group: group.mission_group,
+      vision_group: group.vision_group,
+      id_dependency: group.id_dependency,
+      id_groupType: group.id_groupType
     };
   }
   doSubmit = async () => {
@@ -91,7 +106,14 @@ class GroupForm extends Form {
           {this.renderSelect(
             "id_dependency",
             "Facultad",
+            "name_dependency",
             this.state.dependencies
+          )}
+          {this.renderSelect(
+            "id_groupType",
+            "Tipo",
+            "name_groupType",
+            this.state.groupTypes
           )}
           {this.renderButton("Guardar")}
         </form>

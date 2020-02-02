@@ -18,9 +18,9 @@ export function saveGroup(group) {
   if (group.id_group) {
     const body = { ...group };
     delete body.id_group;
-    console.log(group);
     return http.put(groupUrl(group.id_group), body);
   }
+  console.log("Post:", group);
   return http.post(apiEndpoint, group);
 }
 

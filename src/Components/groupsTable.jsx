@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -21,6 +21,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -187,7 +189,11 @@ const EnhancedTableToolbar = props => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          Tabla de Grupos
+          <NavLink to="/grupo/new">
+            <Fab size="small" color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
+          </NavLink>
         </Typography>
       )}
 
