@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { getDependencies } from "../services/dependencyService";
+import { getGroups } from "../services/groupService";
 import GroupsTable from "./groupsTable";
-
 import { Container } from "@material-ui/core";
 
-class ResearchGroups extends Component {
+class Groups extends Component {
   state = {
-    groups: []
+    groups: [],
+    dependencies: []
   };
 
   async componentDidMount() {
-    const res = await axios.get(
-      `http://localhost/proyectosinvestigacion/public/api/group`
-    );
-    const groups = res.data;
-    this.setState({ groups });
-    console.log("grupos", groups);
+    const { data: dependencies } = await getDependencies();
+    //const dependencies = [{ name: "All Movies", _id: "" }, ...data];
+    const { data: groups } = await getGroups();
+
+    this.setState({ groups, dependencies });
   }
 
   getGroup(id) {
@@ -34,4 +34,4 @@ class ResearchGroups extends Component {
   }
 }
 
-export default ResearchGroups;
+export default Groups;

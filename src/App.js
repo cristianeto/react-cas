@@ -4,7 +4,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import { CasClient } from "./CasClient/CasClient";
 import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
-import ResearchGroups from "./Components/researchGroups";
+import Groups from "./Components/groups";
 import GroupForm from "./Components/groupForm";
 import Welcome from "./Components/welcome";
 
@@ -44,7 +44,7 @@ export default class App extends Component {
             <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} /> */}
           <Route path="/welcome" component={Welcome} />
-          <Route path="/grupos-investigacion" component={ResearchGroups} />
+          <Route path="/grupos-investigacion" component={Groups} />
           <Route path="/grupo/:id" component={GroupForm} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/welcome" />

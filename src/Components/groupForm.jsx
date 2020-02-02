@@ -1,16 +1,11 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React from "react";
 import Breadcrumb from "./breadcum";
+import Form from "./common/form";
+import { getDependencies } from "../services/dependencyService";
+import { getGroup, saveGroup } from "../services/groupService";
+import { Container } from "@material-ui/core";
 
-import { Container, TextField } from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Button from "@material-ui/core/Button";
-
-class GroupForm extends Component {
+class GroupForm extends Form {
   state = {
     data: {
       acronym_group: "",
@@ -30,39 +25,26 @@ class GroupForm extends Component {
     // errors: {}
   };
 
-  handleChange = ({ target: input }) => {
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
-    // console.log(data);
-    this.setState({ data });
-  };
+  async populateDependencies() {
+    const { data: dependencies } = await getDependencies();
+    this.setState({ dependencies });
+  }
 
-  handleSChange = e => {
-    console.log("evento select: ", e.target.value);
-  };
+  async populateGroup() {
+    try {
+      const groupId = this.props.match.params.id; //Pasando por URL id movie
+      if (groupId === "new") return; //Si si
+      const { data: group } = await getGroup(groupId); //Si no.
+      this.setState({ data: this.mapToViewModel(group) });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        this.props.history.replace("/not-found");
+    }
+  }
 
   async componentDidMount() {
-    const res = await axios.get(
-      `http://localhost/proyectosinvestigacion/public/api/dependency`
-    );
-    const dependencies = res.data;
-    this.setState({ dependencies });
-    console.log("dependencias", dependencies);
-
-    const groupId = this.props.match.params.id;
-    if (groupId === "new") return;
-
-    console.log("grupoId: ", groupId);
-    //Si no.
-
-    const res2 = await axios.get(
-      `http://localhost/proyectosinvestigacion/public/api/group/${groupId}`
-    );
-    const group = res2.data;
-    console.log("grupo: ", group);
-    if (!group) return this.props.history.replace("/not-found");
-
-    this.setState({ data: this.mapToViewModel(group) });
+    await this.populateDependencies();
+    await this.populateGroup();
   }
 
   mapToViewModel(group) {
@@ -81,6 +63,10 @@ class GroupForm extends Component {
       vision_group: group.vision_group
     };
   }
+  doSubmit = async () => {
+    await saveGroup(this.state.data);
+    this.props.history.push("/grupos-investigacion");
+  };
 
   render() {
     const { data } = this.state;
@@ -96,112 +82,18 @@ class GroupForm extends Component {
         <h1>
           Grupo: <small>{data.acronym_group}</small>
         </h1>
-        <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
-            <TextField
-              required
-              id="code_group"
-              name="code_group"
-              label="Código"
-              value={data.code_group}
-              style={{ marginRight: "1em" }}
-              margin="normal"
-              onChange={this.handleChange}
-              variant="outlined"
-              size="small"
-            />
-            <TextField
-              required
-              id="acronym_group"
-              name="acronym_group"
-              label="Siglas"
-              value={data.acronym_group}
-              style={{ marginRight: "1em" }}
-              margin="normal"
-              onChange={this.handleChange}
-              variant="outlined"
-              size="small"
-            />
-          </div>
-          <TextField
-            required
-            id="name_group"
-            name="name_group"
-            label="Nombre"
-            value={data.name_group}
-            placeholder="Ingrese el nombre del grupo"
-            helperText="EN MAYÚSUCULAS"
-            fullWidth
-            margin="normal"
-            onChange={this.handleChange}
-            variant="outlined"
-            size="small"
-          />
-          <TextField
-            id="mission_group"
-            label="Misión"
-            name="mission_group"
-            multiline
-            rowsMax="4"
-            value={data.mission_group}
-            style={{ width: "100%" }}
-            onChange={this.handleChange}
-            variant="outlined"
-            required
-            size="small"
-          />
-          <TextField
-            id="vision_group"
-            label="Visión"
-            name="vision_group"
-            multiline
-            rowsMax="4"
-            value={data.vision_group}
-            style={{ marginTop: "1em", width: "100%" }}
-            onChange={this.handleChange}
-            variant="outlined"
-            required
-            size="small"
-          />
-          <FormControl
-            required
-            variant="outlined"
-            style={{ marginTop: "2em", marginRight: "1em", width: "50%" }}
-            size="small"
-          >
-            <InputLabel id="demo-simple-select-outlined-label">
-              Facultad
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="id_dependency"
-              name="id_dependency"
-              value={data.id_dependency}
-              onChange={this.handleChange}
-              labelWidth={75}
-            >
-              <MenuItem value="">
-                <em>Seleccione una dependencia</em>
-              </MenuItem>
-              {this.state.dependencies.map(dependency => (
-                <MenuItem
-                  value={dependency.id_dependency}
-                  key={dependency.id_dependency}
-                >
-                  {dependency.name_dependency}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>Requerida</FormHelperText>
-          </FormControl>
-          <Button
-            size="medium"
-            variant="contained"
-            color="primary"
-            style={{ marginTop: "1em", display: "flex", flexWrap: "wrap" }}
-          >
-            Guardar
-          </Button>
+        <form onSubmit={this.handleSubmit}>
+          {this.renderInput("code_group", "Código")}
+          {this.renderInput("acronym_group", "Siglas")}
+          {this.renderInput("name_group", "Nombre")}
+          {this.renderTextarea("mission_group", "Misión")}
+          {this.renderTextarea("vision_group", "Visión")}
+          {this.renderSelect(
+            "id_dependency",
+            "Facultad",
+            this.state.dependencies
+          )}
+          {this.renderButton("Guardar")}
         </form>
       </Container>
     );
