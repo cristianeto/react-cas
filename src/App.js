@@ -7,6 +7,7 @@ import NotFound from "./Components/notFound";
 import Groups from "./Components/groups";
 import GroupForm from "./Components/groupForm";
 import Welcome from "./Components/welcome";
+import Users from "./Components/users";
 
 export default class App extends Component {
   constructor(props) {
@@ -43,6 +44,7 @@ export default class App extends Component {
           {/* <Route path="/login" component={LoginForm} />
             <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} /> */}
+          <Route path="/usuarios" component={Users} />
           <Route path="/welcome" component={Welcome} />
           <Route path="/grupos-investigacion" component={Groups} />
           <Route path="/grupo/:id" component={GroupForm} />

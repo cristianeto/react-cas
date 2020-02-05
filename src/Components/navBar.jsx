@@ -89,7 +89,7 @@ export default function ButtonAppBar() {
       </List>
       <Divider />
       <List>
-        <NavLink to="/users" style={navLink}>
+        <NavLink to="/usuarios" style={navLink}>
           <ListItem button>
             <ListItemIcon>
               <InboxIcon />
