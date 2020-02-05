@@ -2,10 +2,13 @@ import React from "react";
 import Joi from "@hapi/joi";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
+import LinesGroup from "./linesGroup";
 import { getDependencies } from "../services/dependencyService";
 import { getGroupTypes } from "../services/groupTypeService";
 import { getGroup, saveGroup } from "../services/groupService";
 import { Container } from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 class GroupForm extends Form {
   state = {
@@ -91,32 +94,62 @@ class GroupForm extends Form {
         label: "Grupos Investigación"
       }
     ];
+
+    const classes = {
+      paper: {
+        padding: "2em",
+        color: "secondary"
+      }
+    };
     return (
       <Container maxWidth="xl">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
         <h1>
           Grupo: <small>{data.acronym_group}</small>
         </h1>
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("code_group", "Código")}
-          {this.renderInput("acronym_group", "Siglas")}
-          {this.renderInput("name_group", "Nombre")}
-          {this.renderTextarea("mission_group", "Misión")}
-          {this.renderTextarea("vision_group", "Visión")}
-          {this.renderSelect(
-            "id_dependency",
-            "Facultad",
-            "name_dependency",
-            this.state.dependencies
-          )}
-          {this.renderSelect(
-            "id_groupType",
-            "Tipo",
-            "name_groupType",
-            this.state.groupTypes
-          )}
-          {this.renderButton("Guardar")}
-        </form>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={7} md={8}>
+            <Paper style={classes.paper}>
+              <form onSubmit={this.handleSubmit}>
+                {this.renderInput("code_group", "Código")}
+                {this.renderInput("acronym_group", "Siglas")}
+                {this.renderInput("name_group", "Nombre")}
+                {this.renderTextarea("mission_group", "Misión")}
+                {this.renderTextarea("vision_group", "Visión")}
+                {this.renderSelect(
+                  "id_dependency",
+                  "Facultad",
+                  "name_dependency",
+                  this.state.dependencies
+                )}
+                {this.renderSelect(
+                  "id_groupType",
+                  "Tipo",
+                  "name_groupType",
+                  this.state.groupTypes
+                )}
+                {this.renderButton("Guardar")}
+              </form>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={5} md={4}>
+            <Paper style={classes.paper}>
+              <LinesGroup></LinesGroup>
+            </Paper>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Paper style={classes.paper}>xs=6 sm=3</Paper>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Paper style={classes.paper}>xs=6 sm=3</Paper>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Paper style={classes.paper}>xs=6 sm=3</Paper>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Paper style={classes.paper}>xs=6 sm=3</Paper>
+          </Grid>
+        </Grid>
       </Container>
     );
   }
