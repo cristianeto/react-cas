@@ -6,6 +6,7 @@ import LinesGroup from "./linesGroup";
 import { getDependencies } from "../services/dependencyService";
 import { getGroupTypes } from "../services/groupTypeService";
 import { getGroup, saveGroup } from "../services/groupService";
+import { getLines } from "../services/lineService";
 import { Container } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -19,10 +20,12 @@ class GroupForm extends Form {
       mission_group: "",
       vision_group: "",
       id_dependency: "",
+      id_lines: "",
       id_groupType: ""
     },
     dependencies: [],
     groupTypes: [],
+    lines: [],
     errors: {}
   };
 
@@ -50,12 +53,17 @@ class GroupForm extends Form {
     const { data: groupTypes } = await getGroupTypes();
     this.setState({ groupTypes });
   }
-
+  async populateLines() {
+    const { data: lines } = await getLines();
+    this.setState({ lines });
+    console.log(lines);
+  }
   async populateGroup() {
     try {
       const groupId = this.props.match.params.id; //Pasando por URL id movie
       if (groupId === "new") return; //Si si
       const { data: group } = await getGroup(groupId); //Si no.
+      console.log("group: ", group);
       this.setState({ data: this.mapToViewModel(group) });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
@@ -67,6 +75,7 @@ class GroupForm extends Form {
     await this.populateDependencies();
     await this.populateGroupTypes();
     await this.populateGroup();
+    await this.populateLines();
   }
 
   mapToViewModel(group) {
@@ -78,7 +87,8 @@ class GroupForm extends Form {
       mission_group: group.mission_group,
       vision_group: group.vision_group,
       id_dependency: group.id_dependency,
-      id_groupType: group.id_groupType
+      id_groupType: group.id_groupType,
+      id_lines: [group.lines]
     };
   }
   doSubmit = async () => {
@@ -121,6 +131,12 @@ class GroupForm extends Form {
                   "Facultad",
                   "name_dependency",
                   this.state.dependencies
+                )}
+                {this.renderMultiSelect(
+                  "id_researchLine",
+                  "Líneas",
+                  "name_researchLine",
+                  this.state.lines
                 )}
                 {this.renderSelect(
                   "id_groupType",

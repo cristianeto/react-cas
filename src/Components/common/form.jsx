@@ -3,6 +3,7 @@ import React, { Component } from "react";
 
 import Input from "./input";
 import MySelect from "./select";
+import MyMultiSelect from "./multiSelect";
 import Textarea from "./textarea";
 import Button from "@material-ui/core/Button";
 
@@ -45,8 +46,11 @@ class Form extends Component {
     else delete errors[input.name];
 
     const data = { ...this.state.data };
+    console.log(input.name, "; ", input.value);
+
     data[input.name] = input.value;
     this.setState({ data, errors });
+    console.log(this.state.data);
   };
 
   renderButton(label) {
@@ -105,6 +109,21 @@ class Form extends Component {
       <MySelect
         name={name}
         value={data[name]}
+        label={label}
+        property={property}
+        options={options}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+  renderMultiSelect(name, label, property, options) {
+    const { data, errors } = this.state;
+
+    return (
+      <MyMultiSelect
+        name={[name]}
+        value={[data[name]]}
         label={label}
         property={property}
         options={options}
