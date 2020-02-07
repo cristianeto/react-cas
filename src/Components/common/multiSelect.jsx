@@ -47,7 +47,7 @@ const MyMultiSelect = ({ name, label, property, options, error, ...rest }) => {
         labelWidth={75}
         multiple
         {...rest}
-        input={<Input id={name} name={[name]} value={[]} />}
+        input={<Input id={name} name={name} value={[]} />}
         renderValue={selected => (
           <div style={classes.chips}>
             {selected.map(value => (

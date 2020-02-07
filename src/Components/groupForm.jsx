@@ -20,7 +20,7 @@ class GroupForm extends Form {
       mission_group: "",
       vision_group: "",
       id_dependency: "",
-      id_lines: "",
+      id_researchLine: "",
       id_groupType: ""
     },
     dependencies: [],
@@ -38,11 +38,12 @@ class GroupForm extends Form {
       .alphanum()
       .label("Siglas")
       .max(10),
-    name_group: Joi.string(),
-    mission_group: Joi.string(),
-    vision_group: Joi.string(),
-    id_dependency: Joi.number(),
-    id_groupType: Joi.number()
+    name_group: Joi.string().label("Nombre"),
+    mission_group: Joi.string().label("Misión"),
+    vision_group: Joi.string().label("Visión"),
+    id_dependency: Joi.number().label("Dependencia"),
+    id_groupType: Joi.number().label("Tipo"),
+    id_lines: Joi.any()
   });
 
   async populateDependencies() {
@@ -56,15 +57,14 @@ class GroupForm extends Form {
   async populateLines() {
     const { data: lines } = await getLines();
     this.setState({ lines });
-    console.log(lines);
   }
   async populateGroup() {
     try {
       const groupId = this.props.match.params.id; //Pasando por URL id movie
       if (groupId === "new") return; //Si si
       const { data: group } = await getGroup(groupId); //Si no.
-      console.log("group: ", group);
       this.setState({ data: this.mapToViewModel(group) });
+      console.log(this.state.data);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
@@ -79,6 +79,10 @@ class GroupForm extends Form {
   }
 
   mapToViewModel(group) {
+    let lines = [];
+    group.lines.map(line => {
+      return lines.push(line.id_researchLine);
+    });
     return {
       id_group: group.id_group,
       code_group: group.code_group,
@@ -88,7 +92,7 @@ class GroupForm extends Form {
       vision_group: group.vision_group,
       id_dependency: group.id_dependency,
       id_groupType: group.id_groupType,
-      id_lines: [group.lines]
+      id_lines: lines
     };
   }
   doSubmit = async () => {

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { getDependencies } from "../services/dependencyService";
 import { getGroups } from "../services/groupService";
 import GroupsTable from "./groupsTable";
+import ButtonAdd from "./common/buttonAdd";
 import { Container } from "@material-ui/core";
 
 class Groups extends Component {
@@ -26,7 +27,9 @@ class Groups extends Component {
     return (
       <main>
         <Container maxWidth="xl">
-          <h1>Grupos de Investigación</h1>
+          <h1>
+            Grupos de Investigación <ButtonAdd entity={"grupo"} />
+          </h1>
           <GroupsTable datas={this.state.groups} onGetGroup={this.getGroup} />
         </Container>
       </main>
