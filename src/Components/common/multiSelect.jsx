@@ -7,7 +7,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input";
 import Chip from "@material-ui/core/Chip";
 
-const MyMultiSelect = ({ name, label, property, options, error, ...rest }) => {
+const MyMultiSelect = ({
+  name,
+  label,
+  property,
+  options,
+  error,
+  value,
+  onChange,
+  ...rest
+}) => {
   let validation;
   error === undefined ? (validation = false) : (validation = true);
   const MenuProps = {
@@ -19,6 +28,10 @@ const MyMultiSelect = ({ name, label, property, options, error, ...rest }) => {
     }
   };
   const classes = {
+    formControl: {
+      minWidth: "100%",
+      maxWidth: "100%"
+    },
     chips: {
       display: "flex",
       flexWrap: "wrap"
@@ -30,8 +43,44 @@ const MyMultiSelect = ({ name, label, property, options, error, ...rest }) => {
       marginTop: "3em"
     }
   };
+  const [personName, setPersonName] = React.useState([]);
+  const names = [
+    "Oliver Hansen",
+    "Van Henry",
+    "April Tucker",
+    "Ralph Hubbard",
+    "Omar Alexander",
+    "Carlos Abbott",
+    "Miriam Wagner",
+    "Bradley Wilkerson",
+    "Virginia Andrews",
+    "Kelly Snyder"
+  ];
+
+  const handleChangeM = event => {
+    console.log("Click: ", value);
+    setPersonName(event.target.value);
+  };
   return (
-    <FormControl
+    <FormControl style={classes.formControl}>
+      <InputLabel id="demo-mutiple-name-label">Name</InputLabel>
+      <Select
+        labelId="demo-mutiple-name-label"
+        id="demo-mutiple-name"
+        multiple
+        value={personName}
+        onChange={handleChangeM}
+        input={<Input />}
+        MenuProps={MenuProps}
+      >
+        {names.map((namesd, index) => (
+          <MenuItem key={namesd} value={namesd}>
+            {namesd}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+    /*     <FormControl
       required
       variant="outlined"
       fullWidth
@@ -67,7 +116,7 @@ const MyMultiSelect = ({ name, label, property, options, error, ...rest }) => {
         ))}
       </Select>
       {error && <FormHelperText>{error}</FormHelperText>}
-    </FormControl>
+    </FormControl> */
   );
 };
 

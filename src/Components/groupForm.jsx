@@ -43,7 +43,7 @@ class GroupForm extends Form {
     vision_group: Joi.string().label("Visión"),
     id_dependency: Joi.number().label("Dependencia"),
     id_groupType: Joi.number().label("Tipo"),
-    id_lines: Joi.any()
+    id_researchLine: Joi.any().label("Líneas")
   });
 
   async populateDependencies() {
@@ -64,7 +64,7 @@ class GroupForm extends Form {
       if (groupId === "new") return; //Si si
       const { data: group } = await getGroup(groupId); //Si no.
       this.setState({ data: this.mapToViewModel(group) });
-      console.log(this.state.data);
+      console.log("data: ", this.state.data);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
@@ -79,10 +79,12 @@ class GroupForm extends Form {
   }
 
   mapToViewModel(group) {
-    let lines = [];
-    group.lines.map(line => {
-      return lines.push(line.id_researchLine);
-    });
+    let lines = [0];
+    /* group.lines.forEach(line => {
+      lines.push(line.id_researchLine);
+    }); */
+    console.log("Lines:", lines);
+
     return {
       id_group: group.id_group,
       code_group: group.code_group,
@@ -92,7 +94,7 @@ class GroupForm extends Form {
       vision_group: group.vision_group,
       id_dependency: group.id_dependency,
       id_groupType: group.id_groupType,
-      id_lines: lines
+      id_researchLine: lines
     };
   }
   doSubmit = async () => {

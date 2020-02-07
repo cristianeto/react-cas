@@ -46,11 +46,22 @@ class Form extends Component {
     else delete errors[input.name];
 
     const data = { ...this.state.data };
-
+    console.log("Name Select: ", input.name);
     data[input.name] = input.value;
-    console.log(data[input.name]);
     this.setState({ data, errors });
-    console.log(this.state.data);
+  };
+
+  handleChangeMulti = e => {
+    //Retornando un error
+
+    const data = { ...this.state.data };
+    data[e.target.name] = e.target.value;
+    console.log("Name Multiselect: ", e.target.name);
+    console.log("Value Multiselect: ", e.target.value);
+    this.setState({ data });
+    console.log("state data: ", this.state.data);
+    /* setPersonName(event.target.value);
+    console.log(personName); */
   };
 
   renderButton(label) {
@@ -123,11 +134,11 @@ class Form extends Component {
     return (
       <MyMultiSelect
         name={[name]}
-        value={[data[name]]}
+        value={data[name]}
         label={label}
         property={property}
         options={options}
-        onChange={this.handleChange}
+        onChange={this.handleChangeMulti}
         error={errors[name]}
       />
     );
