@@ -5,28 +5,19 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input";
-import Chip from "@material-ui/core/Chip";
 
 const MyMultiSelect = ({
   name,
+  value,
   label,
   property,
   options,
-  error,
-  value,
   onChange,
-  ...rest
+  error
 }) => {
   let validation;
   error === undefined ? (validation = false) : (validation = true);
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: "10em",
-        width: 250
-      }
-    }
-  };
+
   const classes = {
     formControl: {
       minWidth: "100%",
@@ -43,68 +34,55 @@ const MyMultiSelect = ({
       marginTop: "3em"
     }
   };
-  const [personName, setPersonName] = React.useState([]);
-  const names = [
-    "Oliver Hansen",
-    "Van Henry",
-    "April Tucker",
-    "Ralph Hubbard",
-    "Omar Alexander",
-    "Carlos Abbott",
-    "Miriam Wagner",
-    "Bradley Wilkerson",
-    "Virginia Andrews",
-    "Kelly Snyder"
-  ];
-
-  const handleChangeM = event => {
-    console.log("Click: ", value);
-    setPersonName(event.target.value);
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250
+      }
+    }
   };
+
   return (
     <FormControl style={classes.formControl}>
       <InputLabel id="demo-mutiple-name-label">Name</InputLabel>
       <Select
         labelId="demo-mutiple-name-label"
-        id="demo-mutiple-name"
+        id={name + []}
+        name={name + []}
+        value={[value]}
         multiple
-        value={personName}
-        onChange={handleChangeM}
         input={<Input />}
         MenuProps={MenuProps}
+        onChange={onChange}
       >
-        {names.map((namesd, index) => (
-          <MenuItem key={namesd} value={namesd}>
-            {namesd}
+        {options.map(option => (
+          <MenuItem key={option[name]} value={option[property]}>
+            {option[property]}
           </MenuItem>
         ))}
       </Select>
+      {/* {error && <FormHelperText>{error}</FormHelperText>} */}
     </FormControl>
-    /*     <FormControl
+  );
+  /* return (
+    <FormControl
       required
       variant="outlined"
       fullWidth
       size="small"
       margin="normal"
     >
-      <InputLabel id="demo-mutiple-chip-label">{label}</InputLabel>
+      <InputLabel id="demo-simple-select-outlined-label">{label}</InputLabel>
       <Select
         error={validation}
-        labelId="demo-mutiple-chip-label"
+        labelId="demo-simple-select-outlined-label"
         id={name}
         name={name}
         labelWidth={75}
-        multiple
         {...rest}
-        input={<Input id={name} name={name} value={[]} />}
-        renderValue={selected => (
-          <div style={classes.chips}>
-            {selected.map(value => (
-              <Chip key={value} label={value} style={classes.chip} />
-            ))}
-          </div>
-        )}
-        MenuProps={MenuProps}
       >
         <MenuItem value="" disabled>
           <em>Seleccione una opción</em>
@@ -116,8 +94,8 @@ const MyMultiSelect = ({
         ))}
       </Select>
       {error && <FormHelperText>{error}</FormHelperText>}
-    </FormControl> */
-  );
+    </FormControl>
+  ); */
 };
 
 export default MyMultiSelect;

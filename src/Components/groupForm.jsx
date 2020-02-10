@@ -79,11 +79,10 @@ class GroupForm extends Form {
   }
 
   mapToViewModel(group) {
-    let lines = [0];
-    /* group.lines.forEach(line => {
-      lines.push(line.id_researchLine);
-    }); */
-    console.log("Lines:", lines);
+    let lines = "";
+    lines = group.lines.map(line => {
+      return line.name_researchLine;
+    });
 
     return {
       id_group: group.id_group,

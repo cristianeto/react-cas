@@ -55,9 +55,12 @@ class Form extends Component {
     //Retornando un error
 
     const data = { ...this.state.data };
-    data[e.target.name] = e.target.value;
+    data[e.target.name] = e.target.value[0].push(e.target.value[1]);
     console.log("Name Multiselect: ", e.target.name);
-    console.log("Value Multiselect: ", e.target.value);
+    console.log(
+      "Value Multiselect: ",
+      e.target.value[0] + "," + e.target.value[1]
+    );
     this.setState({ data });
     console.log("state data: ", this.state.data);
     /* setPersonName(event.target.value);
@@ -134,7 +137,7 @@ class Form extends Component {
     return (
       <MyMultiSelect
         name={[name]}
-        value={data[name]}
+        value={[data[name]]}
         label={label}
         property={property}
         options={options}
