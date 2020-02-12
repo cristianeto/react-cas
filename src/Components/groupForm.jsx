@@ -20,7 +20,7 @@ class GroupForm extends Form {
       mission_group: "",
       vision_group: "",
       id_dependency: "",
-      id_researchLine: "",
+      id_researchLine: [],
       id_groupType: ""
     },
     dependencies: [],
@@ -43,7 +43,7 @@ class GroupForm extends Form {
     vision_group: Joi.string().label("Visión"),
     id_dependency: Joi.number().label("Dependencia"),
     id_groupType: Joi.number().label("Tipo"),
-    id_researchLine: Joi.any().label("Líneas")
+    id_researchLine: Joi.array().label("Líneas")
   });
 
   async populateDependencies() {
@@ -79,11 +79,11 @@ class GroupForm extends Form {
   }
 
   mapToViewModel(group) {
-    let lines = [0];
-    /* group.lines.forEach(line => {
+    let lines = [];
+    group.lines.forEach(line => {
       lines.push(line.id_researchLine);
-    }); */
-    console.log("Lines:", lines);
+    });
+    //console.log("Lines:", lines);
 
     return {
       id_group: group.id_group,
@@ -142,6 +142,7 @@ class GroupForm extends Form {
                   "id_researchLine",
                   "Líneas",
                   "name_researchLine",
+                  this.state.data.id_researchLine,
                   this.state.lines
                 )}
                 {this.renderSelect(

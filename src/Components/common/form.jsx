@@ -46,23 +46,20 @@ class Form extends Component {
     else delete errors[input.name];
 
     const data = { ...this.state.data };
-    console.log("Name Select: ", input.name);
     data[input.name] = input.value;
     this.setState({ data, errors });
   };
 
-  handleChangeMulti = e => {
-    //Retornando un error
+  /*   handleChangeMultiple = event => {
+    console.log("target: ", event.target);
+    const value = event.target.value;
 
+    //console.log("data: ", this.state.data);
     const data = { ...this.state.data };
-    data[e.target.name] = e.target.value;
-    console.log("Name Multiselect: ", e.target.name);
-    console.log("Value Multiselect: ", e.target.value);
+    data[event.target.name] = value;
     this.setState({ data });
-    console.log("state data: ", this.state.data);
-    /* setPersonName(event.target.value);
-    console.log(personName); */
-  };
+    console.log("cris Lineas del grupo: ", data["id_researchLine"]);
+  }; */
 
   renderButton(label) {
     let validation;
@@ -128,17 +125,17 @@ class Form extends Component {
       />
     );
   }
-  renderMultiSelect(name, label, property, options) {
+  renderMultiSelect(name, label, property, optionsSelected, options) {
     const { data, errors } = this.state;
-
     return (
       <MyMultiSelect
-        name={[name]}
+        name={name}
         value={data[name]}
         label={label}
         property={property}
+        optionsSelected={data[name]}
         options={options}
-        onChange={this.handleChangeMulti}
+        onChange={this.handleChange}
         error={errors[name]}
       />
     );
