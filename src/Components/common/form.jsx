@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Input from "./input";
 import MySelect from "./select";
 import MyMultiSelect from "./multiSelect";
+import Panel from "./panel";
 import Textarea from "./textarea";
 import Button from "@material-ui/core/Button";
 
@@ -48,18 +49,8 @@ class Form extends Component {
     const data = { ...this.state.data };
     data[input.name] = input.value;
     this.setState({ data, errors });
+    console.log(this.state.data);
   };
-
-  /*   handleChangeMultiple = event => {
-    console.log("target: ", event.target);
-    const value = event.target.value;
-
-    //console.log("data: ", this.state.data);
-    const data = { ...this.state.data };
-    data[event.target.name] = value;
-    this.setState({ data });
-    console.log("cris Lineas del grupo: ", data["id_researchLine"]);
-  }; */
 
   renderButton(label) {
     let validation;
@@ -76,6 +67,7 @@ class Form extends Component {
         size="medium"
         variant="contained"
         color="primary"
+        margin="normal"
       >
         {label}
       </Button>
@@ -125,20 +117,25 @@ class Form extends Component {
       />
     );
   }
-  renderMultiSelect(name, label, property, optionsSelected, options) {
+  renderMultiSelect(name, label, property, options) {
     const { data, errors } = this.state;
     return (
       <MyMultiSelect
         name={name}
-        value={data[name]}
+        //value={data[name]}
         label={label}
         property={property}
         optionsSelected={data[name]}
         options={options}
-        onChange={this.handleChange}
+        onChange={this.handleChangeMultiple}
         error={errors[name]}
       />
     );
+  }
+
+  renderPanel(id, property, title) {
+    const { data } = this.state;
+    return <Panel id={id} property={property} title={title} data={data[id]} />;
   }
 }
 

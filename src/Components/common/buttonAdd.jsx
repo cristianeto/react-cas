@@ -7,7 +7,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 const ButtonAdd = props => {
   return (
     <React.Fragment>
-      <Tooltip title={"Agregar"}>
+      <Tooltip
+        title={"Agregar"}
+        style={{ position: "absolute", bottom: "2em", right: "3em" }}
+      >
         <NavLink to={`/${props.entity}/new`}>
           <Fab size="medium" color="primary" aria-label="add">
             <AddIcon />

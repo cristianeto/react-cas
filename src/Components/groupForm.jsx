@@ -3,15 +3,13 @@ import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
-import LinesGroup from "./linesGroup";
+
 import { getDependencies } from "../services/dependencyService";
 import { getGroupTypes } from "../services/groupTypeService";
 import { getGroup, saveGroup } from "../services/groupService";
 import { getLines } from "../services/lineService";
 import { Container } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import { LinearProgress } from "@material-ui/core";
+import { LinearProgress, Typography, Paper, Grid } from "@material-ui/core";
 
 class GroupForm extends Form {
   state = {
@@ -67,7 +65,6 @@ class GroupForm extends Form {
       if (groupId === "new") return; //Si si
       const { data: group } = await getGroup(groupId); //Si no.
       this.setState({ data: this.mapToViewModel(group) });
-      console.log("data: ", this.state.data);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
@@ -99,16 +96,38 @@ class GroupForm extends Form {
       vision_group: group.vision_group,
       id_dependency: group.id_dependency,
       id_groupType: group.id_groupType,
-      id_researchLine: lines
+      id_researchLine: group.lines
     };
   }
   doSubmit = async () => {
-    await saveGroup(this.state.data);
-    this.props.enqueueSnackbar(
-      `${this.state.data.acronym_group} fue guardado correctamente!`,
-      { variant: "success" }
-    );
-    this.props.history.push("/grupos-investigacion");
+    try {
+      await saveGroup(this.state.data);
+      this.props.enqueueSnackbar(
+        `${this.state.data.acronym_group} fue guardado correctamente!`,
+        { variant: "success" }
+      );
+      /* this.props.history.push("/grupos-investigacion"); */
+    } catch (error) {
+      this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
+        variant: "error"
+      });
+    }
+  };
+
+  handleChangeMultiple = ({ target: input }) => {
+    const valueArray = input.value;
+
+    const data = { ...this.state.data };
+    const entities = [...this.state["lines"]];
+
+    let newArray = [];
+    entities.forEach(line => {
+      valueArray.forEach(val => {
+        if (line.id_researchLine === val) newArray.push(line);
+      });
+    });
+    data[input.name] = newArray;
+    this.setState({ data });
   };
 
   render() {
@@ -127,15 +146,15 @@ class GroupForm extends Form {
       }
     };
     return (
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
-        <h1 style={{ width: "50%" }}>
-          Grupo: <small>{data.acronym_group}</small>
-          {this.state.isLoading && <LinearProgress color="secondary" />}
-        </h1>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper style={classes.paper}>
+              <Typography variant="h4" gutterBottom>
+                Grupo: <small>{data.acronym_group}</small>
+                {this.state.isLoading && <LinearProgress color="secondary" />}
+              </Typography>
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("code_group", "Código")}
                 {this.renderInput("acronym_group", "Siglas")}
@@ -152,7 +171,6 @@ class GroupForm extends Form {
                   "id_researchLine",
                   "Líneas",
                   "name_researchLine",
-                  this.state.data.id_researchLine,
                   this.state.lines
                 )}
                 {this.renderSelect(
@@ -165,10 +183,25 @@ class GroupForm extends Form {
               </form>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={5} md={4}>
-            <Paper style={classes.paper}>
-              <LinesGroup></LinesGroup>
-            </Paper>
+          <Grid container item xs={12} sm={5} md={4}>
+            <Grid item xs={12} sm={12}>
+              <Paper style={classes.paper}>
+                {this.renderPanel(
+                  "id_researchLine",
+                  "name_researchLine",
+                  "Líneas de Investigación"
+                )}
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Paper style={classes.paper}>
+                {this.renderPanel(
+                  "id_researchLine",
+                  "name_researchLine",
+                  "Programas"
+                )}
+              </Paper>
+            </Grid>
           </Grid>
           <Grid item xs={6} sm={3}>
             <Paper style={classes.paper}>xs=6 sm=3</Paper>

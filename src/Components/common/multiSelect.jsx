@@ -17,7 +17,10 @@ const MyMultiSelect = ({
 }) => {
   let validation;
   error === undefined ? (validation = false) : (validation = true);
-
+  let ids = [];
+  optionsSelected.forEach(optionSelected => {
+    ids.push(optionSelected[name]);
+  });
   return (
     <FormControl required fullWidth size="small" margin="normal">
       <InputLabel id="demo-mutiple-name-label">{label}</InputLabel>
@@ -27,7 +30,7 @@ const MyMultiSelect = ({
         id={name}
         multiple
         name={name}
-        value={optionsSelected}
+        value={ids}
         input={<Input />}
         {...rest}
       >

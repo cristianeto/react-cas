@@ -13,7 +13,11 @@ const Breadcum = props => {
     <Breadcrumbs
       separator={<NavigateNextIcon fontSize="small" />}
       aria-label="breadcrumb"
-      style={{ display: "flex", justifyContent: "flex-end", marginTop: "1em" }}
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        padding: "1em 0 1em"
+      }}
     >
       {props.onListBreadcrumbs.map(breadItem => (
         <Link

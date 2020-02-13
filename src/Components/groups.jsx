@@ -28,7 +28,10 @@ class Groups extends Component {
   render() {
     return (
       <main>
-        <Container maxWidth="xl">
+        <Container
+          maxWidth="xl"
+          style={{ backgroundColor: "#f5f5f5", paddingTop: "1em" }}
+        >
           <h1>
             Grupos de Investigación <ButtonAdd entity={"grupo"} />
           </h1>
