@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
 
 import { CasClient } from "./CasClient/CasClient";
 import NavBar from "./Components/navBar";
@@ -38,21 +39,23 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        <NavBar />
-        <Switch>
-          {/* <Route path="/login" component={LoginForm} />
+      <SnackbarProvider maxSnack={3}>
+        <div>
+          <NavBar />
+          <Switch>
+            {/* <Route path="/login" component={LoginForm} />
             <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} /> */}
-          <Route path="/usuarios" component={Users} />
-          <Route path="/welcome" component={Welcome} />
-          <Route path="/grupos-investigacion" component={Groups} />
-          <Route path="/grupo/:id" component={GroupForm} />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect from="/" exact to="/welcome" />
-          <Redirect to="/not-found" />
-        </Switch>
-      </div>
+            <Route path="/usuarios" component={Users} />
+            <Route path="/welcome" component={Welcome} />
+            <Route path="/grupos-investigacion" component={Groups} />
+            <Route path="/grupo/:id" component={GroupForm} />
+            <Route path="/not-found" component={NotFound} />
+            <Redirect from="/" exact to="/welcome" />
+            <Redirect to="/not-found" />
+          </Switch>
+        </div>
+      </SnackbarProvider>
     );
   }
 }

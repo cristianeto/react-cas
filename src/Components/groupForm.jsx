@@ -1,5 +1,6 @@
 import React from "react";
 import Joi from "@hapi/joi";
+import { withSnackbar } from "notistack";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
 import LinesGroup from "./linesGroup";
@@ -10,6 +11,7 @@ import { getLines } from "../services/lineService";
 import { Container } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import { LinearProgress } from "@material-ui/core";
 
 class GroupForm extends Form {
   state = {
@@ -26,7 +28,8 @@ class GroupForm extends Form {
     dependencies: [],
     groupTypes: [],
     lines: [],
-    errors: {}
+    errors: {},
+    isLoading: false
   };
 
   schema = Joi.object({
@@ -72,10 +75,12 @@ class GroupForm extends Form {
   }
 
   async componentDidMount() {
+    this.setState({ isLoading: true });
     await this.populateDependencies();
     await this.populateGroupTypes();
     await this.populateGroup();
     await this.populateLines();
+    this.setState({ isLoading: false });
   }
 
   mapToViewModel(group) {
@@ -99,6 +104,10 @@ class GroupForm extends Form {
   }
   doSubmit = async () => {
     await saveGroup(this.state.data);
+    this.props.enqueueSnackbar(
+      `${this.state.data.acronym_group} fue guardado correctamente!`,
+      { variant: "success" }
+    );
     this.props.history.push("/grupos-investigacion");
   };
 
@@ -120,8 +129,9 @@ class GroupForm extends Form {
     return (
       <Container maxWidth="xl">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
-        <h1>
+        <h1 style={{ width: "50%" }}>
           Grupo: <small>{data.acronym_group}</small>
+          {this.state.isLoading && <LinearProgress color="secondary" />}
         </h1>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
@@ -178,4 +188,4 @@ class GroupForm extends Form {
   }
 }
 
-export default GroupForm;
+export default withSnackbar(GroupForm);

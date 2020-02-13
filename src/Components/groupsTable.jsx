@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { LinearProgress, Typography } from "@material-ui/core";
 
-class UsersTable extends Component {
+class GroupsTable extends Component {
   state = {};
   getMuiTheme = () =>
     createMuiTheme({
@@ -57,7 +58,7 @@ class UsersTable extends Component {
                 style={{ textDecoration: "none" }}
                 to={`/grupo/${tableMeta.rowData[0]}`}
               >
-                {value} {tableMeta.rowData[2]}
+                {value}
               </Link>
             );
           }
@@ -82,18 +83,57 @@ class UsersTable extends Component {
     ];
 
     const data = this.props.datas;
-
+    const isLoading = this.props.onLoading;
     const options = {
       filterType: "dropdown",
       responsive: "scroll",
       rowsPerPage: 5,
-      rowsPerPageOptions: [5, 10, 20]
+      rowsPerPageOptions: [5, 10, 20],
+      textLabels: {
+        body: {
+          noMatch: "Lo sentimos, no se han encontrado registros",
+          toolTip: "Ordenar",
+          columnHeaderTooltip: column => `Ordenar por ${column.label}`
+        },
+        pagination: {
+          next: "Página siguiente",
+          previous: "Página anterior",
+          rowsPerPage: "Filas por página:",
+          displayRows: "de"
+        },
+        toolbar: {
+          search: "Buscar",
+          downloadCsv: "Descargar CSV",
+          print: "Imprimir",
+          viewColumns: "Ver Columnas",
+          filterTable: "Filtrar Tabla"
+        },
+        filter: {
+          all: "Todo",
+          title: "FILTRADO",
+          reset: "RESETEAR"
+        },
+        viewColumns: {
+          title: "Mostrar Columnas",
+          titleAria: "Mostrar/Ocultar Table Columns"
+        },
+        selectedRows: {
+          text: "fila(s) seleccionada(s)",
+          delete: "Borrar",
+          deleteAria: "Delete Selected Rows"
+        }
+      }
     };
 
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable
-          title={"Lista de grupos de investigación"}
+          title={
+            <Typography variant="h6">
+              Lista de grupos de investigación
+              {isLoading && <LinearProgress color="secondary" />}
+            </Typography>
+          }
           data={data}
           columns={columns}
           options={options}
@@ -103,4 +143,4 @@ class UsersTable extends Component {
   }
 }
 
-export default UsersTable;
+export default GroupsTable;

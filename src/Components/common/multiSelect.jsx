@@ -20,7 +20,7 @@ const MyMultiSelect = ({
 
   return (
     <FormControl required fullWidth size="small" margin="normal">
-      <InputLabel id="demo-mutiple-name-label">Name</InputLabel>
+      <InputLabel id="demo-mutiple-name-label">{label}</InputLabel>
       <Select
         error={validation}
         labelId="demo-mutiple-name-label"
@@ -31,6 +31,9 @@ const MyMultiSelect = ({
         input={<Input />}
         {...rest}
       >
+        <MenuItem disabled value="">
+          <em>Seleccione una o más opciones</em>
+        </MenuItem>
         {options.map(option => (
           <MenuItem key={option[name]} value={option[name]}>
             {option[property]}
