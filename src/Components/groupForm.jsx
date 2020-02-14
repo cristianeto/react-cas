@@ -3,6 +3,7 @@ import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
+import Panel from "./common/panel";
 
 import { getDependencies } from "../services/dependencyService";
 import { getGroupTypes } from "../services/groupTypeService";
@@ -129,20 +130,6 @@ class GroupForm extends Form {
     }
   };
 
-  handleChangeMultiple = ({ target: input }) => {
-    const valueArray = input.value;
-    const data = { ...this.state.data };
-    let entities = this.cloningArray(input.name);
-    let newArray = [];
-    entities.forEach(entity => {
-      valueArray.forEach(val => {
-        if (entity[input.name] === val) newArray.push(entity);
-      });
-    });
-    data[input.name] = newArray;
-    this.setState({ data });
-  };
-
   cloningArray(inputName) {
     let entities = [];
     switch (inputName) {
@@ -224,16 +211,22 @@ class GroupForm extends Form {
           <Grid container item xs={12} sm={5} md={4} spacing={3}>
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
-                {this.renderPanel(
-                  "id_researchLine",
-                  "name_researchLine",
-                  "Líneas de Investigación"
-                )}
+                <Panel
+                  id="id_researchLine"
+                  property="name_researchLine"
+                  title="Líneas de Investigación"
+                  data={this.state.data["id_researchLine"]}
+                />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
-                {this.renderPanel("id_program", "name_program", "Programas")}
+                <Panel
+                  id="id_program"
+                  property="name_program"
+                  title="Programas"
+                  data={this.state.data["id_program"]}
+                />
               </Paper>
             </Grid>
           </Grid>

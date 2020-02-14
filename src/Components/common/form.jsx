@@ -52,6 +52,20 @@ class Form extends Component {
     console.log(this.state.data);
   };
 
+  handleChangeMultiple = ({ target: input }) => {
+    const valueArray = input.value;
+    const data = { ...this.state.data };
+    let entities = this.cloningArray(input.name);
+    let newArray = [];
+    entities.forEach(entity => {
+      valueArray.forEach(val => {
+        if (entity[input.name] === val) newArray.push(entity);
+      });
+    });
+    data[input.name] = newArray;
+    this.setState({ data });
+  };
+
   renderButton(label) {
     let validation;
     this.validate() === null ? (validation = false) : (validation = true);
@@ -133,10 +147,10 @@ class Form extends Component {
     );
   }
 
-  renderPanel(id, property, title) {
+  /* renderPanel(id, property, title) {
     const { data } = this.state;
     return <Panel id={id} property={property} title={title} data={data[id]} />;
-  }
+  } */
 }
 
 export default Form;
