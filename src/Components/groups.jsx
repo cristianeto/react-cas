@@ -3,7 +3,7 @@ import { getDependencies } from "../services/dependencyService";
 import { getGroups } from "../services/groupService";
 import GroupsTable from "./groupsTable";
 import ButtonAdd from "./common/buttonAdd";
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 
 class Groups extends Component {
   state = {
@@ -32,9 +32,9 @@ class Groups extends Component {
           maxWidth="xl"
           style={{ backgroundColor: "#f5f5f5", paddingTop: "1em" }}
         >
-          <h1>
+          <Typography variant="h6" gutterBottom>
             Grupos de Investigación <ButtonAdd entity={"grupo"} />
-          </h1>
+          </Typography>
           <GroupsTable
             datas={this.state.groups}
             onGetGroup={this.getGroup}

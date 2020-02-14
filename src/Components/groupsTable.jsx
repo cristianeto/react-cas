@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography } from "@material-ui/core";
+import { LinearProgress, Typography, Chip } from "@material-ui/core";
 
 class GroupsTable extends Component {
   state = {};
@@ -28,6 +28,11 @@ class GroupsTable extends Component {
       }
     });
 
+  getStatus = value => {
+    if (value === 1) {
+      return "Activo";
+    }
+  };
   render() {
     const columns = [
       {
@@ -78,6 +83,22 @@ class GroupsTable extends Component {
         options: {
           filter: true,
           sort: true
+        }
+      },
+      {
+        name: "active_group",
+        label: "Estado",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: value => {
+            return (
+              <Chip
+                label={value === 1 ? "Activo" : "Inactivo"}
+                color={value === 1 ? "primary" : "secondary"}
+              ></Chip>
+            );
+          }
         }
       }
     ];

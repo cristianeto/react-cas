@@ -115,7 +115,9 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Investigación
+            <Link to="/" className={classes.navLink}>
+              Spirit
+            </Link>
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>

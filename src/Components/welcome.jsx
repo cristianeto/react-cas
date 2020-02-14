@@ -1,24 +1,24 @@
 import React from "react";
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 const Welcome = () => {
   return (
-    <main>
-      <Container maxWidth="xl">
-        <h1>Bienvenido</h1>
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam non at
-          qui quisquam voluptatum voluptatibus optio numquam aspernatur sit
-          libero temporibus sunt ea quibusdam, error asperiores. Dolore
-          repudiandae quia eum!
-        </p>
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam non at
-          qui quisquam voluptatum voluptatibus optio numquam aspernatur sit
-          libero temporibus sunt ea quibusdam, error asperiores. Dolore
-          repudiandae quia eum!
-        </p>
-      </Container>
-    </main>
+    <Container maxWidth="xl" style={{ minHeight: "90vh" }}>
+      <Typography variant="h4" gutterBottom>
+        Bienvenido
+      </Typography>
+      <Typography variant="body1">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam non at
+        qui quisquam voluptatum voluptatibus optio numquam aspernatur sit libero
+        temporibus sunt ea quibusdam, error asperiores. Dolore repudiandae quia
+        eum!
+      </Typography>
+      <Typography variant="body1">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam non at
+        qui quisquam voluptatum voluptatibus optio numquam aspernatur sit libero
+        temporibus sunt ea quibusdam, error asperiores. Dolore repudiandae quia
+        eum!
+      </Typography>
+    </Container>
   );
 };
 

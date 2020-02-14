@@ -8,8 +8,14 @@ import { getDependencies } from "../services/dependencyService";
 import { getGroupTypes } from "../services/groupTypeService";
 import { getGroup, saveGroup } from "../services/groupService";
 import { getLines } from "../services/lineService";
-import { Container } from "@material-ui/core";
-import { LinearProgress, Typography, Paper, Grid } from "@material-ui/core";
+import {
+  Container,
+  LinearProgress,
+  Typography,
+  Paper,
+  Grid
+} from "@material-ui/core";
+import { getPrograms } from "../services/programService";
 
 class GroupForm extends Form {
   state = {
@@ -21,11 +27,13 @@ class GroupForm extends Form {
       vision_group: "",
       id_dependency: "",
       id_researchLine: [],
+      id_program: [],
       id_groupType: ""
     },
     dependencies: [],
     groupTypes: [],
     lines: [],
+    programs: [],
     errors: {},
     isLoading: false
   };
@@ -44,7 +52,8 @@ class GroupForm extends Form {
     vision_group: Joi.string().label("Visión"),
     id_dependency: Joi.number().label("Dependencia"),
     id_groupType: Joi.number().label("Tipo"),
-    id_researchLine: Joi.array().label("Líneas")
+    id_researchLine: Joi.array().label("Líneas"),
+    id_program: Joi.array().label("Programas")
   });
 
   async populateDependencies() {
@@ -58,6 +67,10 @@ class GroupForm extends Form {
   async populateLines() {
     const { data: lines } = await getLines();
     this.setState({ lines });
+  }
+  async populatePrograms() {
+    const { data: programs } = await getPrograms();
+    this.setState({ programs });
   }
   async populateGroup() {
     try {
@@ -77,6 +90,7 @@ class GroupForm extends Form {
     await this.populateGroupTypes();
     await this.populateGroup();
     await this.populateLines();
+    await this.populatePrograms();
     this.setState({ isLoading: false });
   }
 
@@ -96,7 +110,8 @@ class GroupForm extends Form {
       vision_group: group.vision_group,
       id_dependency: group.id_dependency,
       id_groupType: group.id_groupType,
-      id_researchLine: group.lines
+      id_researchLine: group.lines,
+      id_program: group.programs
     };
   }
   doSubmit = async () => {
@@ -106,7 +121,7 @@ class GroupForm extends Form {
         `${this.state.data.acronym_group} fue guardado correctamente!`,
         { variant: "success" }
       );
-      /* this.props.history.push("/grupos-investigacion"); */
+      this.props.history.push("/grupos-investigacion");
     } catch (error) {
       this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
         variant: "error"
@@ -116,25 +131,42 @@ class GroupForm extends Form {
 
   handleChangeMultiple = ({ target: input }) => {
     const valueArray = input.value;
-
     const data = { ...this.state.data };
-    const entities = [...this.state["lines"]];
-
+    let entities = this.cloningArray(input.name);
     let newArray = [];
-    entities.forEach(line => {
+    entities.forEach(entity => {
       valueArray.forEach(val => {
-        if (line.id_researchLine === val) newArray.push(line);
+        if (entity[input.name] === val) newArray.push(entity);
       });
     });
     data[input.name] = newArray;
     this.setState({ data });
   };
 
+  cloningArray(inputName) {
+    let entities = [];
+    switch (inputName) {
+      case "id_researchLine":
+        entities = [...this.state["lines"]];
+        break;
+      case "id_program":
+        entities = [...this.state["programs"]];
+        break;
+      default:
+        break;
+    }
+    return entities;
+  }
+
   render() {
     const { data } = this.state;
     const listBreadcrumbs = [
       {
-        path: "grupos-investigación",
+        path: "/",
+        label: "Inicio"
+      },
+      {
+        path: "/grupos-investigacion",
         label: "Grupos Investigación"
       }
     ];
@@ -173,6 +205,12 @@ class GroupForm extends Form {
                   "name_researchLine",
                   this.state.lines
                 )}
+                {this.renderMultiSelect(
+                  "id_program",
+                  "Programas",
+                  "name_program",
+                  this.state.programs
+                )}
                 {this.renderSelect(
                   "id_groupType",
                   "Tipo",
@@ -183,7 +221,7 @@ class GroupForm extends Form {
               </form>
             </Paper>
           </Grid>
-          <Grid container item xs={12} sm={5} md={4}>
+          <Grid container item xs={12} sm={5} md={4} spacing={3}>
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
                 {this.renderPanel(
@@ -195,11 +233,7 @@ class GroupForm extends Form {
             </Grid>
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
-                {this.renderPanel(
-                  "id_researchLine",
-                  "name_researchLine",
-                  "Programas"
-                )}
+                {this.renderPanel("id_program", "name_program", "Programas")}
               </Paper>
             </Grid>
           </Grid>

@@ -22,7 +22,7 @@ const Breadcum = props => {
       {props.onListBreadcrumbs.map(breadItem => (
         <Link
           color="inherit"
-          to="/grupos-investigacion"
+          to={breadItem.path}
           style={breadcrumbLink}
           key={breadItem.path}
         >
