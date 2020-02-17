@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import Input from "./input";
 import MySelect from "./select";
 import MyMultiSelect from "./multiSelect";
-import Panel from "./panel";
 import Textarea from "./textarea";
 import Button from "@material-ui/core/Button";
 

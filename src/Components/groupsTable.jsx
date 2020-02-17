@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography, Chip } from "@material-ui/core";
+import { LinearProgress, Typography } from "@material-ui/core";
+import Active from "./common/active";
 
 class GroupsTable extends Component {
-  state = {};
   getMuiTheme = () =>
     createMuiTheme({
       overrides: {
@@ -91,12 +91,12 @@ class GroupsTable extends Component {
         options: {
           filter: true,
           sort: true,
-          customBodyRender: value => {
+          customBodyRender: (value, tableMeta) => {
             return (
-              <Chip
-                label={value === 1 ? "Activo" : "Inactivo"}
-                color={value === 1 ? "primary" : "secondary"}
-              ></Chip>
+              <Active
+                actived={value}
+                onClick={() => this.props.onActive(tableMeta.rowData[0])}
+              />
             );
           }
         }
