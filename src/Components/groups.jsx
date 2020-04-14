@@ -27,9 +27,7 @@ class Groups extends Component {
   }
   handleActive = async idGroup => {
     const originalGroups = this.state.groups;
-    // let groups = originalGroups.filter(g => g.id_group !== group[0]);
     const group = this.getGroup(idGroup);
-    console.log("It working!", group);
     const groups = [...this.state.groups];
     const index = groups.indexOf(group);
     groups[index] = { ...groups[index] };
@@ -42,12 +40,13 @@ class Groups extends Component {
     }
     this.setState({ groups });
     // groups[index].active_group = !groups[index].active_group;
-    console.log("grupo index: ", groups[index].active_group);
     try {
       await saveGroup(groups[index]);
     } catch (ex) {
       if (ex.response && ex.response.status === 404) console.log("x");
-      this.props.enqueueSnackbar(`Error al actualizar!`, { variant: "error" });
+      this.props.enqueueSnackbar(`Error al actualizar! ${ex}`, {
+        variant: "error"
+      });
 
       this.setState({ groups: originalGroups });
     }

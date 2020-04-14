@@ -40,7 +40,7 @@ export default class App extends Component {
   render() {
     return (
       <SnackbarProvider maxSnack={3}>
-        <div style={{ backgroundColor: "#f5f5f5" }}>
+        <div style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
           <NavBar />
           <Switch>
             {/* <Route path="/login" component={LoginForm} />

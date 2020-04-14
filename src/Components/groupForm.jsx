@@ -4,6 +4,8 @@ import { withSnackbar } from "notistack";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
 import Panel from "./common/panel";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 
 import { getDependencies } from "../services/dependencyService";
 import { getGroupTypes } from "../services/groupTypeService";
@@ -164,6 +166,8 @@ class GroupForm extends Form {
         color: "secondary"
       }
     };
+    console.log(this.state.data["id_program"]);
+    const top100Films = this.state.programs;
     return (
       <Container maxWidth="lg">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
@@ -227,6 +231,33 @@ class GroupForm extends Form {
                   title="Programas"
                   data={this.state.data["id_program"]}
                 />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Paper style={classes.paper}>
+                <Typography variant="h6" gutterBottom>
+                  Usuarios
+                </Typography>
+                <div style={classes.demo}>
+                  <Autocomplete
+                    multiple
+                    id="tags-outlined"
+                    options={top100Films}
+                    getOptionLabel={option => option.name_program}
+                    defaultValue={top100Films[13]}
+                    filterSelectedOptions
+                    onChange={this.handleChangeMultiple}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Usuarios"
+                        placeholder="Seleccionar un miembro "
+                        fullWidth
+                      />
+                    )}
+                  />
+                </div>
               </Paper>
             </Grid>
           </Grid>
