@@ -16,28 +16,28 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import { Link, NavLink } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   list: {
-    width: 250
+    width: 250,
   },
   navLink: {
     color: "inherit",
-    textDecoration: "none"
-  }
+    textDecoration: "none",
+  },
 }));
 
 const navLink = {
   color: "inherit",
-  textDecoration: "none"
+  textDecoration: "none",
 };
 
 export default function ButtonAppBar() {
@@ -46,10 +46,10 @@ export default function ButtonAppBar() {
     top: false,
     left: false,
     bottom: false,
-    right: false
+    right: false,
   });
 
-  const toggleDrawer = (side, open) => event => {
+  const toggleDrawer = (side, open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -60,7 +60,7 @@ export default function ButtonAppBar() {
     setState({ ...state, [side]: open });
   };
 
-  const sideList = side => (
+  const sideList = (side) => (
     <div
       className={classes.list}
       role="presentation"
@@ -83,7 +83,37 @@ export default function ButtonAppBar() {
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
+            <ListItemText primary={"Dependencias"} />
+          </ListItem>
+        </NavLink>
+      </List>
+      <List>
+        <NavLink to="/grupos-investigacion" style={navLink}>
+          <ListItem button>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
             <ListItemText primary={"Grupos investigación"} />
+          </ListItem>
+        </NavLink>
+      </List>
+      <List>
+        <NavLink to="/grupos-investigacion" style={navLink}>
+          <ListItem button>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Componentes"} />
+          </ListItem>
+        </NavLink>
+      </List>
+      <List>
+        <NavLink to="/grupos-investigacion" style={navLink}>
+          <ListItem button>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Requerimientos"} />
           </ListItem>
         </NavLink>
       </List>
