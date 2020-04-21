@@ -3,17 +3,17 @@ export let CONFIG = {
   Settings: {
     CASLOGIN: "https://seguridad.espoch.edu.ec/cas/login?",
     CASLOGOUT: "https://seguridad.espoch.edu.ec/cas/logout?",
-    CASVALIDATE: "https://seguridad.espoch.edu.ec/cas/p3/serviceValidate?",
+    //CASVALIDATE: "https://seguridad.espoch.edu.ec/cas/p3/serviceValidate?", //Esta constante sera llamanda en laravel
     //REDIRECT_URI: 'https://pruebacomprobante.espoch.edu.ec:8080/',
     REDIRECT_URI: "http://localhost:3000/",
     LOGOUT_REDIRECT: "https://pruebacomprobante.espoch.edu.ec:8080/logout/",
     LOGOUT_CORREO: "https://login.microsoftonline.com/common/oauth2/logout?",
     VALIDATEPHP:
       //"https://cimogsys.espoch.edu.ec/proyectosinvestigacion/public/api/validateCAS?"
-      "http://localhost/proyectosinvestigacion/public/api/validateCAS?"
+      "http://localhost/proyectosinvestigacion/public/api/validateCAS?",
     // VALIDATEJAVA:
     //"https://pruebas.espoch.edu.ec:8181/ServicioWebComprobantes/ServiciosComprobantes/ValidateCas/"
-  }
+  },
 };
 
 ///Dominio Pruebas

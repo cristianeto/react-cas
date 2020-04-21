@@ -78,7 +78,7 @@ export default function ButtonAppBar() {
         </Link>
       </List>
       <List>
-        <NavLink to="/grupos-investigacion" style={navLink}>
+        <NavLink to="/dependencias" style={navLink}>
           <ListItem button>
             <ListItemIcon>
               <InboxIcon />

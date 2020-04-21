@@ -4,10 +4,9 @@ import { OPTIONS } from "../configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
-import Active from "./common/active";
 import ButtonAdd from "./common/buttonAdd";
 
-class GroupsTable extends Component {
+class DependenciesTable extends Component {
   getMuiTheme = () =>
     createMuiTheme({
       overrides: {
@@ -30,15 +29,15 @@ class GroupsTable extends Component {
       },
     });
 
-  getStatus = (value) => {
-    if (value === 1) {
-      return "Activo";
-    }
-  };
+  //   getStatus = (value) => {
+  //     if (value === 1) {
+  //       return "Activo";
+  //     }
+  //   };
   render() {
     const columns = [
       {
-        name: "id_group",
+        name: "id_dependency",
         label: "id",
         options: {
           filter: false,
@@ -46,15 +45,15 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "code_group",
-        label: "Código",
+        name: "acronym_dependency",
+        label: "Siglas",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "name_group",
+        name: "name_dependency",
         label: "Nombre",
         options: {
           filter: true,
@@ -63,7 +62,7 @@ class GroupsTable extends Component {
             return (
               <Link
                 style={{ textDecoration: "none" }}
-                to={`/grupo/${tableMeta.rowData[0]}`}
+                to={`/dependencia/${tableMeta.rowData[0]}`}
               >
                 {value}
               </Link>
@@ -72,35 +71,19 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "acronym_group",
-        label: "Siglas",
+        name: "email_dependency",
+        label: "Correo",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "dependency.name_dependency",
-        label: "Facultad",
+        name: "dependency_type.name_dependencyType",
+        label: "Tipo",
         options: {
           filter: true,
           sort: true,
-        },
-      },
-      {
-        name: "active_group",
-        label: "Estado",
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender: (value, tableMeta) => {
-            return (
-              <Active
-                actived={value}
-                onClick={() => this.props.onActive(tableMeta.rowData[0])}
-              />
-            );
-          },
         },
       },
     ];
@@ -114,8 +97,7 @@ class GroupsTable extends Component {
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Lista de grupos de investigación{" "}
-              <ButtonAdd entity={"dependencia"} />
+              Lista de dependencias <ButtonAdd entity={"dependencia"} />
               {isLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
@@ -128,4 +110,4 @@ class GroupsTable extends Component {
   }
 }
 
-export default GroupsTable;
+export default DependenciesTable;

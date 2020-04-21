@@ -9,12 +9,14 @@ import Groups from "./Components/groups";
 import GroupForm from "./Components/groupForm";
 import Welcome from "./Components/welcome";
 import Users from "./Components/users";
+import Dependencies from "./Components/dependencies";
+import DependencyForm from "./Components/dependencyForm";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      asd: "asas"
+      asd: "asas",
     };
   }
 
@@ -48,6 +50,8 @@ export default class App extends Component {
           <Route path="/rentals" component={Rentals} /> */}
             <Route path="/usuarios" component={Users} />
             <Route path="/welcome" component={Welcome} />
+            <Route path="/dependencias" component={Dependencies} />
+            <Route path="/dependencia/:id" component={DependencyForm} />
             <Route path="/grupos-investigacion" component={Groups} />
             <Route path="/grupo/:id" component={GroupForm} />
             <Route path="/not-found" component={NotFound} />
