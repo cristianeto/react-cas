@@ -9,15 +9,14 @@ import Groups from "./Components/groups";
 import GroupForm from "./Components/groupForm";
 import Welcome from "./Components/welcome";
 import Users from "./Components/users";
+import Projects from "./Components/projects";
 import Dependencies from "./Components/dependencies";
 import DependencyForm from "./Components/dependencyForm";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      asd: "asas",
-    };
+    this.state = {};
   }
 
   async componentDidMount() {
@@ -37,25 +36,58 @@ export default class App extends Component {
     } catch (err) {
       if (err.error !== "login_required") console.log("error: " + err);
     } */
+
+    const user = null;
+    /* const user = {
+      name: "Cristian",
+      apellido: "Guaman",
+    }; */
+    this.setState({ user });
+
+    let ClientCAS = new CasClient();
+    try {
+      if (!ClientCAS.getLogin()) {
+        ClientCAS.saveTicket();
+        // this.handleLogin(ClientCAS);
+        await ClientCAS.validateLogin().then();
+      }
+    } catch (error) {}
   }
 
+  async handleLogin(ClientCAS) {
+    console.log("click");
+    let ClientCAS2 = new CasClient();
+    try {
+      await ClientCAS2.verificaLogin().then();
+      console.log("Pasando...");
+
+      /*  if (ClientCAS.isAuthenticated() && ClientCAS.getLogin()) {
+        this.ObtenerDatosCentralizada();
+      } */
+      //this.forceUpdate();
+    } catch (err) {
+      if (err.error !== "login_required") console.log("error: " + err);
+    }
+  }
   render() {
+    const { user } = this.state;
     return (
       <SnackbarProvider maxSnack={3}>
         <div style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
-          <NavBar />
+          <NavBar user={user} onLogin={this.handleLogin} />
           <Switch>
             {/* <Route path="/login" component={LoginForm} />
             <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} /> */}
+            <Route path="/proyectos" component={Projects} />
             <Route path="/usuarios" component={Users} />
-            <Route path="/welcome" component={Welcome} />
+            <Route path="/" exact component={Welcome} />
             <Route path="/dependencias" component={Dependencies} />
             <Route path="/dependencia/:id" component={DependencyForm} />
             <Route path="/grupos-investigacion" component={Groups} />
             <Route path="/grupo/:id" component={GroupForm} />
             <Route path="/not-found" component={NotFound} />
-            <Redirect from="/" exact to="/welcome" />
+            {/* <Redirect from="/" exact to="/" /> */}
             <Redirect to="/not-found" />
           </Switch>
         </div>

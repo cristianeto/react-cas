@@ -55,11 +55,11 @@ export class CasClient {
     let promise = new Promise(async (resolve, reject) => {
       axios
         .get(urlvalidate)
-        .then(res => {
+        .then((res) => {
           console.log("Holaaaaaa", res);
           this.validation(resolve, reject, res);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("Error: " + error.message);
           //this.Logout();
         })
@@ -72,7 +72,7 @@ export class CasClient {
 
   validation(resolve, reject, res) {
     console.log("validation...");
-    x2js.parseString(res.data, function(err, resultado) {
+    x2js.parseString(res.data, function (err, resultado) {
       console.log("parseString...");
       let sucesso =
         resultado["cas:serviceResponse"]["cas:authenticationSuccess"];

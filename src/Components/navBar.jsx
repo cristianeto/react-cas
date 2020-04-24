@@ -40,7 +40,7 @@ const navLink = {
   textDecoration: "none",
 };
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -68,7 +68,7 @@ export default function ButtonAppBar() {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-        <Link to="/" className={classes.navLink}>
+        <Link to="/proyectos" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
               <InboxIcon />
@@ -149,7 +149,16 @@ export default function ButtonAppBar() {
               Spirit
             </Link>
           </Typography>
-          <Button color="inherit">Login</Button>
+          {!props.user && (
+            <Button color="inherit" onClick={props.onLogin}>
+              Login
+            </Button>
+          )}
+          {props.user && (
+            <Button color="inherit" style={{ textTransform: "lowercase" }}>
+              {sessionStorage.getItem("loginUser")}
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer open={state.left} onClose={toggleDrawer("left", false)}>
