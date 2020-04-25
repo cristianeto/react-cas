@@ -1,23 +1,52 @@
 import React, { Component } from "react";
-import MUIDataTable from "mui-datatables";
 import { Link } from "react-router-dom";
+import { OPTIONS } from "../configTable";
+import MUIDataTable from "mui-datatables";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { LinearProgress, Typography } from "@material-ui/core";
+import ButtonAdd from "./common/buttonAdd";
 
 class UsersTable extends Component {
-  state = {};
+  getMuiTheme = () =>
+    createMuiTheme({
+      overrides: {
+        MUIDataTableBodyCell: {
+          root: {},
+        },
+        MuiIconButton: {
+          sizeSmall: {
+            // Adjust spacing to reach minimal touch target hitbox
+            marginLeft: 4,
+            marginRight: 4,
+            padding: 12,
+          },
+        },
+      },
+      props: {
+        MuiTable: {
+          size: "small",
+        },
+      },
+    });
 
+  //   getStatus = (value) => {
+  //     if (value === 1) {
+  //       return "Activo";
+  //     }
+  //   };
   render() {
     const columns = [
       {
-        name: "id_person",
-        label: "cedula",
+        name: "id",
+        label: "id",
         options: {
           filter: false,
-          display: "excluded"
-        }
+          display: "excluded",
+        },
       },
       {
-        name: "names_person",
-        label: "Nombre",
+        name: "indentification_card",
+        label: "C.I.",
         options: {
           filter: true,
           sort: true,
@@ -27,53 +56,64 @@ class UsersTable extends Component {
                 style={{ textDecoration: "none" }}
                 to={`/usuario/${tableMeta.rowData[0]}`}
               >
-                {value} {tableMeta.rowData[2]}
+                {value}
               </Link>
             );
-          }
-        }
+          },
+        },
       },
       {
-        name: "lastnames_person",
+        name: "name",
+        label: "Nombre",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "lastname",
         label: "Apellido",
         options: {
-          display: "excluded",
           filter: true,
-          sort: true
-        }
+          sort: true,
+        },
       },
       {
         name: "email",
-        label: "Correo",
+        label: "Correo electrónico",
         options: {
           filter: true,
-          sort: true
-        }
+          sort: true,
+        },
       },
       {
-        name: "state",
-        label: "State",
+        name: "created_at",
+        label: "Fecha creación",
         options: {
           filter: true,
-          sort: true
-        }
-      }
+          sort: true,
+        },
+      },
     ];
 
     const data = this.props.datas;
-
-    const options = {
-      filterType: "dropdown",
-      responsive: "scroll"
-    };
+    const isLoading = this.props.onLoading;
+    const options = OPTIONS;
 
     return (
-      <MUIDataTable
-        title={"Lista de usuarios"}
-        data={data}
-        columns={columns}
-        options={options}
-      />
+      <MuiThemeProvider theme={this.getMuiTheme()}>
+        <MUIDataTable
+          title={
+            <Typography variant="h6">
+              Lista de usuarios <ButtonAdd entity={"usuario"} />
+              {isLoading && <LinearProgress color="secondary" />}
+            </Typography>
+          }
+          data={data}
+          columns={columns}
+          options={options}
+        />
+      </MuiThemeProvider>
     );
   }
 }

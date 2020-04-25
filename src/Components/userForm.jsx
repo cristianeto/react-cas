@@ -38,25 +38,12 @@ class DependencyForm extends Form {
     id_dependency: Joi.number(),
     name_dependency: Joi.string().label("Nombre").max(500),
     acronym_dependency: Joi.string().alphanum().label("Sigla").max(10),
-    contact_dependency: Joi.string().allow("", null).label("Contacto").max(150),
-    city_dependency: Joi.string().allow("", null).label("Ciudad").max(100),
-    email_dependency: Joi.string()
-      .email({
-        minDomainSegments: 2,
-        tlds: { allow: ["com", "espoch", "edu", "ec"] },
-      })
-      .label("Correo")
-      .max(100),
-    web_dependency: Joi.string().allow("", null).uri().label("Web").max(100),
-    phone_dependency: Joi.string()
-      .allow("", null)
-      .label("Teléfono")
-      .min(7)
-      .max(20),
-    participationType_dependency: Joi.string()
-      .allow("", null)
-      .label("Tipo participación")
-      .max(500),
+    contact_dependency: Joi.string().label("Contacto").max(150),
+    city_dependency: Joi.string().label("Ciudad").max(100),
+    email_dependency: Joi.string().label("Correo").max(100),
+    web_dependency: Joi.string().label("Web").max(100),
+    phone_dependency: Joi.string().label("Web").max(100),
+    participationType_dependency: Joi.string().label("Tipo participación"),
     id_dependencyType: Joi.number().label("Tipo dependencia"),
   });
 
@@ -160,7 +147,6 @@ class DependencyForm extends Form {
                 {this.renderSelect(
                   "id_dependencyType",
                   "Tipo",
-                  55,
                   "name_dependencyType",
                   this.state.dependencyTypes
                 )}

@@ -4,8 +4,6 @@ import { withSnackbar } from "notistack";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
 import Panel from "./common/panel";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
 
 import { getDependencies } from "../services/dependencyService";
 import { getGroupTypes } from "../services/groupTypeService";
@@ -16,7 +14,7 @@ import {
   LinearProgress,
   Typography,
   Paper,
-  Grid
+  Grid,
 } from "@material-ui/core";
 import { getPrograms } from "../services/programService";
 
@@ -31,32 +29,27 @@ class GroupForm extends Form {
       id_dependency: "",
       id_researchLine: [],
       id_program: [],
-      id_groupType: ""
+      id_groupType: "",
     },
     dependencies: [],
     groupTypes: [],
     lines: [],
     programs: [],
     errors: {},
-    isLoading: false
+    isLoading: false,
   };
 
   schema = Joi.object({
     id_group: Joi.number(),
-    code_group: Joi.string()
-      .label("Código")
-      .max(10),
-    acronym_group: Joi.string()
-      .alphanum()
-      .label("Siglas")
-      .max(10),
+    code_group: Joi.string().label("Código").max(10),
+    acronym_group: Joi.string().alphanum().label("Siglas").max(10),
     name_group: Joi.string().label("Nombre"),
     mission_group: Joi.string().label("Misión"),
     vision_group: Joi.string().label("Visión"),
     id_dependency: Joi.number().label("Dependencia"),
     id_groupType: Joi.number().label("Tipo"),
     id_researchLine: Joi.array().label("Líneas"),
-    id_program: Joi.array().label("Programas")
+    id_program: Joi.array().label("Programas"),
   });
 
   async populateDependencies() {
@@ -99,7 +92,7 @@ class GroupForm extends Form {
 
   mapToViewModel(group) {
     let lines = [];
-    group.lines.forEach(line => {
+    group.lines.forEach((line) => {
       lines.push(line.id_researchLine);
     });
     //console.log("Lines:", lines);
@@ -114,7 +107,7 @@ class GroupForm extends Form {
       id_dependency: group.id_dependency,
       id_groupType: group.id_groupType,
       id_researchLine: group.lines,
-      id_program: group.programs
+      id_program: group.programs,
     };
   }
   doSubmit = async () => {
@@ -127,7 +120,7 @@ class GroupForm extends Form {
       this.props.history.push("/grupos-investigacion");
     } catch (error) {
       this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
-        variant: "error"
+        variant: "error",
       });
     }
   };
@@ -152,22 +145,20 @@ class GroupForm extends Form {
     const listBreadcrumbs = [
       {
         path: "/",
-        label: "Inicio"
+        label: "Inicio",
       },
       {
         path: "/grupos-investigacion",
-        label: "Grupos Investigación"
-      }
+        label: "Grupos Investigación",
+      },
     ];
 
     const classes = {
       paper: {
         padding: "2em",
-        color: "secondary"
-      }
+        color: "secondary",
+      },
     };
-    console.log(this.state.data["id_program"]);
-    const top100Films = this.state.programs;
     return (
       <Container maxWidth="lg">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
@@ -187,12 +178,13 @@ class GroupForm extends Form {
                 {this.renderSelect(
                   "id_dependency",
                   "Facultad",
+                  75,
                   "name_dependency",
                   this.state.dependencies
                 )}
                 {this.renderMultiSelect(
                   "id_researchLine",
-                  "Líneas",
+                  "Líneas de investigación",
                   "name_researchLine",
                   this.state.lines
                 )}
@@ -204,7 +196,8 @@ class GroupForm extends Form {
                 )}
                 {this.renderSelect(
                   "id_groupType",
-                  "Tipo",
+                  "Tipo proyecto",
+                  115,
                   "name_groupType",
                   this.state.groupTypes
                 )}
@@ -238,26 +231,7 @@ class GroupForm extends Form {
                 <Typography variant="h6" gutterBottom>
                   Usuarios
                 </Typography>
-                <div style={classes.demo}>
-                  <Autocomplete
-                    multiple
-                    id="tags-outlined"
-                    options={top100Films}
-                    getOptionLabel={option => option.name_program}
-                    defaultValue={top100Films[13]}
-                    filterSelectedOptions
-                    onChange={this.handleChangeMultiple}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        variant="outlined"
-                        label="Usuarios"
-                        placeholder="Seleccionar un miembro "
-                        fullWidth
-                      />
-                    )}
-                  />
-                </div>
+                <div style={classes.demo}></div>
               </Paper>
             </Grid>
           </Grid>

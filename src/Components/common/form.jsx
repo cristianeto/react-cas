@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 
 class Form extends Component {
   state = {
-    data: {}
+    data: {},
     // errors: {}
   };
 
@@ -28,7 +28,7 @@ class Form extends Component {
     return error ? error.details[0].message : null;
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const errors = this.validate();
 
@@ -55,8 +55,8 @@ class Form extends Component {
     const data = { ...this.state.data };
     let entities = this.cloningArray(input.name);
     let newArray = [];
-    entities.forEach(entity => {
-      valueArray.forEach(val => {
+    entities.forEach((entity) => {
+      valueArray.forEach((val) => {
         if (entity[input.name] === val) newArray.push(entity);
       });
     });
@@ -91,6 +91,22 @@ class Form extends Component {
 
     return (
       <Input
+        required={false}
+        type={type}
+        name={name}
+        value={data[name]}
+        label={label}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+  renderInputDate(name, label, type = "date") {
+    const { data, errors } = this.state;
+
+    return (
+      <Input
+        required={false}
         type={type}
         name={name}
         value={data[name]}
@@ -114,7 +130,7 @@ class Form extends Component {
       />
     );
   }
-  renderSelect(name, label, property, options) {
+  renderSelect(name, label, labelWidth, property, options) {
     const { data, errors } = this.state;
 
     return (
@@ -122,6 +138,7 @@ class Form extends Component {
         name={name}
         value={data[name]}
         label={label}
+        labelWidth={labelWidth}
         property={property}
         options={options}
         onChange={this.handleChange}

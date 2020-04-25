@@ -1,56 +1,46 @@
 import React, { Component } from "react";
 import ProjectsTable from "./projectsTable";
-import { getDependencies } from "../services/dependencyService";
-import { getGroups, saveGroup } from "../services/groupService";
+import { getProjects } from "../services/projectService";
+import { getPrograms } from "../services/programService";
+import { getResearchTypes } from "../services/researchTypeService";
+import { getProjectTypes } from "../services/projectTypeService";
+import { getCoverageTypes } from "../services/coverageTypeService";
 import Breadcum from "./breadcum";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 
-class Groups extends Component {
+class Projects extends Component {
   state = {
-    groups: [],
-    dependencies: [],
+    projects: [],
+    programs: [],
+    researchTypes: [],
+    projectTypes: [],
+    coverageTypes: [],
     isLoading: false,
   };
 
   async componentDidMount() {
     this.setState({ isLoading: true });
-    const { data: dependencies } = await getDependencies();
+    const { data: programs } = await getPrograms();
+    const { data: researchTypes } = await getResearchTypes();
+    const { data: projectTypes } = await getProjectTypes();
+    const { data: coverageTypes } = await getCoverageTypes();
     //const dependencies = [{ name: "All Movies", _id: "" }, ...data];
-    const { data: groups } = await getGroups();
+    const { data: projects } = await getProjects();
 
-    this.setState({ groups, dependencies, isLoading: false });
+    this.setState({
+      projects,
+      programs,
+      researchTypes,
+      projectTypes,
+      coverageTypes,
+      isLoading: false,
+    });
   }
 
-  getGroup(id) {
-    return this.state.groups.find((g) => g.id_group === id);
+  getProject(id) {
+    return this.state.projects.find((p) => p.id_project === id);
   }
-  handleActive = async (idGroup) => {
-    const originalGroups = this.state.groups;
-    const group = this.getGroup(idGroup);
-    const groups = [...this.state.groups];
-    const index = groups.indexOf(group);
-    groups[index] = { ...groups[index] };
-    if (groups[index].active_group === 1) {
-      groups[index].active_group = 0;
-    } else if (groups[index].active_group === 0) {
-      groups[index].active_group = 1;
-    } else {
-      groups[index].active_group = 3;
-    }
-    this.setState({ groups });
-    // groups[index].active_group = !groups[index].active_group;
-    try {
-      await saveGroup(groups[index]);
-    } catch (ex) {
-      if (ex.response && ex.response.status === 404) console.log("x");
-      this.props.enqueueSnackbar(`Error al actualizar! ${ex}`, {
-        variant: "error",
-      });
-
-      this.setState({ groups: originalGroups });
-    }
-  };
 
   render() {
     const listBreadcrumbs = [
@@ -72,11 +62,10 @@ class Groups extends Component {
             onListBreadcrumbs={listBreadcrumbs}
             lastLabel={"Proyectos"}
           />
-          <GroupsTable
-            datas={this.state.groups}
-            onGetGroup={this.getGroup}
+          <ProjectsTable
+            datas={this.state.projects}
+            onGetProject={this.getProject}
             onLoading={this.state.isLoading}
-            onActive={this.handleActive}
             style={classes.table}
           />
         </Container>
@@ -85,4 +74,4 @@ class Groups extends Component {
   }
 }
 
-export default withSnackbar(Groups);
+export default withSnackbar(Projects);

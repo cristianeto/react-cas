@@ -1,37 +1,58 @@
 import React, { Component } from "react";
-import { getDependencies } from "../services/dependencyService";
-import { getUsers } from "../services/userService";
 import UsersTable from "./usersTable";
+import { getUsers } from "../services/userService";
 import { Container } from "@material-ui/core";
+import { withSnackbar } from "notistack";
+import Breadcum from "./breadcum";
 
 class Users extends Component {
   state = {
     users: [],
-    dependencies: []
+    isLoading: false,
   };
 
   async componentDidMount() {
-    const { data: dependencies } = await getDependencies();
-    //const dependencies = [{ name: "All Movies", _id: "" }, ...data];
+    this.setState({ isLoading: true });
     const { data: users } = await getUsers();
+    //const dependencies = [{ name: "All Movies", _id: "" }, ...data];
 
-    this.setState({ users, dependencies });
+    this.setState({ users, isLoading: false });
   }
 
   getUser(id) {
-    return this.state.users.find(g => g.id_person === id);
+    return this.state.users.find((u) => u.id === id);
   }
 
   render() {
+    const listBreadcrumbs = [
+      {
+        path: "/",
+        label: "Inicio",
+      },
+    ];
+    const classes = {
+      table: {
+        padding: "2em",
+        color: "secondary",
+      },
+    };
     return (
       <main>
         <Container maxWidth="xl">
-          <h1>Usuarios</h1>
-          <UsersTable datas={this.state.users} onGetUser={this.getUser} />
+          <Breadcum
+            onListBreadcrumbs={listBreadcrumbs}
+            lastLabel={"Usuarios"}
+          />
+          <UsersTable
+            datas={this.state.users}
+            onGetUser={this.getUser}
+            onLoading={this.state.isLoading}
+            style={classes.table}
+          />
         </Container>
       </main>
     );
   }
 }
 
-export default Users;
+export default withSnackbar(Users);

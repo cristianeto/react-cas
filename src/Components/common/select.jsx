@@ -22,13 +22,12 @@ const MySelect = ({ name, label, property, options, error, ...rest }) => {
         labelId="demo-simple-select-outlined-label"
         id={name}
         name={name}
-        labelWidth={75}
         {...rest}
       >
         <MenuItem value="" disabled>
           <em>Seleccione una opción</em>
         </MenuItem>
-        {options.map(option => (
+        {options.map((option) => (
           <MenuItem value={option[name]} key={option[name]}>
             {option[property]}
           </MenuItem>

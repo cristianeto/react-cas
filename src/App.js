@@ -7,6 +7,7 @@ import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
 import Groups from "./Components/groups";
 import GroupForm from "./Components/groupForm";
+import ProjectForm from "./Components/projectForm";
 import Welcome from "./Components/welcome";
 import Users from "./Components/users";
 import Projects from "./Components/projects";
@@ -79,6 +80,7 @@ export default class App extends Component {
             {/* <Route path="/login" component={LoginForm} />
             <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} /> */}
+            <Route path="/proyecto/:id" component={ProjectForm} />
             <Route path="/proyectos" component={Projects} />
             <Route path="/usuarios" component={Users} />
             <Route path="/" exact component={Welcome} />

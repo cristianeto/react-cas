@@ -4,7 +4,6 @@ import { OPTIONS } from "../configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
-import Active from "./common/active";
 import ButtonAdd from "./common/buttonAdd";
 
 class ProjectsTable extends Component {
@@ -30,11 +29,6 @@ class ProjectsTable extends Component {
       },
     });
 
-  getStatus = (value) => {
-    if (value === 1) {
-      return "Activo";
-    }
-  };
   render() {
     const columns = [
       {
@@ -43,22 +37,6 @@ class ProjectsTable extends Component {
         options: {
           filter: false,
           display: "excluded",
-        },
-      },
-      {
-        name: "startDate_project",
-        label: "Fecha Inicio",
-        options: {
-          filter: true,
-          sort: true,
-        },
-      },
-      {
-        name: "endDate_project",
-        label: "Fecha Final",
-        options: {
-          filter: true,
-          sort: true,
         },
       },
       {
@@ -80,6 +58,22 @@ class ProjectsTable extends Component {
         },
       },
       {
+        name: "startDate_project",
+        label: "Fecha Inicio",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "endDate_project",
+        label: "Fecha Final",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
         name: "year_project",
         label: "Año",
         options: {
@@ -96,7 +90,7 @@ class ProjectsTable extends Component {
         },
       },
       {
-        name: "researchType.name_researchType",
+        name: "research_type.name_researchType",
         label: "Tipo",
         options: {
           filter: true,
@@ -104,7 +98,7 @@ class ProjectsTable extends Component {
         },
       },
       {
-        name: "coverage_type.name_coverage_type",
+        name: "coverage_type.name_coverageType",
         label: "Cobertura",
         options: {
           filter: true,
