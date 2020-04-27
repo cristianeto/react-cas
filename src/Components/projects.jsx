@@ -55,9 +55,13 @@ class Projects extends Component {
       //await deleteProject(project.id_project);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
-        this.props.enqueueSnackbar(`Se produjo un error. ${ex}`, {
-          variant: "error",
-        });
+        this.props.enqueueSnackbar(
+          `
+        Se produjo un error. ${ex}`,
+          {
+            variant: "error",
+          }
+        );
 
       this.setState({ projects: originalProjects });
     }
