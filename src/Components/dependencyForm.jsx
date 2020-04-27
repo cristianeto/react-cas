@@ -100,10 +100,9 @@ class DependencyForm extends Form {
   doSubmit = async () => {
     try {
       await saveDependency(this.state.data);
-      this.props.enqueueSnackbar(
-        `${this.state.data.acronym_dependency} fue guardado correctamente!`,
-        { variant: "success" }
-      );
+      this.props.enqueueSnackbar(`Registro guardado correctamente!`, {
+        variant: "success",
+      });
       this.props.history.push("/dependencias");
     } catch (error) {
       this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
@@ -159,8 +158,8 @@ class DependencyForm extends Form {
                 )}
                 {this.renderSelect(
                   "id_dependencyType",
-                  "Tipo",
-                  55,
+                  "Tipo de dependencia",
+                  160,
                   "name_dependencyType",
                   this.state.dependencyTypes
                 )}

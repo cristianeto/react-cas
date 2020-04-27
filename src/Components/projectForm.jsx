@@ -3,6 +3,11 @@ import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 import { getProject, saveProject } from "../services/projectService";
 import { getPrograms } from "../services/programService";
@@ -24,6 +29,7 @@ class ProjectForm extends Form {
       startDate_project: "",
       endDate_project: "",
       endDateReal_project: "",
+      year_project: "",
       location_project: "",
       id_program: "",
       id_researchType: "",
@@ -43,7 +49,8 @@ class ProjectForm extends Form {
     name_project: Joi.string().label("Código").max(500),
     startDate_project: Joi.date().label("Fecha Inicio"),
     endDate_project: Joi.date().label("Fecha Fin"),
-    endDateReal_project: Joi.date().allow("").label("Fecha Final Real"),
+    endDateReal_project: Joi.date().allow("", null).label("Fecha Final Real"),
+    year_project: Joi.number().label("Año del proyecto").min(2020).max(2021),
     location_project: Joi.string().label("Ubicación"),
     id_program: Joi.number().label("Programa"),
     id_researchType: Joi.number().label("Tipo investigación"),
@@ -98,6 +105,7 @@ class ProjectForm extends Form {
       startDate_project: project.startDate_project,
       endDate_project: project.endDate_project,
       endDateReal_project: project.endDateReal_project,
+      year_project: project.year_project,
       location_project: project.location_project,
       id_program: project.id_program,
       id_researchType: project.id_researchType,
@@ -108,7 +116,7 @@ class ProjectForm extends Form {
   doSubmit = async () => {
     try {
       await saveProject(this.state.data);
-      this.props.enqueueSnackbar(`Proyecto guardado correctamente!`, {
+      this.props.enqueueSnackbar(`Registro guardado correctamente!`, {
         variant: "success",
       });
       this.props.history.push("/proyectos");
@@ -135,7 +143,6 @@ class ProjectForm extends Form {
   } */
 
   render() {
-    const { data } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -165,13 +172,82 @@ class ProjectForm extends Form {
             <Paper style={classes.paper}>
               <Typography variant="h4" gutterBottom>
                 Proyecto
-                {data.isLoading && <LinearProgress color="secondary" />}
+                {this.state.isLoading && <LinearProgress color="secondary" />}
               </Typography>
               <form onSubmit={this.handleSubmit}>
                 {this.renderTextarea("name_project", "Nombre")}
-                {this.renderInputDate("startDate_project", "Fecha Inicio")}
-                {this.renderInput("endDate_project", "Fecha Fin")}
-                {this.renderInput("endDateReal_project", "Fecha Final Real")}
+                {/* {this.renderInputDate("startDate_project", "Fecha Inicio")} */}
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    autoOk
+                    variant="dialog"
+                    inputVariant="outlined"
+                    label="Fecha inicio"
+                    format="yyyy-MM-dd"
+                    name={"startDate_project"}
+                    inputValue={this.state.data.startDate_project}
+                    InputAdornmentProps={{ position: "end" }}
+                    onChange={(date) =>
+                      this.handleChangeDate(date, "startDate_project")
+                    }
+                    size="small"
+                    margin="normal"
+                    fullWidth
+                    value={
+                      this.state.data.startDate_project
+                        ? this.state.data.startDate_project
+                        : null
+                    }
+                    minDate={new Date("2020-01-01") || undefined}
+                  />
+                  <KeyboardDatePicker
+                    autoOk
+                    variant="dialog"
+                    inputVariant="outlined"
+                    label="Fecha fin"
+                    format="yyyy-MM-dd"
+                    name={"endDate_project"}
+                    inputValue={this.state.data.endDate_project}
+                    InputAdornmentProps={{ position: "end" }}
+                    onChange={(date) =>
+                      this.handleChangeDate(date, "endDate_project")
+                    }
+                    size="small"
+                    margin="normal"
+                    fullWidth
+                    value={
+                      this.state.data.endDate_project
+                        ? this.state.data.endDate_project
+                        : null
+                    }
+                  />
+                  <KeyboardDatePicker
+                    autoOk={false}
+                    variant="dialog"
+                    inputVariant="outlined"
+                    label="Fecha fin real"
+                    format="yyyy-MM-dd"
+                    name={"endDateReal_project"}
+                    inputValue={this.state.data.endDateReal_project}
+                    InputAdornmentProps={{ position: "end" }}
+                    onChange={(date) =>
+                      this.handleChangeDate(date, "endDateReal_project")
+                    }
+                    size="small"
+                    margin="normal"
+                    fullWidth
+                    value={
+                      this.state.data.endDateReal_project
+                        ? this.state.data.endDateReal_project
+                        : null
+                    }
+                    disabled
+                  />
+                </MuiPickersUtilsProvider>
+
+                {/* {this.renderInputDate("endDate_project", "Fecha Fin")}
+                {this.renderInputDate("endDateReal_project", "Fecha Fin Real")} */}
+                {this.renderInput("year_project", "Año")}
                 {this.renderInput("location_project", "Ubicación")}
                 {this.renderSelect(
                   "id_program",

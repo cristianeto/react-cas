@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { OPTIONS } from "../configTable";
+import { TEXT_LABELS } from "../configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
@@ -28,6 +28,12 @@ class ProjectsTable extends Component {
         },
       },
     });
+
+  /* handleDelete(rowsIndex) {
+    rowsIndex.map((r) => {
+      return console.log(this.props.datas[0]);
+    });
+  } */
 
   render() {
     const columns = [
@@ -106,17 +112,34 @@ class ProjectsTable extends Component {
         },
       },
     ];
+    const options_config = {
+      filterType: "dropdown",
+      responsive: "scroll",
+      rowsPerPage: 5,
+      rowsPerPageOptions: [5, 10, 20],
+      textLabels: TEXT_LABELS,
+      onRowsDelete: (rowsDeleted) => {
+        let rows = this.props.datas;
+        let idsToDelete = [];
+        rowsDeleted.data.forEach((row) => {
+          idsToDelete.push(rows[row.index]);
+          //this.props.onDelete(rows[row.index]);
+        });
+        //       console.log(idsToDelete);
+        this.props.onDelete(idsToDelete);
+      },
+    };
 
     const data = this.props.datas;
     const isLoading = this.props.onLoading;
-    const options = OPTIONS;
+    const options = options_config;
 
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Lista de proyectos <ButtonAdd entity={"dependencia"} />
+              Lista de proyectos <ButtonAdd entity={"proyecto"} />
               {isLoading && <LinearProgress color="secondary" />}
             </Typography>
           }

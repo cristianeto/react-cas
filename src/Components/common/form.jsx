@@ -6,6 +6,7 @@ import MySelect from "./select";
 import MyMultiSelect from "./multiSelect";
 import Textarea from "./textarea";
 import Button from "@material-ui/core/Button";
+import SaveIcon from "@material-ui/icons/Save";
 
 class Form extends Component {
   state = {
@@ -64,6 +65,22 @@ class Form extends Component {
     this.setState({ data });
   };
 
+  handleChangeDate = (date, input) => {
+    const data = { ...this.state.data };
+    data[input] = this.formatDate(new Date(date));
+    this.setState({ data });
+  };
+  formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   renderButton(label) {
     let validation;
     this.validate() === null ? (validation = false) : (validation = true);
@@ -80,6 +97,7 @@ class Form extends Component {
         variant="contained"
         color="primary"
         margin="normal"
+        startIcon={<SaveIcon />}
       >
         {label}
       </Button>
@@ -106,7 +124,7 @@ class Form extends Component {
 
     return (
       <Input
-        required={false}
+        required={true}
         type={type}
         name={name}
         value={data[name]}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { OPTIONS } from "../configTable";
+import { TEXT_LABELS } from "../configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
@@ -104,10 +104,17 @@ class GroupsTable extends Component {
         },
       },
     ];
+    const options_config = {
+      filterType: "dropdown",
+      responsive: "scroll",
+      rowsPerPage: 5,
+      rowsPerPageOptions: [5, 10, 20],
+      textLabels: TEXT_LABELS,
+    };
 
     const data = this.props.datas;
     const isLoading = this.props.onLoading;
-    const options = OPTIONS;
+    const options = options_config;
 
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>

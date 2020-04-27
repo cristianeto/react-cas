@@ -5,7 +5,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -14,6 +13,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
+import GroupIcon from "@material-ui/icons/Group";
+import BusinessIcon from "@material-ui/icons/Business";
+import GroupWorkIcon from "@material-ui/icons/GroupWork";
+import FolderIcon from "@material-ui/icons/Folder";
+import MenuIcon from "@material-ui/icons/Menu";
+
 import { Link, NavLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +76,7 @@ export default function ButtonAppBar(props) {
         <Link to="/proyectos" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
-              <InboxIcon />
+              <FolderIcon />
             </ListItemIcon>
             <ListItemText primary={"Proyectos"} />
           </ListItem>
@@ -81,7 +86,7 @@ export default function ButtonAppBar(props) {
         <NavLink to="/dependencias" style={navLink}>
           <ListItem button>
             <ListItemIcon>
-              <InboxIcon />
+              <BusinessIcon />
             </ListItemIcon>
             <ListItemText primary={"Dependencias"} />
           </ListItem>
@@ -91,7 +96,7 @@ export default function ButtonAppBar(props) {
         <NavLink to="/grupos-investigacion" style={navLink}>
           <ListItem button>
             <ListItemIcon>
-              <InboxIcon />
+              <GroupWorkIcon />
             </ListItemIcon>
             <ListItemText primary={"Grupos investigación"} />
           </ListItem>
@@ -122,7 +127,7 @@ export default function ButtonAppBar(props) {
         <NavLink to="/usuarios" style={navLink}>
           <ListItem button>
             <ListItemIcon>
-              <InboxIcon />
+              <GroupIcon />
             </ListItemIcon>
             <ListItemText primary={"Usuarios"} />
           </ListItem>

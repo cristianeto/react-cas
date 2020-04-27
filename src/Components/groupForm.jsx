@@ -113,10 +113,9 @@ class GroupForm extends Form {
   doSubmit = async () => {
     try {
       await saveGroup(this.state.data);
-      this.props.enqueueSnackbar(
-        `${this.state.data.acronym_group} fue guardado correctamente!`,
-        { variant: "success" }
-      );
+      this.props.enqueueSnackbar(`Registro guardado correctamente!`, {
+        variant: "success",
+      });
       this.props.history.push("/grupos-investigacion");
     } catch (error) {
       this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
