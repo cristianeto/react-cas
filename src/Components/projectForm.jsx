@@ -177,6 +177,7 @@ class ProjectForm extends Form {
               <form onSubmit={this.handleSubmit}>
                 {this.renderTextarea("name_project", "Nombre")}
                 {/* {this.renderInputDate("startDate_project", "Fecha Inicio")} */}
+
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                     autoOk
@@ -244,7 +245,6 @@ class ProjectForm extends Form {
                     disabled
                   />
                 </MuiPickersUtilsProvider>
-
                 {/* {this.renderInputDate("endDate_project", "Fecha Fin")}
                 {this.renderInputDate("endDateReal_project", "Fecha Fin Real")} */}
                 {this.renderInput("year_project", "Año")}

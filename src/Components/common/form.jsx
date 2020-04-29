@@ -11,7 +11,7 @@ import SaveIcon from "@material-ui/icons/Save";
 class Form extends Component {
   state = {
     data: {},
-    // errors: {}
+    errors: {},
   };
 
   validate = () => {
@@ -110,21 +110,6 @@ class Form extends Component {
     return (
       <Input
         required={false}
-        type={type}
-        name={name}
-        value={data[name]}
-        label={label}
-        onChange={this.handleChange}
-        error={errors[name]}
-      />
-    );
-  }
-  renderInputDate(name, label, type = "date") {
-    const { data, errors } = this.state;
-
-    return (
-      <Input
-        required={true}
         type={type}
         name={name}
         value={data[name]}

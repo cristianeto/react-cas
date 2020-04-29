@@ -118,15 +118,16 @@ class ProjectsTable extends Component {
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
       textLabels: TEXT_LABELS,
+      selectableRows: "single",
       onRowsDelete: (rowsDeleted) => {
-        let rows = this.props.datas;
-        let idsToDelete = [];
+        const rows = this.props.datas;
+        let rowsToDelete = [];
         rowsDeleted.data.forEach((row) => {
-          idsToDelete.push(rows[row.index]);
+          rowsToDelete.push(rows[row.index]);
           //this.props.onDelete(rows[row.index]);
         });
-        //       console.log(idsToDelete);
-        this.props.onDelete(idsToDelete);
+        console.log(rowsToDelete);
+        this.props.onDelete(rowsToDelete);
       },
     };
 

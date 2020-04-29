@@ -42,17 +42,39 @@ class Projects extends Component {
     return this.state.projects.find((p) => p.id_project === id);
   }
 
-  handleDelete = async (project) => {
-    console.log(project);
+  handleDelete = async (projectsToDelete) => {
     const originalProjects = this.state.projects;
     const projects = originalProjects.filter(
-      (p) => p.id_project !== project.id_project
+      (project) => !projectsToDelete.includes(project)
     );
     this.setState({ projects });
-    //console.log(this.state.projects);
 
+    const action = (key) => (
+      <Fragment>
+        <Button
+          onClick={() => {
+            alert(`I belong to snackbar with key ${key}`);
+          }}
+        >
+          'Alert'
+        </Button>
+        <Button
+          onClick={() => {
+            this.props.closeSnackbar(key);
+          }}
+        >
+          'Dismiss'
+        </Button>
+      </Fragment>
+    );
     try {
-      //await deleteProject(project.id_project);
+      projectsToDelete.forEach(async (project) => {
+        await deleteProject(project.id_project);
+        this.props.enqueueSnackbar("Registro(s) eliminado(s)", {
+          autoHideDuration: 3000,
+          action,
+        });
+      });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.enqueueSnackbar(
