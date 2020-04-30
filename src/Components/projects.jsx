@@ -42,49 +42,47 @@ class Projects extends Component {
     return this.state.projects.find((p) => p.id_project === id);
   }
 
+  handleUndo(projectsToDelete, originalProjects) {
+    const action = (key) => (
+      <Fragment>
+        <Button
+          onClick={() => {
+            //this.setState({ projects: originalProjects });
+            this.props.closeSnackbar(key);
+          }}
+          style={{ color: "#fff" }}
+        >
+          ACEPTAR
+        </Button>
+      </Fragment>
+    );
+    const lenghtArray = projectsToDelete.length;
+    const mensaje =
+      lenghtArray === 1
+        ? `Registro eliminado`
+        : `${lenghtArray} registros eliminados`;
+    this.props.enqueueSnackbar(mensaje, {
+      autoHideDuration: 3000,
+      action,
+    });
+  }
+
   handleDelete = async (projectsToDelete) => {
     const originalProjects = this.state.projects;
     const projects = originalProjects.filter(
       (project) => !projectsToDelete.includes(project)
     );
     this.setState({ projects });
-
-    const action = (key) => (
-      <Fragment>
-        <Button
-          onClick={() => {
-            alert(`I belong to snackbar with key ${key}`);
-          }}
-        >
-          'Alert'
-        </Button>
-        <Button
-          onClick={() => {
-            this.props.closeSnackbar(key);
-          }}
-        >
-          'Dismiss'
-        </Button>
-      </Fragment>
-    );
+    this.handleUndo(projectsToDelete, originalProjects);
     try {
       projectsToDelete.forEach(async (project) => {
         await deleteProject(project.id_project);
-        this.props.enqueueSnackbar("Registro(s) eliminado(s)", {
-          autoHideDuration: 3000,
-          action,
-        });
       });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
-        this.props.enqueueSnackbar(
-          `
-        Se produjo un error. ${ex}`,
-          {
-            variant: "error",
-          }
-        );
-
+        this.props.enqueueSnackbar(`Se produjo un error. ${ex}`, {
+          variant: "error",
+        });
       this.setState({ projects: originalProjects });
     }
   };

@@ -101,6 +101,11 @@ class UsersTable extends Component {
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
       textLabels: TEXT_LABELS,
+      onRowsDelete: (rowsDeleted) => {
+        const data = this.props.datas; //lista
+        const usersToDelete = rowsDeleted.data.map((d) => data[d.dataIndex]); //Array de todos
+        this.props.onDelete(usersToDelete);
+      },
     };
 
     const data = this.props.datas;

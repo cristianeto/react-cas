@@ -4,11 +4,7 @@ import { withSnackbar } from "notistack";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { getProject, saveProject } from "../services/projectService";
 import { getPrograms } from "../services/programService";
 import { getResearchTypes } from "../services/researchTypeService";
@@ -116,10 +112,10 @@ class ProjectForm extends Form {
   doSubmit = async () => {
     try {
       await saveProject(this.state.data);
-      this.props.enqueueSnackbar(`Registro guardado correctamente!`, {
+      this.props.enqueueSnackbar(`Proyecto guardado correctamente!`, {
         variant: "success",
       });
-      this.props.history.push("/proyectos");
+      // this.props.history.push("/proyectos");
     } catch (error) {
       this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
         variant: "error",
@@ -179,74 +175,28 @@ class ProjectForm extends Form {
                 {/* {this.renderInputDate("startDate_project", "Fecha Inicio")} */}
 
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    autoOk
-                    variant="dialog"
-                    inputVariant="outlined"
-                    label="Fecha inicio"
-                    format="yyyy-MM-dd"
-                    name={"startDate_project"}
-                    inputValue={this.state.data.startDate_project}
-                    InputAdornmentProps={{ position: "end" }}
-                    onChange={(date) =>
-                      this.handleChangeDate(date, "startDate_project")
-                    }
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    value={
-                      this.state.data.startDate_project
-                        ? this.state.data.startDate_project
-                        : null
-                    }
-                    minDate={new Date("2020-01-01") || undefined}
-                  />
-                  <KeyboardDatePicker
-                    autoOk
-                    variant="dialog"
-                    inputVariant="outlined"
-                    label="Fecha fin"
-                    format="yyyy-MM-dd"
-                    name={"endDate_project"}
-                    inputValue={this.state.data.endDate_project}
-                    InputAdornmentProps={{ position: "end" }}
-                    onChange={(date) =>
-                      this.handleChangeDate(date, "endDate_project")
-                    }
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    value={
-                      this.state.data.endDate_project
-                        ? this.state.data.endDate_project
-                        : null
-                    }
-                  />
-                  <KeyboardDatePicker
-                    autoOk={false}
-                    variant="dialog"
-                    inputVariant="outlined"
-                    label="Fecha fin real"
-                    format="yyyy-MM-dd"
-                    name={"endDateReal_project"}
-                    inputValue={this.state.data.endDateReal_project}
-                    InputAdornmentProps={{ position: "end" }}
-                    onChange={(date) =>
-                      this.handleChangeDate(date, "endDateReal_project")
-                    }
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    value={
-                      this.state.data.endDateReal_project
-                        ? this.state.data.endDateReal_project
-                        : null
-                    }
-                    disabled
-                  />
+                  {this.renderDatePicker(
+                    "startDate_project",
+                    "Fecha Inicio",
+                    "2020-01-01",
+                    "2020-12-31",
+                    false
+                  )}
+                  {this.renderDatePicker(
+                    "endDate_project",
+                    "Fecha Fin",
+                    "2020-02-01",
+                    "2020-12-31",
+                    false
+                  )}
+                  {this.renderDatePicker(
+                    "endDateReal_project",
+                    "Fecha fin real",
+                    "2020-02-01",
+                    "2020-12-31",
+                    false
+                  )}
                 </MuiPickersUtilsProvider>
-                {/* {this.renderInputDate("endDate_project", "Fecha Fin")}
-                {this.renderInputDate("endDateReal_project", "Fecha Fin Real")} */}
                 {this.renderInput("year_project", "Año")}
                 {this.renderInput("location_project", "Ubicación")}
                 {this.renderSelect(

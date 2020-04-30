@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-// import Joi from "joi-browser";
-
 import Input from "./input";
 import MySelect from "./select";
 import MyMultiSelect from "./multiSelect";
 import Textarea from "./textarea";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
+import InputDate from "./inputDate";
 
 class Form extends Component {
   state = {
@@ -66,30 +65,32 @@ class Form extends Component {
   };
 
   handleChangeDate = (date, input) => {
+    const jsonDate = {};
+    jsonDate["name"] = input;
+    jsonDate["value"] = date;
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(jsonDate);
+    if (errorMessage) errors[input] = errorMessage;
+    else delete errors[input];
+
     const data = { ...this.state.data };
     data[input] = this.formatDate(new Date(date));
-    this.setState({ data });
+    this.setState({ data, errors });
   };
+
   formatDate(date) {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
       day = "" + d.getDate(),
       year = d.getFullYear();
-
     if (month.length < 2) month = "0" + month;
     if (day.length < 2) day = "0" + day;
-
     return [year, month, day].join("-");
   }
   renderButton(label) {
     let validation;
     this.validate() === null ? (validation = false) : (validation = true);
-
     return (
-      // <button disabled={this.validate()} className="btn btn-primary">
-      //   {label}
-      // </button>
-
       <Button
         disabled={validation}
         type="submit"
@@ -164,7 +165,24 @@ class Form extends Component {
       />
     );
   }
+  renderDatePicker(name, label, minDate, maxDate, disabled) {
+    const { data, errors } = this.state;
 
+    return (
+      <InputDate
+        required={false}
+        //type={type}
+        name={name}
+        value={data[name]}
+        label={label}
+        onChange={this.handleChangeDate}
+        minDate={new Date(minDate)}
+        maxDate={new Date(maxDate)}
+        disabled={disabled}
+        error={errors[name]}
+      />
+    );
+  }
   /* renderPanel(id, property, title) {
     const { data } = this.state;
     return <Panel id={id} property={property} title={title} data={data[id]} />;

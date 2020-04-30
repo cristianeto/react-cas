@@ -118,16 +118,11 @@ class ProjectsTable extends Component {
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
       textLabels: TEXT_LABELS,
-      selectableRows: "single",
+      //selectableRows: "single",
       onRowsDelete: (rowsDeleted) => {
-        const rows = this.props.datas;
-        let rowsToDelete = [];
-        rowsDeleted.data.forEach((row) => {
-          rowsToDelete.push(rows[row.index]);
-          //this.props.onDelete(rows[row.index]);
-        });
-        console.log(rowsToDelete);
-        this.props.onDelete(rowsToDelete);
+        const data = this.props.datas; //lista de todos los proyectos
+        const projectsToDelete = rowsDeleted.data.map((d) => data[d.dataIndex]); //Array de todos los proyectos a borrar.
+        this.props.onDelete(projectsToDelete);
       },
     };
 
