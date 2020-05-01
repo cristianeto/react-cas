@@ -45,7 +45,7 @@ class UsersTable extends Component {
         },
       },
       {
-        name: "indentification_card",
+        name: "identification_card",
         label: "C.I.",
         options: {
           filter: true,
@@ -89,6 +89,14 @@ class UsersTable extends Component {
       {
         name: "created_at",
         label: "Fecha creación",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "updated_at",
+        label: "Última actualización",
         options: {
           filter: true,
           sort: true,

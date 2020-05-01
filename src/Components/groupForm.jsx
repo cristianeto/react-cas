@@ -117,8 +117,8 @@ class GroupForm extends Form {
         variant: "success",
       });
       this.props.history.push("/grupos-investigacion");
-    } catch (error) {
-      this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
+    } catch (ex) {
+      this.props.enqueueSnackbar(`Se produjo un error: ${ex.response.data}`, {
         variant: "error",
       });
     }

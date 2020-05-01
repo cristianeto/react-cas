@@ -42,7 +42,7 @@ class ProjectForm extends Form {
 
   schema = Joi.object({
     id_project: Joi.number(),
-    name_project: Joi.string().label("Código").max(500),
+    name_project: Joi.string().label("Nombre").max(500),
     startDate_project: Joi.date().label("Fecha Inicio"),
     endDate_project: Joi.date().label("Fecha Fin"),
     endDateReal_project: Joi.date().allow("", null).label("Fecha Final Real"),
@@ -116,8 +116,8 @@ class ProjectForm extends Form {
         variant: "success",
       });
       // this.props.history.push("/proyectos");
-    } catch (error) {
-      this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
+    } catch (ex) {
+      this.props.enqueueSnackbar(`Se produjo un error. ${ex.response.data}`, {
         variant: "error",
       });
     }

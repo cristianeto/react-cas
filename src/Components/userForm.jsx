@@ -3,10 +3,7 @@ import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "./breadcum";
 import Form from "./common/form";
-
-import { getDependencyTypes } from "../services/dependencyTypeService";
-import { getDependency, saveDependency } from "../services/dependencyService";
-
+import { getUser, saveUser } from "../services/userService";
 import {
   Container,
   LinearProgress,
@@ -14,49 +11,47 @@ import {
   Paper,
   Grid,
 } from "@material-ui/core";
-
-class DependencyForm extends Form {
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import FolderIcon from "@material-ui/icons/Folder";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Avatar from "@material-ui/core/Avatar";
+class UserForm extends Form {
   state = {
     data: {
-      name_dependency: "",
-      acronym_dependency: "",
-      contact_dependency: "",
-      city_dependency: "",
-      email_dependency: "",
-      web_dependency: "",
-      phone_dependency: "",
-      participationType_dependency: "",
-      id_dependencyType: "",
+      identification_card: "",
+      name: "",
+      lastname: "",
+      email: "",
     },
-    dependencyTypes: [],
-
     errors: {},
     isLoading: false,
   };
 
   schema = Joi.object({
-    id_dependency: Joi.number(),
-    name_dependency: Joi.string().label("Nombre").max(500),
-    acronym_dependency: Joi.string().alphanum().label("Sigla").max(10),
-    contact_dependency: Joi.string().label("Contacto").max(150),
-    city_dependency: Joi.string().label("Ciudad").max(100),
-    email_dependency: Joi.string().label("Correo").max(100),
-    web_dependency: Joi.string().label("Web").max(100),
-    phone_dependency: Joi.string().label("Web").max(100),
-    participationType_dependency: Joi.string().label("Tipo participación"),
-    id_dependencyType: Joi.number().label("Tipo dependencia"),
+    id: Joi.number(),
+    identification_card: Joi.string().label("C.I.").min(10).max(10),
+    name: Joi.string().label("Nombre").max(100),
+    lastname: Joi.string().label("Apellido").max(100),
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "espoch", "edu", "ec"] },
+      })
+      .label("Correo")
+      .max(100),
   });
 
-  async populateDependencyTypes() {
-    const { data: dependencyTypes } = await getDependencyTypes();
-    this.setState({ dependencyTypes });
-  }
-  async populateDependency() {
+  async populateUser() {
     try {
-      const dependencyId = this.props.match.params.id; //Pasando por URL id movie
-      if (dependencyId === "new") return; //Si si
-      const { data: dependency } = await getDependency(dependencyId); //Si no.
-      this.setState({ data: this.mapToViewModel(dependency) });
+      const userId = this.props.match.params.id; //Pasando por URL id movie
+      if (userId === "new") return; //Si si
+      const { data: user } = await getUser(userId); //Si no.
+      this.setState({ data: this.mapToViewModel(user) });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
@@ -65,50 +60,47 @@ class DependencyForm extends Form {
 
   async componentDidMount() {
     this.setState({ isLoading: true });
-    await this.populateDependencyTypes();
-    await this.populateDependency();
+    await this.populateUser();
     this.setState({ isLoading: false });
   }
 
-  mapToViewModel(dependency) {
+  mapToViewModel(user) {
     return {
-      id_dependency: dependency.id_dependency,
-      name_dependency: dependency.name_dependency,
-      acronym_dependency: dependency.acronym_dependency,
-      contact_dependency: dependency.contact_dependency,
-      city_dependency: dependency.city_dependency,
-      email_dependency: dependency.email_dependency,
-      web_dependency: dependency.web_dependency,
-      phone_dependency: dependency.phone_dependency,
-      participationType_dependency: dependency.participationType_dependency,
-      id_dependencyType: dependency.id_dependencyType,
+      id: user.id,
+      identification_card: user.identification_card,
+      name: user.name,
+      lastname: user.lastname,
+      email: user.email,
     };
   }
   doSubmit = async () => {
     try {
-      await saveDependency(this.state.data);
-      this.props.enqueueSnackbar(
-        `${this.state.data.acronym_dependency} fue guardado correctamente!`,
-        { variant: "success" }
-      );
-      this.props.history.push("/dependencias");
-    } catch (error) {
-      this.props.enqueueSnackbar(`Se produjo un error. ${error}`, {
-        variant: "error",
+      await saveUser(this.state.data);
+      this.props.enqueueSnackbar(`Usuario guardado correctamente!`, {
+        variant: "success",
       });
+      this.props.history.push("/usuarios");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        this.props.enqueueSnackbar(`${ex.response.data}`, {
+          variant: "error",
+        });
+        const errors = { ...this.state.errors };
+        errors.email = ex.response.data;
+        this.setState({ errors });
+      }
     }
   };
 
   render() {
-    const { data } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
         label: "Inicio",
       },
       {
-        path: "/dependencias",
-        label: "Dependencias",
+        path: "/usuarios",
+        label: "Usuarios",
       },
     ];
 
@@ -121,38 +113,48 @@ class DependencyForm extends Form {
 
     return (
       <Container maxWidth="lg">
-        <Breadcrumb
-          onListBreadcrumbs={listBreadcrumbs}
-          lastLabel={"Dependencia"}
-        />
+        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuario"} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper style={classes.paper}>
               <Typography variant="h4" gutterBottom>
-                Dependencia: <small>{data.acronym_dependency}</small>
+                Usuario
                 {this.state.isLoading && <LinearProgress color="secondary" />}
               </Typography>
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("name_dependency", "Nombre")}
-                {this.renderInput("acronym_dependency", "Sigla")}
-                {this.renderInput("contact_dependency", "Contacto")}
-                {this.renderInput("city_dependency", "Ciudad")}
-                {this.renderInput("email_dependency", "Correo")}
-                {this.renderInput("web_dependency", "Sitio web")}
-                {this.renderInput("phone_dependency", "Teléfono")}
-                {this.renderTextarea(
-                  "participationType_dependency",
-                  "Tipo participación"
-                )}
-                {this.renderSelect(
-                  "id_dependencyType",
-                  "Tipo",
-                  "name_dependencyType",
-                  this.state.dependencyTypes
-                )}
-
+                {this.renderInput("identification_card", "C.I.")}
+                {this.renderInput("name", "Nombre")}
+                {this.renderInput("lastname", "Apellido")}
+                {this.renderInput("email", "Correo")}
                 {this.renderButton("Guardar")}
               </form>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={5} md={4}>
+            <Paper style={classes.paper}>
+              <Typography variant="h4" gutterBottom>
+                Perfiles
+              </Typography>
+              <div className={classes.demo}>
+                <List dense={true}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <FolderIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary="Administrador"
+                      secondary={"2020-12-28"}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
+              </div>
             </Paper>
           </Grid>
         </Grid>
@@ -161,4 +163,4 @@ class DependencyForm extends Form {
   }
 }
 
-export default withSnackbar(DependencyForm);
+export default withSnackbar(UserForm);

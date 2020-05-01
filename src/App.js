@@ -8,6 +8,7 @@ import NotFound from "./Components/notFound";
 import Groups from "./Components/groups";
 import GroupForm from "./Components/groupForm";
 import ProjectForm from "./Components/projectForm";
+import UserForm from "./Components/userForm";
 import Welcome from "./Components/welcome";
 import Users from "./Components/users";
 import Projects from "./Components/projects";
@@ -82,6 +83,7 @@ export default class App extends Component {
           <Route path="/rentals" component={Rentals} /> */}
             <Route path="/proyecto/:id" component={ProjectForm} />
             <Route path="/proyectos" component={Projects} />
+            <Route path="/usuario/:id" component={UserForm} />
             <Route path="/usuarios" component={Users} />
             <Route path="/" exact component={Welcome} />
             <Route path="/dependencias" component={Dependencies} />
