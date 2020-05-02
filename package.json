@@ -15,6 +15,8 @@
     "acorn": "7.1.1",
     "axios": "^0.19.1",
     "date-fns": "^2.12.0",
+    "kind-of": "^6.0.3",
+    "minimist": "^0.2.1",
     "mui-datatables": "^2.14.0",
     "notistack": "^0.9.7",
     "react": "^16.12.0",

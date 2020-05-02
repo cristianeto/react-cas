@@ -18,7 +18,7 @@ const MyMultiSelect = ({
   let validation;
   error === undefined ? (validation = false) : (validation = true);
   let ids = [];
-  optionsSelected.forEach(optionSelected => {
+  optionsSelected.forEach((optionSelected) => {
     ids.push(optionSelected[name]);
   });
   return (
@@ -37,7 +37,7 @@ const MyMultiSelect = ({
         <MenuItem disabled value="">
           <em>Seleccione una o más opciones</em>
         </MenuItem>
-        {options.map(option => (
+        {options.map((option) => (
           <MenuItem key={option[name]} value={option[name]}>
             {option[property]}
           </MenuItem>

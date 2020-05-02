@@ -84,6 +84,7 @@ class UserForm extends Form {
       if (ex.response && ex.response.status === 400) {
         this.props.enqueueSnackbar(`${ex.response.data}`, {
           variant: "error",
+          preventDuplicate: true,
         });
         const errors = { ...this.state.errors };
         errors.email = ex.response.data;
