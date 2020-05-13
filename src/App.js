@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
-
-import { CasClient } from "./CasClient/CasClient";
 import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
 import Groups from "./Components/groups";
@@ -14,6 +12,9 @@ import Users from "./Components/users";
 import Projects from "./Components/projects";
 import Dependencies from "./Components/dependencies";
 import DependencyForm from "./Components/dependencyForm";
+import Logout from "./Components/logout";
+import cas from "./services/casService";
+import auth from "./services/authService";
 
 export default class App extends Component {
   constructor(props) {
@@ -22,51 +23,22 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
-    //if (this.props.location.pathname === '/callback') return;
-    /*  let ClientCAS = new CasClient();
     try {
-      if (!ClientCAS.getLogin()) {
-        ClientCAS.saveTicket();
-        await ClientCAS.verificaLogin().then();
+      if (!cas.getLogin()) {
+        cas.saveTicket();
+        await cas.getTicketCAS();
       }
-      console.log("Pasando...");
-
-      if (ClientCAS.isAuthenticated() && ClientCAS.getLogin()) {
-        this.ObtenerDatosCentralizada();
-      }
-      //this.forceUpdate();
-    } catch (err) {
-      if (err.error !== "login_required") console.log("error: " + err);
-    } */
-
-    const user = null;
-    /* const user = {
-      name: "Cristian",
-      apellido: "Guaman",
-    }; */
-    this.setState({ user });
-
-    let ClientCAS = new CasClient();
-    try {
-      if (!ClientCAS.getLogin()) {
-        ClientCAS.saveTicket();
-        // this.handleLogin(ClientCAS);
-        await ClientCAS.validateLogin().then();
-      }
-    } catch (error) {}
+      const user = cas.getLogin();
+      this.setState({ user });
+      if (auth.getPassport() === "") auth.login(user);
+    } catch (error) {
+      alert(error);
+    }
   }
 
-  async handleLogin(ClientCAS) {
-    console.log("click");
-    let ClientCAS2 = new CasClient();
+  handleLogin() {
     try {
-      await ClientCAS2.verificaLogin().then();
-      console.log("Pasando...");
-
-      /*  if (ClientCAS.isAuthenticated() && ClientCAS.getLogin()) {
-        this.ObtenerDatosCentralizada();
-      } */
-      //this.forceUpdate();
+      cas.redirect();
     } catch (err) {
       if (err.error !== "login_required") console.log("error: " + err);
     }
@@ -86,6 +58,7 @@ export default class App extends Component {
             <Route path="/usuario/:id" component={UserForm} />
             <Route path="/usuarios" component={Users} />
             <Route path="/" exact component={Welcome} />
+            <Route path="/logout" exact component={Logout} />
             <Route path="/dependencias" component={Dependencies} />
             <Route path="/dependencia/:id" component={DependencyForm} />
             <Route path="/grupos-investigacion" component={Groups} />
