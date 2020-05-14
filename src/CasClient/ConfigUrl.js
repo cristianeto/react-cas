@@ -6,8 +6,7 @@ export let CONFIG = {
     MY_APLICATION: "http://localhost:3000/",
     LOGOUT_REDIRECT: "http://localhost:3000/logout/",
     LOGOUT_CORREO: "https://login.microsoftonline.com/common/oauth2/logout?",
-    VALIDATE_TICKET:
-      "http://localhost/proyectosinvestigacion/public/api/validateCAS?",
+    VALIDATE_TICKET: "http://localhost/spirit-backend/public/api/validateCAS?",
   },
 };
 
