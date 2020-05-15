@@ -110,6 +110,7 @@ function remove() {
   window.sessionStorage.removeItem("cedula");
   window.sessionStorage.removeItem("clientName");
   window.sessionStorage.removeItem("passport");
+  window.sessionStorage.removeItem("id");
 }
 export default {
   redirect,

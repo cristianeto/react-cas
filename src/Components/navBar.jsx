@@ -1,14 +1,12 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import cas from "../services/casService";
+import MenuRoles from "./menuRoles";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
@@ -41,12 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const navLink = {
-  color: "inherit",
-  textDecoration: "none",
-};
-
-export default function ButtonAppBar(props) {
+export default function NavBar(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -54,18 +47,7 @@ export default function ButtonAppBar(props) {
     bottom: false,
     right: false,
   });
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const handleLogout = () => {
-    handleClose();
-    cas.logout();
-  };
   const toggleDrawer = (side, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -73,7 +55,6 @@ export default function ButtonAppBar(props) {
     ) {
       return;
     }
-
     setState({ ...state, [side]: open });
   };
 
@@ -95,7 +76,7 @@ export default function ButtonAppBar(props) {
         </Link>
       </List>
       <List>
-        <NavLink to="/dependencias" style={navLink}>
+        <NavLink to="/dependencias" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
               <BusinessIcon />
@@ -105,7 +86,7 @@ export default function ButtonAppBar(props) {
         </NavLink>
       </List>
       <List>
-        <NavLink to="/grupos-investigacion" style={navLink}>
+        <NavLink to="/grupos-investigacion" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
               <GroupWorkIcon />
@@ -115,7 +96,7 @@ export default function ButtonAppBar(props) {
         </NavLink>
       </List>
       <List>
-        <NavLink to="/grupos-investigacion" style={navLink}>
+        <NavLink to="/grupos-investigacion" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
               <InboxIcon />
@@ -125,7 +106,7 @@ export default function ButtonAppBar(props) {
         </NavLink>
       </List>
       <List>
-        <NavLink to="/grupos-investigacion" style={navLink}>
+        <NavLink to="/grupos-investigacion" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
               <InboxIcon />
@@ -136,7 +117,7 @@ export default function ButtonAppBar(props) {
       </List>
       <Divider />
       <List>
-        <NavLink to="/usuarios" style={navLink}>
+        <NavLink to="/usuarios" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
               <GroupIcon />
@@ -172,28 +153,12 @@ export default function ButtonAppBar(props) {
             </Button>
           )}
           {props.user && (
-            <React.Fragment>
-              <Button
-                color="inherit"
-                style={{ textTransform: "lowercase" }}
-                onClick={handleClick}
-              >
-                {props.user}
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Administrador</MenuItem>
-                <MenuItem onClick={handleClose}>Rector</MenuItem>
-                <MenuItem onClick={handleClose}>Decano</MenuItem>
-                <MenuItem onClick={handleClose}>Vicedecano</MenuItem>
-                <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
-              </Menu>
-            </React.Fragment>
+            <MenuRoles
+              user={props.user}
+              roles={props.roles}
+              onChangeRole={props.onChangeRole}
+              onLogout={props.onLogout}
+            />
           )}
         </Toolbar>
       </AppBar>

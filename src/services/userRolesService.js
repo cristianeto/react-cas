@@ -4,7 +4,7 @@ import { apiUrl } from "../config.json";
 const apiEndpoint = apiUrl + "/auth/v1/usersroles";
 
 function userRoleUrl(id) {
-  return `${apiEndpoint}/1`;
+  return `${apiEndpoint}/${id}`;
 }
 
 export function getRolesByUser(userId) {

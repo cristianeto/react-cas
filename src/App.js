@@ -19,7 +19,14 @@ import { getRolesByUser } from "./services/userRolesService";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { user: null, roles: null };
+    this.state = {
+      user: null,
+      roles: [
+        { role_id: 1, role_name: "admin" },
+        { role_id: 2, role_name: "user" },
+      ],
+      selectedRole: {},
+    };
   }
 
   async componentDidMount() {
@@ -29,25 +36,17 @@ class App extends Component {
         await cas.getTicketCAS();
       }
       const user = auth.getCurrentUser();
-      console.log(user);
       if (cas.isAuthenticated() && cas.getLogin() && !auth.isAuthenticated()) {
         await auth.login(user);
       }
       this.setState({ user });
       if (auth.isAuthenticated()) {
-        const { data: roles } = await getRolesByUser(user);
+        const userId = sessionStorage.getItem("id");
+        const { data: roles } = await getRolesByUser(userId);
         this.setState({ roles });
-      }
-      /* const user = auth.getCurrentUser();
-      console.log(user);
-       this.setState({ user });*/
-      /*  if (user !== null) {
-        await auth.login(user);
-        const roles = await getRolesByUser(user);
-        console.log(roles);
       } else {
-        console.log("sino");
-      } */
+        console.log("Usuario no autenticado en el Backend");
+      }
     } catch (ex) {
       console.log(ex);
       this.props.enqueueSnackbar(`Se produjo un error. ${ex}`, {
@@ -63,11 +62,23 @@ class App extends Component {
       if (err.error !== "login_required") console.log("error: " + err);
     }
   }
+  handleLogout = () => {
+    cas.logout();
+  };
+  handleChangeRole = (role) => {
+    console.info(role);
+  };
   render() {
-    const { user } = this.state;
+    const { user, roles } = this.state;
     return (
       <div style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
-        <NavBar user={user} onLogin={this.handleLogin} />
+        <NavBar
+          user={user}
+          roles={roles}
+          onLogin={this.handleLogin}
+          onChangeRole={this.handleChangeRole}
+          onLogout={this.handleLogout}
+        />
         <Switch>
           {/* <Route path="/login" component={LoginForm} />
             <Route path="/customers" component={Customers} />

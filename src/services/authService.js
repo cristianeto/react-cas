@@ -5,20 +5,22 @@ const tokenKey = "passport";
 
 http.setPassport(getPassport());
 
-export async function login(cedula) {
+export async function login(email) {
   try {
-    console.log(cedula);
-    const { data } = await http.post(apiEndpoint, { cedula });
+    const { data } = await http.post(apiEndpoint, { email });
     sessionStorage.setItem(tokenKey, data.access_token);
+    sessionStorage.setItem("id", data.user.id);
+    http.setPassport(getPassport());
+    console.log(data.user);
+    return data.user;
   } catch (ex) {
-    console.log(ex);
     sessionStorage.setItem(tokenKey, null);
   }
 }
 
 export function getCurrentUser() {
   try {
-    const user = sessionStorage.getItem("cedula");
+    const user = sessionStorage.getItem("loginUser");
     return user;
   } catch (ex) {
     return null;
@@ -30,7 +32,7 @@ export function getPassport() {
 }
 
 export function isAuthenticated() {
-  var rawIdToken = getPassport();
+  const rawIdToken = getPassport();
   return isNotEmpty(rawIdToken);
 }
 function isNotEmpty(obj) {
