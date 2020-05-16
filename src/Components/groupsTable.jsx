@@ -121,8 +121,7 @@ class GroupsTable extends Component {
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Lista de grupos de investigación{" "}
-              <ButtonAdd entity={"dependencia"} />
+              Lista de grupos de investigación <ButtonAdd entity={"grupo"} />
               {isLoading && <LinearProgress color="secondary" />}
             </Typography>
           }

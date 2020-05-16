@@ -44,7 +44,6 @@ async function getTicketCAS() {
 
 function validation(res) {
   x2js.parseString(res.data, (err, resultado) => {
-    console.log(resultado);
     let sucesso = resultado["cas:serviceResponse"]["cas:authenticationSuccess"];
     if (sucesso !== undefined) {
       var sucess =
@@ -53,7 +52,7 @@ function validation(res) {
       var atributos = sucess[0]["cas:attributes"];
       if (atributos[0]["cas:clientName"] !== undefined) {
         sessionStorage.setItem("clientName", atributos[0]["cas:clientName"]);
-        sessionStorage.setItem("cedula", atributos[0]["cas:cedula"]);
+        //sessionStorage.setItem("cedula", atributos[0]["cas:cedula"]);
       } else {
         sessionStorage.setItem("clientName", "Centralizada");
       }
@@ -69,9 +68,6 @@ function validation(res) {
 
 function getTicket() {
   return sessionStorage.getItem(ticketKey);
-}
-function getCedula() {
-  return sessionStorage.getItem("cedula");
 }
 export function getLogin() {
   return sessionStorage.getItem(loginKey);
@@ -107,15 +103,13 @@ export function logout() {
 function remove() {
   window.sessionStorage.removeItem("ticketUser");
   window.sessionStorage.removeItem("loginUser");
-  window.sessionStorage.removeItem("cedula");
   window.sessionStorage.removeItem("clientName");
   window.sessionStorage.removeItem("passport");
-  window.sessionStorage.removeItem("id");
+  window.sessionStorage.removeItem("user");
 }
 export default {
   redirect,
   getLogin,
-  getCedula,
   saveTicket,
   getTicketCAS,
   verificaLogin,

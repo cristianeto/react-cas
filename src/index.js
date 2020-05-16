@@ -1,13 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { SnackbarProvider } from "notistack";
 import { BrowserRouter } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
+import Button from "@material-ui/core/Button";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+const notistackRef = React.createRef();
+const onClickDismiss = (key) => () => {
+  notistackRef.current.closeSnackbar(key);
+};
+
 ReactDOM.render(
-  <SnackbarProvider maxSnack={3}>
+  <SnackbarProvider
+    preventDuplicate
+    maxSnack={3}
+    ref={notistackRef}
+    action={(key) => (
+      <Button onClick={onClickDismiss(key)} style={{ color: "#fff" }}>
+        CERRAR
+      </Button>
+    )}
+  >
     <BrowserRouter>
       <App />
     </BrowserRouter>

@@ -8,20 +8,22 @@ http.setPassport(getPassport());
 export async function login(email) {
   try {
     const { data } = await http.post(apiEndpoint, { email });
+    console.log(data);
     sessionStorage.setItem(tokenKey, data.access_token);
-    sessionStorage.setItem("id", data.user.id);
+    sessionStorage.setItem("user", JSON.stringify(data.user));
     http.setPassport(getPassport());
-    console.log(data.user);
     return data.user;
   } catch (ex) {
     sessionStorage.setItem(tokenKey, null);
+    console.error(ex);
+    return ex;
   }
 }
 
 export function getCurrentUser() {
   try {
-    const user = sessionStorage.getItem("loginUser");
-    return user;
+    const user = sessionStorage.getItem("user");
+    return JSON.parse(user);
   } catch (ex) {
     return null;
   }

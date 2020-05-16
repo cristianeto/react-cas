@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import MenuRoles from "./menuRoles";
+import ImageProfile from "./common/imageProfile";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -19,6 +20,7 @@ import BusinessIcon from "@material-ui/icons/Business";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
 import FolderIcon from "@material-ui/icons/Folder";
 import MenuIcon from "@material-ui/icons/Menu";
+import avatar from "../static/img/img_avatar.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,7 +49,7 @@ export default function NavBar(props) {
     bottom: false,
     right: false,
   });
-
+  const { selectedRole, user, onLogin, onLogout, roles, onChangeRole } = props;
   const toggleDrawer = (side, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -66,6 +68,9 @@ export default function NavBar(props) {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
+        <ListItem style={{ display: "flex", justifyContent: "center" }}>
+          <ImageProfile alt={"avatar"} location={avatar} size={"large"} />
+        </ListItem>
         <Link to="/proyectos" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
@@ -74,8 +79,6 @@ export default function NavBar(props) {
             <ListItemText primary={"Proyectos"} />
           </ListItem>
         </Link>
-      </List>
-      <List>
         <NavLink to="/dependencias" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
@@ -84,8 +87,6 @@ export default function NavBar(props) {
             <ListItemText primary={"Dependencias"} />
           </ListItem>
         </NavLink>
-      </List>
-      <List>
         <NavLink to="/grupos-investigacion" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
@@ -94,8 +95,6 @@ export default function NavBar(props) {
             <ListItemText primary={"Grupos investigación"} />
           </ListItem>
         </NavLink>
-      </List>
-      <List>
         <NavLink to="/grupos-investigacion" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
@@ -104,8 +103,6 @@ export default function NavBar(props) {
             <ListItemText primary={"Componentes"} />
           </ListItem>
         </NavLink>
-      </List>
-      <List>
         <NavLink to="/grupos-investigacion" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
@@ -116,15 +113,28 @@ export default function NavBar(props) {
         </NavLink>
       </List>
       <Divider />
-      <List>
-        <NavLink to="/usuarios" className={classes.navLink}>
-          <ListItem button>
-            <ListItemIcon>
-              <GroupIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Usuarios"} />
-          </ListItem>
-        </NavLink>
+      {selectedRole.id_role === 1 && (
+        <List>
+          <NavLink to="/usuarios" className={classes.navLink}>
+            <ListItem button>
+              <ListItemIcon>
+                <GroupIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Usuarios"} />
+            </ListItem>
+          </NavLink>
+        </List>
+      )}
+      <List
+        style={{
+          alignSelf: "flex-end",
+        }}
+      >
+        <ListItem>
+          <Typography variant="caption" display="block" gutterBottom>
+            SPIrit V1.0 - CIMOGSYS
+          </Typography>
+        </ListItem>
       </List>
     </div>
   );
@@ -147,22 +157,28 @@ export default function NavBar(props) {
               Spirit
             </Link>
           </Typography>
-          {!props.user && (
-            <Button color="inherit" onClick={props.onLogin}>
+          {!user && (
+            <Button color="inherit" onClick={onLogin}>
               Login
             </Button>
           )}
-          {props.user && (
+          {user && (
             <MenuRoles
-              user={props.user}
-              roles={props.roles}
-              onChangeRole={props.onChangeRole}
-              onLogout={props.onLogout}
+              user={user}
+              roles={roles}
+              onChangeRole={onChangeRole}
+              onLogout={onLogout}
             />
           )}
         </Toolbar>
       </AppBar>
-      <Drawer open={state.left} onClose={toggleDrawer("left", false)}>
+      <Drawer
+        style={{
+          display: "flex",
+        }}
+        open={state.left}
+        onClose={toggleDrawer("left", false)}
+      >
         {sideList("left")}
       </Drawer>
     </div>

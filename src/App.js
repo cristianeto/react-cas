@@ -20,12 +20,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
-      roles: [
-        { role_id: 1, role_name: "admin" },
-        { role_id: 2, role_name: "user" },
-      ],
-      selectedRole: {},
+      emailCas: cas.getLogin(),
+      user: auth.getCurrentUser(),
+      roles: [],
+      selectedRole: "",
     };
   }
 
@@ -35,14 +33,15 @@ class App extends Component {
         cas.saveTicket();
         await cas.getTicketCAS();
       }
-      const user = auth.getCurrentUser();
+      const emailCas = cas.getLogin();
       if (cas.isAuthenticated() && cas.getLogin() && !auth.isAuthenticated()) {
-        await auth.login(user);
+        console.log("logueando al backend");
+        const user = await auth.login(emailCas);
+        this.setState({ user });
       }
-      this.setState({ user });
+      this.setState({ emailCas });
       if (auth.isAuthenticated()) {
-        const userId = sessionStorage.getItem("id");
-        const { data: roles } = await getRolesByUser(userId);
+        const { data: roles } = await getRolesByUser(this.state.user.id);
         this.setState({ roles });
       } else {
         console.log("Usuario no autenticado en el Backend");
@@ -65,8 +64,13 @@ class App extends Component {
   handleLogout = () => {
     cas.logout();
   };
-  handleChangeRole = (role) => {
-    console.info(role);
+
+  handleChangeRole = (roleId) => {
+    const role = this.state.roles.find((role) => role.id_role === roleId);
+    this.setState({ selectedRole: role });
+    this.props.enqueueSnackbar(`Su role cambio a ${role.name_role} `, {
+      variant: "info",
+    });
   };
   render() {
     const { user, roles } = this.state;
@@ -78,6 +82,7 @@ class App extends Component {
           onLogin={this.handleLogin}
           onChangeRole={this.handleChangeRole}
           onLogout={this.handleLogout}
+          selectedRole={this.state.selectedRole}
         />
         <Switch>
           {/* <Route path="/login" component={LoginForm} />
@@ -86,7 +91,9 @@ class App extends Component {
           <Route path="/proyecto/:id" component={ProjectForm} />
           <Route path="/proyectos" component={Projects} />
           <Route path="/usuario/:id" component={UserForm} />
-          <Route path="/usuarios" component={Users} />
+          {this.state.selectedRole.id_role === 1 && (
+            <Route path="/usuarios" component={Users} />
+          )}
           <Route path="/" exact component={Welcome} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/dependencias" component={Dependencies} />
