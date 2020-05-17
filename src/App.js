@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { withSnackbar } from "notistack";
+import cas from "./services/casService";
+import auth from "./services/authService";
+import { getRolesByUser } from "./services/userRolesService";
 import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
 import Groups from "./Components/groups";
@@ -13,9 +16,6 @@ import Projects from "./Components/projects";
 import Dependencies from "./Components/dependencies";
 import DependencyForm from "./Components/dependencyForm";
 import Logout from "./Components/logout";
-import cas from "./services/casService";
-import auth from "./services/authService";
-import { getRolesByUser } from "./services/userRolesService";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -62,6 +62,7 @@ class App extends Component {
     }
   }
   handleLogout = () => {
+    auth.logout();
     cas.logout();
   };
 
@@ -89,7 +90,7 @@ class App extends Component {
             <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} /> */}
           <Route path="/proyecto/:id" component={ProjectForm} />
-          <Route path="/proyectos" component={Projects} />
+          <Route path="/proyectos" exact component={Projects} />
           <Route path="/usuario/:id" component={UserForm} />
           {this.state.selectedRole.id_role === 1 && (
             <Route path="/usuarios" component={Users} />

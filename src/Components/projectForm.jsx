@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 
 class ProjectForm extends Form {
+  _isMounted = false;
   state = {
     data: {
       name_project: "",
@@ -79,18 +80,22 @@ class ProjectForm extends Form {
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
-        this.props.history.replace("/not-found");
+        this.props.enqueueSnackbar(ex.response.data.message, {
+          variant: "warning",
+        });
+      this.props.history.replace("/not-found");
     }
   }
 
   async componentDidMount() {
+    this._isMounted = true;
     this.setState({ isLoading: true });
     await this.populatePrograms();
     await this.populateResearchTypes();
     await this.populateProjectTypes();
     await this.populateCoverageTypes();
     await this.populateProject();
-    this.setState({ isLoading: false });
+    if (this._isMounted) this.setState({ isLoading: false });
   }
 
   mapToViewModel(project) {
@@ -117,7 +122,7 @@ class ProjectForm extends Form {
       });
       // this.props.history.push("/proyectos");
     } catch (ex) {
-      this.props.enqueueSnackbar(`Se produjo un error. ${ex.response.data}`, {
+      this.props.enqueueSnackbar(`${ex.response.data.message}`, {
         variant: "error",
       });
     }
@@ -137,7 +142,9 @@ class ProjectForm extends Form {
     }
     return entities;
   } */
-
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
   render() {
     const listBreadcrumbs = [
       {

@@ -71,14 +71,14 @@ export default function NavBar(props) {
         <ListItem style={{ display: "flex", justifyContent: "center" }}>
           <ImageProfile alt={"avatar"} location={avatar} size={"large"} />
         </ListItem>
-        <Link to="/proyectos" className={classes.navLink}>
+        <NavLink to="/proyectos" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>
               <FolderIcon />
             </ListItemIcon>
             <ListItemText primary={"Proyectos"} />
           </ListItem>
-        </Link>
+        </NavLink>
         <NavLink to="/dependencias" className={classes.navLink}>
           <ListItem button>
             <ListItemIcon>

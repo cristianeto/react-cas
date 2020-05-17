@@ -5,7 +5,7 @@ const NotFound = () => {
   return (
     <main>
       <Container maxWidth="xl">
-        <h1>Not Found</h1>
+        <h1>Página no encontrada</h1>
       </Container>
     </main>
   );

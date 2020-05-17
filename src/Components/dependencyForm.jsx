@@ -71,8 +71,12 @@ class DependencyForm extends Form {
       const { data: dependency } = await getDependency(dependencyId); //Si no.
       this.setState({ data: this.mapToViewModel(dependency) });
     } catch (ex) {
-      if (ex.response && ex.response.status === 404)
-        this.props.history.replace("/not-found");
+      if (ex.response && ex.response.status === 404) {
+        this.props.enqueueSnackbar(ex.response.data.message, {
+          variant: "warning",
+        });
+      }
+      this.props.history.replace("/not-found");
     }
   }
 
@@ -105,7 +109,7 @@ class DependencyForm extends Form {
       });
       this.props.history.push("/dependencias");
     } catch (ex) {
-      this.props.enqueueSnackbar(`Se produjo un error. ${ex.response.data}`, {
+      this.props.enqueueSnackbar(`${ex.response.data.message}`, {
         variant: "error",
       });
     }

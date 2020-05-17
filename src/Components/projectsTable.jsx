@@ -142,6 +142,7 @@ class ProjectsTable extends Component {
           data={data}
           columns={columns}
           options={options}
+          responsive={"scrollFullHeight"}
         />
       </MuiThemeProvider>
     );

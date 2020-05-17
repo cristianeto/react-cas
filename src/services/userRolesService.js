@@ -1,7 +1,7 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/auth/v1/usersroles";
+const apiEndpoint = apiUrl + "/usersroles";
 
 function userRoleUrl(id) {
   return `${apiEndpoint}/${id}`;

@@ -44,7 +44,7 @@ class Groups extends Component {
       await saveGroup(groups[index]);
     } catch (ex) {
       if (ex.response && ex.response.status === 404) console.log("x");
-      this.props.enqueueSnackbar(`Error al actualizar! ${ex}`, {
+      this.props.enqueueSnackbar(`${ex.response.data.message}`, {
         variant: "error",
       });
 

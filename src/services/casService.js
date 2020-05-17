@@ -23,7 +23,7 @@ export function isAuthenticated() {
 
 export function saveTicket() {
   let ticket = window.location.search.replace("?ticket=", "");
-  window.history.pushState("", "", "/");
+  // window.history.pushState("", "", "/");
   if (ticket !== null) {
     sessionStorage.setItem(ticketKey, ticket);
   }

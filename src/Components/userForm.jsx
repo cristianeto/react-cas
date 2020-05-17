@@ -82,7 +82,7 @@ class UserForm extends Form {
       this.props.history.push("/usuarios");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        this.props.enqueueSnackbar(`${ex.response.data}`, {
+        this.props.enqueueSnackbar(`${ex.response.data.message}`, {
           variant: "error",
           preventDuplicate: true,
         });
@@ -90,6 +90,9 @@ class UserForm extends Form {
         errors.email = ex.response.data;
         this.setState({ errors });
       }
+      this.props.enqueueSnackbar(`${ex.response.data.message}`, {
+        variant: "error",
+      });
     }
   };
 

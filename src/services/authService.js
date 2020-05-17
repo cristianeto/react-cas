@@ -1,16 +1,17 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
-const apiEndpoint = apiUrl + "/auth";
+const apiEndpoint = apiUrl;
 const tokenKey = "passport";
+const userKey = "user";
 
 http.setPassport(getPassport());
 
 export async function login(email) {
   try {
-    const { data } = await http.post(apiEndpoint, { email });
+    const { data } = await http.post(apiEndpoint + "/auth", { email });
     console.log(data);
     sessionStorage.setItem(tokenKey, data.access_token);
-    sessionStorage.setItem("user", JSON.stringify(data.user));
+    sessionStorage.setItem(userKey, JSON.stringify(data.user));
     http.setPassport(getPassport());
     return data.user;
   } catch (ex) {
@@ -22,7 +23,7 @@ export async function login(email) {
 
 export function getCurrentUser() {
   try {
-    const user = sessionStorage.getItem("user");
+    const user = sessionStorage.getItem(userKey);
     return JSON.parse(user);
   } catch (ex) {
     return null;
@@ -43,9 +44,15 @@ function isNotEmpty(obj) {
 function isEmpty(obj) {
   return obj === undefined || obj == null || obj === "" || obj === " ";
 }
+async function logout() {
+  const { data } = await http.get(apiEndpoint + "/logout");
+  console.log(data);
+}
+
 export default {
   login,
   getPassport,
   getCurrentUser,
   isAuthenticated,
+  logout,
 };

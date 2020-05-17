@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from "react";
+import { withSnackbar } from "notistack";
+import Breadcum from "./breadcum";
 import ProjectsTable from "./projectsTable";
 import { getProjects, deleteProject } from "../services/projectService";
 import { getPrograms } from "../services/programService";
 import { getResearchTypes } from "../services/researchTypeService";
 import { getProjectTypes } from "../services/projectTypeService";
 import { getCoverageTypes } from "../services/coverageTypeService";
-import Breadcum from "./breadcum";
 import { Container, Button } from "@material-ui/core";
-import { withSnackbar } from "notistack";
 
 class Projects extends Component {
   state = {
@@ -74,17 +74,17 @@ class Projects extends Component {
     );
     this.setState({ projects });
     this.handleUndo(projectsToDelete, originalProjects);
-    try {
-      projectsToDelete.forEach(async (project) => {
+    projectsToDelete.forEach(async (project) => {
+      try {
         await deleteProject(project.id_project);
-      });
-    } catch (ex) {
-      if (ex.response && ex.response.status === 404)
-        this.props.enqueueSnackbar(`Se produjo un error. ${ex}`, {
+      } catch (ex) {
+        if (ex.response && ex.response.status === 404) console.log(ex);
+        this.props.enqueueSnackbar(`${ex.response.data.message}`, {
           variant: "error",
         });
-      this.setState({ projects: originalProjects });
-    }
+        this.setState({ projects: originalProjects });
+      }
+    });
   };
 
   render() {

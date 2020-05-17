@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MenuRoles(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { user, roles, onChangeRole, onLogout } = props;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,7 +33,7 @@ export default function MenuRoles(props) {
         style={{ textTransform: "lowercase" }}
         onClick={handleClick}
       >
-        {props.user.email}
+        {user.email}
       </Button>
       <Menu
         id="simple-menu"
@@ -42,24 +43,24 @@ export default function MenuRoles(props) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          <Link to={`/usuario/1`} className={classes.navLink}>
+          <Link to={`/usuario/${user.id}`} className={classes.navLink}>
             MI PERFIL
           </Link>
         </MenuItem>
         <Divider />
-        {props.roles &&
-          props.roles.map((role) => (
+        {roles &&
+          roles.map((role) => (
             <MenuItem
               key={role.id_role}
               onClick={() => {
-                props.onChangeRole(role.id_role);
+                onChangeRole(role.id_role);
               }}
             >
               {role.name_role}
             </MenuItem>
           ))}
         <Divider />
-        <MenuItem onClick={props.onLogout}>CERRAR SESIÓN</MenuItem>
+        <MenuItem onClick={onLogout}>CERRAR SESIÓN</MenuItem>
       </Menu>
     </React.Fragment>
   );
