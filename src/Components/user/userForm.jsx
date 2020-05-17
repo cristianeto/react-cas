@@ -1,9 +1,9 @@
 import React from "react";
 import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
-import Breadcrumb from "./breadcum";
-import Form from "./common/form";
-import { getUser, saveUser } from "../services/userService";
+import Breadcrumb from "../common/breadcum";
+import Form from "../common/form";
+import { getUser, saveUser } from "../../services/userService";
 import {
   Container,
   LinearProgress,
@@ -123,8 +123,8 @@ class UserForm extends Form {
             <Paper style={classes.paper}>
               <Typography variant="h4" gutterBottom>
                 Usuario
-                {this.state.isLoading && <LinearProgress color="secondary" />}
               </Typography>
+              {this.state.isLoading && <LinearProgress color="secondary" />}
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("identification_card", "C.I.")}
                 {this.renderInput("name", "Nombre")}

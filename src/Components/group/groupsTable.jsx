@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { TEXT_LABELS } from "../configTable";
+import { TEXT_LABELS } from "../../configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
-import ButtonAdd from "./common/buttonAdd";
+import Active from "../common/active";
+import ButtonAdd from "../common/buttonAdd";
 
-class DependenciesTable extends Component {
+class GroupsTable extends Component {
   getMuiTheme = () =>
     createMuiTheme({
       overrides: {
@@ -29,15 +30,15 @@ class DependenciesTable extends Component {
       },
     });
 
-  //   getStatus = (value) => {
-  //     if (value === 1) {
-  //       return "Activo";
-  //     }
-  //   };
+  getStatus = (value) => {
+    if (value === 1) {
+      return "Activo";
+    }
+  };
   render() {
     const columns = [
       {
-        name: "id_dependency",
+        name: "id_group",
         label: "id",
         options: {
           filter: false,
@@ -45,15 +46,15 @@ class DependenciesTable extends Component {
         },
       },
       {
-        name: "acronym_dependency",
-        label: "Siglas",
+        name: "code_group",
+        label: "Código",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "name_dependency",
+        name: "name_group",
         label: "Nombre",
         options: {
           filter: true,
@@ -62,7 +63,7 @@ class DependenciesTable extends Component {
             return (
               <Link
                 style={{ textDecoration: "none" }}
-                to={`/dependencia/${tableMeta.rowData[0]}`}
+                to={`/grupo/${tableMeta.rowData[0]}`}
               >
                 {value}
               </Link>
@@ -71,23 +72,38 @@ class DependenciesTable extends Component {
         },
       },
       {
-        name: "email_dependency",
-        label: "Correo",
+        name: "acronym_group",
+        label: "Siglas",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "dependency_type.name_dependencyType",
-        label: "Tipo",
+        name: "dependency.name_dependency",
+        label: "Facultad",
         options: {
           filter: true,
           sort: true,
         },
       },
+      {
+        name: "active_group",
+        label: "Estado",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value, tableMeta) => {
+            return (
+              <Active
+                actived={value}
+                onClick={() => this.props.onActive(tableMeta.rowData[0])}
+              />
+            );
+          },
+        },
+      },
     ];
-
     const options_config = {
       filterType: "dropdown",
       responsive: "scroll",
@@ -105,7 +121,7 @@ class DependenciesTable extends Component {
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Lista de dependencias <ButtonAdd entity={"dependencia"} />
+              Lista de grupos de investigación <ButtonAdd entity={"grupo"} />
               {isLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
@@ -118,4 +134,4 @@ class DependenciesTable extends Component {
   }
 }
 
-export default DependenciesTable;
+export default GroupsTable;

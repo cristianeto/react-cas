@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { withSnackbar } from "notistack";
-import Breadcum from "./breadcum";
+import Breadcum from "../common/breadcum";
 import ProjectsTable from "./projectsTable";
-import { getProjects, deleteProject } from "../services/projectService";
-import { getPrograms } from "../services/programService";
-import { getResearchTypes } from "../services/researchTypeService";
-import { getProjectTypes } from "../services/projectTypeService";
-import { getCoverageTypes } from "../services/coverageTypeService";
+import { getProjects, deleteProject } from "../../services/projectService";
+import { getPrograms } from "../../services/programService";
+import { getResearchTypes } from "../../services/researchTypeService";
+import { getProjectTypes } from "../../services/projectTypeService";
+import { getCoverageTypes } from "../../services/coverageTypeService";
 import { Container, Button } from "@material-ui/core";
 
 class Projects extends Component {

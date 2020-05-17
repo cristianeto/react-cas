@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { TEXT_LABELS } from "../configTable";
+import { TEXT_LABELS } from "../../configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
-import ButtonAdd from "./common/buttonAdd";
+import ButtonAdd from "../common/buttonAdd";
 
-class UsersTable extends Component {
+class ProjectsTable extends Component {
   getMuiTheme = () =>
     createMuiTheme({
       overrides: {
@@ -29,15 +29,16 @@ class UsersTable extends Component {
       },
     });
 
-  //   getStatus = (value) => {
-  //     if (value === 1) {
-  //       return "Activo";
-  //     }
-  //   };
+  /* handleDelete(rowsIndex) {
+    rowsIndex.map((r) => {
+      return console.log(this.props.datas[0]);
+    });
+  } */
+
   render() {
     const columns = [
       {
-        name: "id",
+        name: "id_project",
         label: "id",
         options: {
           filter: false,
@@ -45,8 +46,8 @@ class UsersTable extends Component {
         },
       },
       {
-        name: "identification_card",
-        label: "C.I.",
+        name: "name_project",
+        label: "Nombre",
         options: {
           filter: true,
           sort: true,
@@ -54,7 +55,7 @@ class UsersTable extends Component {
             return (
               <Link
                 style={{ textDecoration: "none" }}
-                to={`/usuario/${tableMeta.rowData[0]}`}
+                to={`/proyecto/${tableMeta.rowData[0]}`}
               >
                 {value}
               </Link>
@@ -63,40 +64,48 @@ class UsersTable extends Component {
         },
       },
       {
-        name: "name",
-        label: "Nombre",
+        name: "startDate_project",
+        label: "Fecha Inicio",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "lastname",
-        label: "Apellido",
+        name: "endDate_project",
+        label: "Fecha Final",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "email",
-        label: "Correo electrónico",
+        name: "year_project",
+        label: "Año",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "created_at",
-        label: "Fecha creación",
+        name: "program.name_program",
+        label: "Programa",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "updated_at",
-        label: "Última actualización",
+        name: "research_type.name_researchType",
+        label: "Tipo",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "coverage_type.name_coverageType",
+        label: "Cobertura",
         options: {
           filter: true,
           sort: true,
@@ -109,10 +118,11 @@ class UsersTable extends Component {
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
       textLabels: TEXT_LABELS,
+      //selectableRows: "single",
       onRowsDelete: (rowsDeleted) => {
-        const data = this.props.datas; //lista
-        const usersToDelete = rowsDeleted.data.map((d) => data[d.dataIndex]); //Array de todos
-        this.props.onDelete(usersToDelete);
+        const data = this.props.datas; //lista de todos los proyectos
+        const projectsToDelete = rowsDeleted.data.map((d) => data[d.dataIndex]); //Array de todos los proyectos a borrar.
+        this.props.onDelete(projectsToDelete);
       },
     };
 
@@ -125,17 +135,18 @@ class UsersTable extends Component {
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Lista de usuarios <ButtonAdd entity={"usuario"} />
+              Lista de proyectos <ButtonAdd entity={"proyecto"} />
               {isLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
           data={data}
           columns={columns}
           options={options}
+          responsive={"scrollFullHeight"}
         />
       </MuiThemeProvider>
     );
   }
 }
 
-export default UsersTable;
+export default ProjectsTable;

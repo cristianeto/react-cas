@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import DependenciesTable from "./dependeniesTable";
-import { getDependencies } from "../services/dependencyService";
+import { getDependencies } from "../../services/dependencyService";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
-import Breadcum from "./breadcum";
+import Breadcum from "../common/breadcum";
 
 class Dependencies extends Component {
   state = {

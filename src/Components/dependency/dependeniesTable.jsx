@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { TEXT_LABELS } from "../configTable";
+import { TEXT_LABELS } from "../../configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
-import ButtonAdd from "./common/buttonAdd";
+import ButtonAdd from "../common/buttonAdd";
 
-class ProjectsTable extends Component {
+class DependenciesTable extends Component {
   getMuiTheme = () =>
     createMuiTheme({
       overrides: {
@@ -29,16 +29,15 @@ class ProjectsTable extends Component {
       },
     });
 
-  /* handleDelete(rowsIndex) {
-    rowsIndex.map((r) => {
-      return console.log(this.props.datas[0]);
-    });
-  } */
-
+  //   getStatus = (value) => {
+  //     if (value === 1) {
+  //       return "Activo";
+  //     }
+  //   };
   render() {
     const columns = [
       {
-        name: "id_project",
+        name: "id_dependency",
         label: "id",
         options: {
           filter: false,
@@ -46,7 +45,15 @@ class ProjectsTable extends Component {
         },
       },
       {
-        name: "name_project",
+        name: "acronym_dependency",
+        label: "Siglas",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "name_dependency",
         label: "Nombre",
         options: {
           filter: true,
@@ -55,7 +62,7 @@ class ProjectsTable extends Component {
             return (
               <Link
                 style={{ textDecoration: "none" }}
-                to={`/proyecto/${tableMeta.rowData[0]}`}
+                to={`/dependencia/${tableMeta.rowData[0]}`}
               >
                 {value}
               </Link>
@@ -64,66 +71,29 @@ class ProjectsTable extends Component {
         },
       },
       {
-        name: "startDate_project",
-        label: "Fecha Inicio",
+        name: "email_dependency",
+        label: "Correo",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "endDate_project",
-        label: "Fecha Final",
-        options: {
-          filter: true,
-          sort: true,
-        },
-      },
-      {
-        name: "year_project",
-        label: "Año",
-        options: {
-          filter: true,
-          sort: true,
-        },
-      },
-      {
-        name: "program.name_program",
-        label: "Programa",
-        options: {
-          filter: true,
-          sort: true,
-        },
-      },
-      {
-        name: "research_type.name_researchType",
+        name: "dependency_type.name_dependencyType",
         label: "Tipo",
         options: {
           filter: true,
           sort: true,
         },
       },
-      {
-        name: "coverage_type.name_coverageType",
-        label: "Cobertura",
-        options: {
-          filter: true,
-          sort: true,
-        },
-      },
     ];
+
     const options_config = {
       filterType: "dropdown",
       responsive: "scroll",
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
       textLabels: TEXT_LABELS,
-      //selectableRows: "single",
-      onRowsDelete: (rowsDeleted) => {
-        const data = this.props.datas; //lista de todos los proyectos
-        const projectsToDelete = rowsDeleted.data.map((d) => data[d.dataIndex]); //Array de todos los proyectos a borrar.
-        this.props.onDelete(projectsToDelete);
-      },
     };
 
     const data = this.props.datas;
@@ -135,18 +105,17 @@ class ProjectsTable extends Component {
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Lista de proyectos <ButtonAdd entity={"proyecto"} />
+              Lista de dependencias <ButtonAdd entity={"dependencia"} />
               {isLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
           data={data}
           columns={columns}
           options={options}
-          responsive={"scrollFullHeight"}
         />
       </MuiThemeProvider>
     );
   }
 }
 
-export default ProjectsTable;
+export default DependenciesTable;

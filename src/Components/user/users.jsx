@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import UsersTable from "./usersTable";
-import { getUsers, deleteUser } from "../services/userService";
+import { getUsers, deleteUser } from "../../services/userService";
 import { Container, Button } from "@material-ui/core";
 import { withSnackbar } from "notistack";
-import Breadcum from "./breadcum";
+import Breadcum from "../common/breadcum";
 
 class Users extends Component {
   state = {

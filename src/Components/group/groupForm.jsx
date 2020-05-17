@@ -1,22 +1,17 @@
 import React from "react";
 import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
-import Breadcrumb from "./breadcum";
-import Form from "./common/form";
-import Panel from "./common/panel";
+import Breadcrumb from "../common/breadcum";
+import Form from "../common/form";
+import Panel from "../common/panel";
 
-import { getDependencies } from "../services/dependencyService";
-import { getGroupTypes } from "../services/groupTypeService";
-import { getGroup, saveGroup } from "../services/groupService";
-import { getLines } from "../services/lineService";
-import {
-  Container,
-  LinearProgress,
-  Typography,
-  Paper,
-  Grid,
-} from "@material-ui/core";
-import { getPrograms } from "../services/programService";
+import { getDependencies } from "../../services/dependencyService";
+import { getGroupTypes } from "../../services/groupTypeService";
+import { getGroup, saveGroup } from "../../services/groupService";
+import { getLines } from "../../services/lineService";
+import { Container, Typography, Paper, Grid } from "@material-ui/core";
+import { getPrograms } from "../../services/programService";
+import TitleForm from "../common/titleForm";
 
 class GroupForm extends Form {
   state = {
@@ -140,7 +135,7 @@ class GroupForm extends Form {
   }
 
   render() {
-    const { data } = this.state;
+    const { isLoading, dependencies, lines, programs, groupTypes } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -164,10 +159,7 @@ class GroupForm extends Form {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper style={classes.paper}>
-              <Typography variant="h4" gutterBottom>
-                Grupo: <small>{data.acronym_group}</small>
-                {this.state.isLoading && <LinearProgress color="secondary" />}
-              </Typography>
+              <TitleForm entity={"Grupo"} isLoading={isLoading} />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("code_group", "Código")}
                 {this.renderInput("acronym_group", "Siglas")}
@@ -179,26 +171,26 @@ class GroupForm extends Form {
                   "Facultad",
                   75,
                   "name_dependency",
-                  this.state.dependencies
+                  dependencies
                 )}
                 {this.renderMultiSelect(
                   "id_researchLine",
                   "Líneas de investigación",
                   "name_researchLine",
-                  this.state.lines
+                  lines
                 )}
                 {this.renderMultiSelect(
                   "id_program",
                   "Programas",
                   "name_program",
-                  this.state.programs
+                  programs
                 )}
                 {this.renderSelect(
                   "id_groupType",
                   "Tipo proyecto",
                   115,
                   "name_groupType",
-                  this.state.groupTypes
+                  groupTypes
                 )}
                 {this.renderButton("Guardar")}
               </form>

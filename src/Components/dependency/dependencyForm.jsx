@@ -1,20 +1,15 @@
 import React from "react";
 import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
-import Breadcrumb from "./breadcum";
-import Form from "./common/form";
-
-import { getDependencyTypes } from "../services/dependencyTypeService";
-import { getDependency, saveDependency } from "../services/dependencyService";
-
+import Breadcrumb from "../common/breadcum";
+import Form from "../common/form";
+import { getDependencyTypes } from "../../services/dependencyTypeService";
 import {
-  Container,
-  LinearProgress,
-  Typography,
-  Paper,
-  Grid,
-} from "@material-ui/core";
-
+  getDependency,
+  saveDependency,
+} from "../../services/dependencyService";
+import { Container, Paper, Grid } from "@material-ui/core";
+import TitleForm from "../common/titleForm";
 class DependencyForm extends Form {
   state = {
     data: {
@@ -116,7 +111,7 @@ class DependencyForm extends Form {
   };
 
   render() {
-    const { data } = this.state;
+    const { isLoading, dependencyTypes } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -144,10 +139,7 @@ class DependencyForm extends Form {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper style={classes.paper}>
-              <Typography variant="h4" gutterBottom>
-                Dependencia: <small>{data.acronym_dependency}</small>
-                {this.state.isLoading && <LinearProgress color="secondary" />}
-              </Typography>
+              <TitleForm entity={"Dependencia"} isLoading={isLoading} />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name_dependency", "Nombre")}
                 {this.renderInput("acronym_dependency", "Sigla")}
@@ -165,7 +157,7 @@ class DependencyForm extends Form {
                   "Tipo de dependencia",
                   160,
                   "name_dependencyType",
-                  this.state.dependencyTypes
+                  dependencyTypes
                 )}
 
                 {this.renderButton("Guardar")}

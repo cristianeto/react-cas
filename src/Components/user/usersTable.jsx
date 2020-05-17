@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { TEXT_LABELS } from "../configTable";
+import { TEXT_LABELS } from "../../configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
-import Active from "./common/active";
-import ButtonAdd from "./common/buttonAdd";
+import ButtonAdd from "../common/buttonAdd";
 
-class GroupsTable extends Component {
+class UsersTable extends Component {
   getMuiTheme = () =>
     createMuiTheme({
       overrides: {
@@ -30,15 +29,15 @@ class GroupsTable extends Component {
       },
     });
 
-  getStatus = (value) => {
-    if (value === 1) {
-      return "Activo";
-    }
-  };
+  //   getStatus = (value) => {
+  //     if (value === 1) {
+  //       return "Activo";
+  //     }
+  //   };
   render() {
     const columns = [
       {
-        name: "id_group",
+        name: "id",
         label: "id",
         options: {
           filter: false,
@@ -46,16 +45,8 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "code_group",
-        label: "Código",
-        options: {
-          filter: true,
-          sort: true,
-        },
-      },
-      {
-        name: "name_group",
-        label: "Nombre",
+        name: "identification_card",
+        label: "C.I.",
         options: {
           filter: true,
           sort: true,
@@ -63,7 +54,7 @@ class GroupsTable extends Component {
             return (
               <Link
                 style={{ textDecoration: "none" }}
-                to={`/grupo/${tableMeta.rowData[0]}`}
+                to={`/usuario/${tableMeta.rowData[0]}`}
               >
                 {value}
               </Link>
@@ -72,35 +63,43 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "acronym_group",
-        label: "Siglas",
+        name: "name",
+        label: "Nombre",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "dependency.name_dependency",
-        label: "Facultad",
+        name: "lastname",
+        label: "Apellido",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "active_group",
-        label: "Estado",
+        name: "email",
+        label: "Correo electrónico",
         options: {
           filter: true,
           sort: true,
-          customBodyRender: (value, tableMeta) => {
-            return (
-              <Active
-                actived={value}
-                onClick={() => this.props.onActive(tableMeta.rowData[0])}
-              />
-            );
-          },
+        },
+      },
+      {
+        name: "created_at",
+        label: "Fecha creación",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "updated_at",
+        label: "Última actualización",
+        options: {
+          filter: true,
+          sort: true,
         },
       },
     ];
@@ -110,6 +109,11 @@ class GroupsTable extends Component {
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
       textLabels: TEXT_LABELS,
+      onRowsDelete: (rowsDeleted) => {
+        const data = this.props.datas; //lista
+        const usersToDelete = rowsDeleted.data.map((d) => data[d.dataIndex]); //Array de todos
+        this.props.onDelete(usersToDelete);
+      },
     };
 
     const data = this.props.datas;
@@ -121,7 +125,7 @@ class GroupsTable extends Component {
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Lista de grupos de investigación <ButtonAdd entity={"grupo"} />
+              Lista de usuarios <ButtonAdd entity={"usuario"} />
               {isLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
@@ -134,4 +138,4 @@ class GroupsTable extends Component {
   }
 }
 
-export default GroupsTable;
+export default UsersTable;

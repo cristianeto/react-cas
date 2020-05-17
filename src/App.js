@@ -6,15 +6,15 @@ import auth from "./services/authService";
 import { getRolesByUser } from "./services/userRolesService";
 import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
-import Groups from "./Components/groups";
-import GroupForm from "./Components/groupForm";
-import ProjectForm from "./Components/projectForm";
-import UserForm from "./Components/userForm";
+import Groups from "./Components/group/groups";
+import GroupForm from "./Components/group/groupForm";
+import ProjectForm from "./Components/project/projectForm";
+import UserForm from "./Components/user/userForm";
+import Users from "./Components/user/users";
 import Welcome from "./Components/welcome";
-import Users from "./Components/users";
-import Projects from "./Components/projects";
-import Dependencies from "./Components/dependencies";
-import DependencyForm from "./Components/dependencyForm";
+import Projects from "./Components/project/projects";
+import Dependencies from "./Components/dependency/dependencies";
+import DependencyForm from "./Components/dependency/dependencyForm";
 import Logout from "./Components/logout";
 class App extends Component {
   constructor(props) {
@@ -89,7 +89,7 @@ class App extends Component {
           {/* <Route path="/login" component={LoginForm} />
             <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} /> */}
-          <Route path="/proyecto/:id" component={ProjectForm} />
+          <Route path="/proyecto/:id" exact component={ProjectForm} />
           <Route path="/proyectos" exact component={Projects} />
           <Route path="/usuario/:id" component={UserForm} />
           {this.state.selectedRole.id_role === 1 && (

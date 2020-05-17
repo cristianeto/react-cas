@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import GroupsTable from "./groupsTable";
-import { getDependencies } from "../services/dependencyService";
-import { getGroups, saveGroup } from "../services/groupService";
-import Breadcum from "./breadcum";
+import { getDependencies } from "../../services/dependencyService";
+import { getGroups, saveGroup } from "../../services/groupService";
+import Breadcum from "../common/breadcum";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 
