@@ -8,13 +8,14 @@ import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
 import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
-import ProjectForm from "./Components/project/projectForm";
+import ProjectForm from "./Components/project/Project";
 import UserForm from "./Components/user/userForm";
 import Users from "./Components/user/users";
 import Welcome from "./Components/welcome";
 import Projects from "./Components/project/projects";
 import Dependencies from "./Components/dependency/dependencies";
 import DependencyForm from "./Components/dependency/dependencyForm";
+import meProfile from "./Components/user/meProfile";
 import Logout from "./Components/logout";
 class App extends Component {
   constructor(props) {
@@ -91,6 +92,9 @@ class App extends Component {
           <Route path="/rentals" component={Rentals} /> */}
           <Route path="/proyecto/:id" exact component={ProjectForm} />
           <Route path="/proyectos" exact component={Projects} />
+          {auth.getCurrentUser() !== null && (
+            <Route path="/mi/perfil" component={meProfile} />
+          )}
           <Route path="/usuario/:id" component={UserForm} />
           {this.state.selectedRole.id_role === 1 && (
             <Route path="/usuarios" component={Users} />

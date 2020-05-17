@@ -43,7 +43,7 @@ export default function MenuRoles(props) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          <Link to={`/usuario/${user.id}`} className={classes.navLink}>
+          <Link to={`/mi/perfil`} className={classes.navLink}>
             MI PERFIL
           </Link>
         </MenuItem>

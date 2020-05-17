@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Info General", "Detalles", "Presupuesto", "Otros"];
+  return ["Info General", "Detalles", "Personas", "Presupuesto"];
 }
 
 function getStepContent(step, props) {
