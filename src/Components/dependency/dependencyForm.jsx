@@ -30,7 +30,7 @@ class DependencyForm extends Form {
   };
 
   schema = Joi.object({
-    id_dependency: Joi.number(),
+    id_dependency: Joi.string(),
     name_dependency: Joi.string().label("Nombre").max(500),
     acronym_dependency: Joi.string().alphanum().label("Sigla").max(10),
     contact_dependency: Joi.string().allow("", null).label("Contacto").max(150),
@@ -52,7 +52,7 @@ class DependencyForm extends Form {
       .allow("", null)
       .label("Tipo participación")
       .max(500),
-    id_dependencyType: Joi.number().label("Tipo dependencia"),
+    id_dependencyType: Joi.string().label("Tipo dependencia"),
   });
 
   async populateDependencyTypes() {

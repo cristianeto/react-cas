@@ -35,13 +35,13 @@ class GroupForm extends Form {
   };
 
   schema = Joi.object({
-    id_group: Joi.number(),
+    id_group: Joi.string(),
     code_group: Joi.string().label("Código").max(10),
     acronym_group: Joi.string().alphanum().label("Siglas").max(10),
     name_group: Joi.string().label("Nombre"),
     mission_group: Joi.string().label("Misión"),
     vision_group: Joi.string().label("Visión"),
-    id_dependency: Joi.number().label("Dependencia"),
+    id_dependency: Joi.string().label("Dependencia"),
     id_groupType: Joi.number().label("Tipo"),
     id_researchLine: Joi.array().label("Líneas"),
     id_program: Joi.array().label("Programas"),

@@ -25,13 +25,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Info General", "Detalles", "Personas", "Presupuesto"];
+  return ["Info General", "Perfil", "Miembros", "Presupuesto"];
 }
 
 function getStepContent(step, props) {
   switch (step) {
     case 0:
-      return <ProjectFormGeneral projectId={props.projectId} />;
+      return (
+        <ProjectFormGeneral
+          projectId={props.projectId}
+          history={props.history}
+        />
+      );
     case 1:
       return <ProjectFormDetails />;
     case 2:

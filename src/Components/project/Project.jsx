@@ -33,7 +33,10 @@ class ProjectForm extends Component {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper style={classes.paper}>
-              <ProjectStepper projectId={this.props.match.params.id} />
+              <ProjectStepper
+                projectId={this.props.match.params.id}
+                history={this.props.history}
+              />
             </Paper>
           </Grid>
           <Grid container item xs={12} sm={5} md={4} spacing={3}>

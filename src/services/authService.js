@@ -45,6 +45,7 @@ function isEmpty(obj) {
   return obj === undefined || obj == null || obj === "" || obj === " ";
 }
 async function logout() {
+  http.setPassport(getPassport());
   const { data } = await http.get(apiEndpoint + "/logout");
   console.log(data);
 }

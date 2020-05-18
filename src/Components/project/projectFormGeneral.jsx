@@ -35,17 +35,17 @@ class ProjectFormGeneral extends Form {
   };
 
   schema = Joi.object({
-    id_project: Joi.number(),
+    id_project: Joi.string().min(36).max(36),
     name_project: Joi.string().label("Nombre").max(500),
     startDate_project: Joi.date().label("Fecha Inicio"),
     endDate_project: Joi.date().label("Fecha Fin"),
     endDateReal_project: Joi.date().allow("", null).label("Fecha Final Real"),
     year_project: Joi.number().label("Año del proyecto").min(2020).max(2021),
     location_project: Joi.string().label("Ubicación"),
-    id_program: Joi.number().label("Programa"),
-    id_researchType: Joi.number().label("Tipo investigación"),
-    id_projectType: Joi.number().label("Tipo proyecto"),
-    id_coverageType: Joi.number().label("Tipo cobertura"),
+    id_program: Joi.string().label("Programa").min(36).max(36),
+    id_researchType: Joi.string().label("Tipo investigación").min(36).max(36),
+    id_projectType: Joi.string().label("Tipo proyecto").min(36).max(36),
+    id_coverageType: Joi.string().label("Tipo cobertura").min(36).max(36),
   });
 
   async populatePrograms() {
@@ -76,7 +76,6 @@ class ProjectFormGeneral extends Form {
         this.props.enqueueSnackbar(ex.response.data.message, {
           variant: "warning",
         });
-      // console.log(ex);
       this.props.history.replace("/not-found");
     }
   }
@@ -114,7 +113,7 @@ class ProjectFormGeneral extends Form {
       this.props.enqueueSnackbar(`Proyecto guardado correctamente!`, {
         variant: "success",
       });
-      this.props.history.push("/proyectos");
+      // this.props.history.push("/proyectos");
     } catch (ex) {
       this.props.enqueueSnackbar(`${ex.response.data.message}`, {
         variant: "error",
