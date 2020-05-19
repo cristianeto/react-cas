@@ -104,8 +104,6 @@ function remove() {
   window.sessionStorage.removeItem("ticketUser");
   window.sessionStorage.removeItem("loginUser");
   window.sessionStorage.removeItem("clientName");
-  window.sessionStorage.removeItem("passport");
-  window.sessionStorage.removeItem("user");
 }
 export default {
   redirect,

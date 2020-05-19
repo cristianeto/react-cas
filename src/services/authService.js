@@ -46,10 +46,14 @@ function isEmpty(obj) {
 }
 async function logout() {
   http.setPassport(getPassport());
+  remove();
   const { data } = await http.get(apiEndpoint + "/logout");
   console.log(data);
 }
-
+function remove() {
+  window.sessionStorage.removeItem("passport");
+  window.sessionStorage.removeItem("user");
+}
 export default {
   login,
   getPassport,

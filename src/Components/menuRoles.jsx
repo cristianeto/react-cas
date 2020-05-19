@@ -5,6 +5,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   navLink: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MenuRoles(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { user, roles, onChangeRole, onLogout } = props;
+  const { user, roles, selectedRole, onChangeRole, onLogout } = props;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -30,10 +31,12 @@ export default function MenuRoles(props) {
     <React.Fragment>
       <Button
         color="inherit"
-        style={{ textTransform: "lowercase" }}
+        //style={{ textTransform: "lowercase" }}
         onClick={handleClick}
       >
-        {user.email}
+        <Typography variant="caption" display="block" gutterBottom>
+          {`${user.name} ${user.lastname}`} {`(${selectedRole.name_role})`}
+        </Typography>
       </Button>
       <Menu
         id="simple-menu"
@@ -42,22 +45,21 @@ export default function MenuRoles(props) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
-          <Link to={`/mi/perfil`} className={classes.navLink}>
-            MI PERFIL
-          </Link>
-        </MenuItem>
-        <Divider />
+        <Link to={`/mi/perfil`} className={classes.navLink}>
+          <MenuItem onClick={handleClose}>MI PERFIL</MenuItem>
+          <Divider />
+        </Link>
         {roles &&
           roles.map((role) => (
-            <MenuItem
-              key={role.id_role}
-              onClick={() => {
-                onChangeRole(role.id_role);
-              }}
-            >
-              {role.name_role}
-            </MenuItem>
+            <Link to={"/"} key={role.id_role} className={classes.navLink}>
+              <MenuItem
+                onClick={() => {
+                  onChangeRole(role.id_role, handleClose);
+                }}
+              >
+                {role.name_role}
+              </MenuItem>
+            </Link>
           ))}
         <Divider />
         <MenuItem onClick={onLogout}>CERRAR SESIÓN</MenuItem>

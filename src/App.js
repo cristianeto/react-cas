@@ -25,6 +25,8 @@ class App extends Component {
       user: auth.getCurrentUser(),
       roles: [],
       selectedRole: "",
+      isOnline: false,
+      keyLostConection: "",
     };
   }
 
@@ -34,19 +36,14 @@ class App extends Component {
         cas.saveTicket();
         await cas.getTicketCAS();
       }
-      const emailCas = cas.getLogin();
       if (cas.isAuthenticated() && cas.getLogin() && !auth.isAuthenticated()) {
         console.log("logueando al backend");
-        const user = await auth.login(emailCas);
-        this.setState({ user });
+        const user = await auth.login(cas.getLogin());
+        this.setState({ user, emailCas: cas.getLogin() });
       }
-      this.setState({ emailCas });
-      if (auth.isAuthenticated()) {
-        const { data: roles } = await getRolesByUser(this.state.user.id);
-        this.setState({ roles });
-      } else {
-        console.log("Usuario no autenticado en el Backend");
-      }
+      this.getRoles();
+      const key = this.detectedOffline();
+      this.detectedOnLine(key);
     } catch (ex) {
       console.log(ex);
       this.props.enqueueSnackbar(`Se produjo un error. ${ex}`, {
@@ -55,6 +52,16 @@ class App extends Component {
     }
   }
 
+  async getRoles() {
+    if (auth.isAuthenticated()) {
+      const { data: roles } = await getRolesByUser(this.state.user.id);
+      let selectedRole = {};
+      if (roles.length >= 0) selectedRole = roles[0];
+      this.setState({ roles, selectedRole });
+    } else {
+      console.log("Usuario no autenticado en el Backend");
+    }
+  }
   handleLogin() {
     try {
       cas.redirect();
@@ -67,13 +74,48 @@ class App extends Component {
     cas.logout();
   };
 
-  handleChangeRole = (roleId) => {
+  handleChangeRole = (roleId, closeFunction) => {
+    closeFunction();
     const role = this.state.roles.find((role) => role.id_role === roleId);
     this.setState({ selectedRole: role });
     this.props.enqueueSnackbar(`Su role cambio a ${role.name_role} `, {
       variant: "info",
     });
   };
+
+  detectedOffline() {
+    const isOnline = window.navigator.onLine;
+    this.setState({ isOnline });
+    window.onoffline = (event) => {
+      this.setState({ isOnline: false });
+      const keyLostConection = this.props.enqueueSnackbar(
+        "Estás sin conexión",
+        {
+          variant: "error",
+          persist: true,
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "center",
+          },
+        }
+      );
+      this.setState({ keyLostConection });
+    };
+  }
+  detectedOnLine(key) {
+    window.ononline = (event) => {
+      this.props.closeSnackbar(key);
+      this.setState({ isOnline: true });
+      this.props.enqueueSnackbar("Estás de regreso!", {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "center",
+        },
+      });
+    };
+  }
+
   render() {
     const { user, roles } = this.state;
     return (

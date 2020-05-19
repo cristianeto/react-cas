@@ -20,6 +20,7 @@ import BusinessIcon from "@material-ui/icons/Business";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
 import FolderIcon from "@material-ui/icons/Folder";
 import MenuIcon from "@material-ui/icons/Menu";
+import SettingsIcon from "@material-ui/icons/Settings";
 import avatar from "../static/img/img_avatar.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -123,6 +124,14 @@ export default function NavBar(props) {
               <ListItemText primary={"Usuarios"} />
             </ListItem>
           </NavLink>
+          <NavLink to="/configuracion" className={classes.navLink}>
+            <ListItem button>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Configuración"} />
+            </ListItem>
+          </NavLink>
         </List>
       )}
       <List
@@ -166,6 +175,7 @@ export default function NavBar(props) {
             <MenuRoles
               user={user}
               roles={roles}
+              selectedRole={selectedRole}
               onChangeRole={onChangeRole}
               onLogout={onLogout}
             />

@@ -36,7 +36,7 @@ class meProfile extends Form {
   };
 
   schema = Joi.object({
-    id: Joi.number(),
+    id: Joi.string(),
     identification_card: Joi.string().label("C.I.").min(10).max(10),
     name: Joi.string().label("Nombre").max(100),
     lastname: Joi.string().label("Apellido").max(100),
