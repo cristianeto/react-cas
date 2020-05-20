@@ -78,9 +78,7 @@ class App extends Component {
     closeFunction();
     const role = this.state.roles.find((role) => role.id_role === roleId);
     this.setState({ selectedRole: role });
-    this.props.enqueueSnackbar(`Su role cambio a ${role.name_role} `, {
-      variant: "info",
-    });
+    this.props.enqueueSnackbar(`Su role cambio a ${role.name_role} `);
   };
 
   detectedOffline() {
@@ -93,10 +91,6 @@ class App extends Component {
         {
           variant: "error",
           persist: true,
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "center",
-          },
         }
       );
       this.setState({ keyLostConection });
@@ -108,10 +102,6 @@ class App extends Component {
       this.setState({ isOnline: true });
       this.props.enqueueSnackbar("Estás de regreso!", {
         variant: "success",
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "center",
-        },
       });
     };
   }

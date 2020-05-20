@@ -9,7 +9,6 @@ http.setPassport(getPassport());
 export async function login(email) {
   try {
     const { data } = await http.post(apiEndpoint + "/auth", { email });
-    console.log(data);
     sessionStorage.setItem(tokenKey, data.access_token);
     sessionStorage.setItem(userKey, JSON.stringify(data.user));
     http.setPassport(getPassport());
@@ -23,8 +22,7 @@ export async function login(email) {
 
 export function getCurrentUser() {
   try {
-    const user = sessionStorage.getItem(userKey);
-    return JSON.parse(user);
+    return JSON.parse(sessionStorage.getItem(userKey));
   } catch (ex) {
     return null;
   }
@@ -47,12 +45,11 @@ function isEmpty(obj) {
 async function logout() {
   http.setPassport(getPassport());
   remove();
-  const { data } = await http.get(apiEndpoint + "/logout");
-  console.log(data);
+  await http.get(apiEndpoint + "/logout");
 }
 function remove() {
-  window.sessionStorage.removeItem("passport");
-  window.sessionStorage.removeItem("user");
+  window.sessionStorage.removeItem(tokenKey);
+  window.sessionStorage.removeItem(userKey);
 }
 export default {
   login,
