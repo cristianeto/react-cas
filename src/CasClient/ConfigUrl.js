@@ -1,5 +1,4 @@
 ///Dominio LocalHost Prueba
-import { apiUrl } from "../config.json";
 export let CONFIG = {
   Settings: {
     CASLOGIN: "https://seguridad.espoch.edu.ec/cas/login?",
@@ -7,7 +6,7 @@ export let CONFIG = {
     MY_APLICATION: "http://localhost:3000/",
     LOGOUT_REDIRECT: "http://localhost:3000/logout/",
     LOGOUT_CORREO: "https://login.microsoftonline.com/common/oauth2/logout?",
-    VALIDATE_TICKET: apiUrl + "/validateCAS?",
+    VALIDATE_TICKET: "/validateCAS?",
   },
 };
 
