@@ -25,7 +25,6 @@ class App extends Component {
       user: auth.getCurrentUser(),
       roles: [],
       selectedRole: "",
-      isOnline: false,
       keyLostConection: "",
     };
   }
@@ -82,10 +81,8 @@ class App extends Component {
   };
 
   detectedOffline() {
-    const isOnline = window.navigator.onLine;
-    this.setState({ isOnline });
+    //const isOnline = window.navigator.onLine;
     window.onoffline = (event) => {
-      this.setState({ isOnline: false });
       const keyLostConection = this.props.enqueueSnackbar(
         "Estás sin conexión",
         {
@@ -99,7 +96,6 @@ class App extends Component {
   detectedOnLine(key) {
     window.ononline = (event) => {
       this.props.closeSnackbar(key);
-      this.setState({ isOnline: true });
       this.props.enqueueSnackbar("Estás de regreso!", {
         variant: "success",
       });
