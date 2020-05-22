@@ -1,7 +1,6 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/groups";
+const apiEndpoint = "/groups";
 
 function groupUrl(id) {
   return `${apiEndpoint}/${id}`;

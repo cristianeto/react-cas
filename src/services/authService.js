@@ -1,6 +1,6 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
-const apiEndpoint = apiUrl;
+
+const apiEndpoint = "/auth";
 const tokenKey = "passport";
 const userKey = "user";
 
@@ -8,7 +8,7 @@ http.setPassport(getPassport());
 
 export async function login(email) {
   try {
-    const { data } = await http.post(apiEndpoint + "/auth", { email });
+    const { data } = await http.post(apiEndpoint, { email });
     sessionStorage.setItem(tokenKey, data.access_token);
     sessionStorage.setItem(userKey, JSON.stringify(data.user));
     http.setPassport(getPassport());
