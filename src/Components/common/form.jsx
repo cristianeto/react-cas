@@ -60,8 +60,13 @@ class Form extends Component {
         if (entity[input.name] === val) newArray.push(entity);
       });
     });
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+
     data[input.name] = newArray;
-    this.setState({ data });
+    this.setState({ data, errors });
   };
 
   handleChangeDate = (date, input) => {

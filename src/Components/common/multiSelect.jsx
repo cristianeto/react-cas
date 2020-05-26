@@ -22,7 +22,13 @@ const MyMultiSelect = ({
     ids.push(optionSelected[name]);
   });
   return (
-    <FormControl required fullWidth size="small" margin="normal">
+    <FormControl
+      required
+      fullWidth
+      variant="outlined"
+      size="small"
+      margin="normal"
+    >
       <InputLabel id="demo-mutiple-name-label">{label}</InputLabel>
       <Select
         error={validation}

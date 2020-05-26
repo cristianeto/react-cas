@@ -43,8 +43,8 @@ class GroupForm extends Form {
     vision_group: Joi.string().label("Visión"),
     id_dependency: Joi.string().label("Dependencia"),
     id_groupType: Joi.number().label("Tipo"),
-    id_researchLine: Joi.array().label("Líneas"),
-    id_program: Joi.array().label("Programas"),
+    id_researchLine: Joi.array().label("Líneas").min(1),
+    id_program: Joi.array().label("Programas").min(1),
   });
 
   async populateDependencies() {
