@@ -86,10 +86,10 @@ class GroupForm extends Form {
   }
 
   mapToViewModel(group) {
-    let lines = [];
-    group.lines.forEach((line) => {
-      lines.push(line.id_researchLine);
-    });
+    // let lines = [];
+    // group.lines.forEach((line) => {
+    //   lines.push(line.id_researchLine);
+    // });
     //console.log("Lines:", lines);
 
     return {
@@ -119,7 +119,7 @@ class GroupForm extends Form {
     }
   };
 
-  cloningArray(inputName) {
+  /*   cloningArray(inputName) {
     let entities = [];
     switch (inputName) {
       case "id_researchLine":
@@ -132,10 +132,25 @@ class GroupForm extends Form {
         break;
     }
     return entities;
-  }
+  } */
+  /*  getLinesSelected() {
+    const linesSelected = [...this.state.data.id_researchLine];
+    const allLines = [...this.state.lines];
+    let optionsSelected = [];
+    allLines.forEach((line) => {
+      linesSelected.forEach((lineSelected) => {
+        if (line.id_line === lineSelected.id_line) {
+          optionsSelected.push(line);
+          console.log("funtioncOptionSelected: ", optionsSelected);
+        }
+      });
+    });
+    return optionsSelected;
+  } */
 
   render() {
     const { isLoading, dependencies, lines, programs, groupTypes } = this.state;
+    // const optionsSelected = this.getLinesSelected();
     const listBreadcrumbs = [
       {
         path: "/",

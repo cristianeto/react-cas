@@ -6,16 +6,17 @@ const Input = ({ name, label, placeHolder, error, ...rest }) => {
   error === undefined ? (validation = false) : (validation = true);
   return (
     <TextField
+      required
       error={validation}
       {...rest}
       id={name}
       name={name}
       label={label}
       placeholder={placeHolder}
-      margin="normal"
       fullWidth
       variant="outlined"
       size="small"
+      margin="normal"
       helperText={error}
     />
   );

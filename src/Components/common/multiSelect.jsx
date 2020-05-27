@@ -1,56 +1,70 @@
 import React from "react";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Select from "@material-ui/core/Select";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
+import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const MyMultiSelect = ({
   name,
   label,
   property,
-  options,
   optionsSelected,
+  options,
+  onChange,
   error,
   ...rest
 }) => {
   let validation;
   error === undefined ? (validation = false) : (validation = true);
-  let ids = [];
-  optionsSelected.forEach((optionSelected) => {
-    ids.push(optionSelected[name]);
-  });
+
   return (
-    <FormControl
-      required
-      fullWidth
-      variant="outlined"
-      size="small"
-      margin="normal"
-    >
-      <InputLabel id="demo-mutiple-name-label">{label}</InputLabel>
-      <Select
-        error={validation}
-        labelId="demo-mutiple-name-label"
-        id={name}
-        multiple
-        name={name}
-        value={ids}
-        input={<Input />}
-        {...rest}
-      >
-        <MenuItem disabled value="">
-          <em>Seleccione una o más opciones</em>
-        </MenuItem>
-        {options.map((option) => (
-          <MenuItem key={option[name]} value={option[name]}>
+    <Autocomplete
+      multiple
+      id={name}
+      name={name}
+      limitTags={2}
+      options={options}
+      disableCloseOnSelect
+      getOptionLabel={(option) => option[property]}
+      onChange={(event, values) => onChange(event, values, name)}
+      {...rest}
+      value={optionsSelected}
+      renderOption={(option, { selected, inputValue }) => {
+        //console.log("inputvalue:" + selected + "-" + inputValue);
+        return (
+          <React.Fragment>
+            <Checkbox
+              name={name}
+              icon={icon}
+              checkedIcon={checkedIcon}
+              style={{ marginRight: 8 }}
+              checked={selected}
+            />
             {option[property]}
-          </MenuItem>
-        ))}
-      </Select>
-      {error && <FormHelperText>{error}</FormHelperText>}
-    </FormControl>
+          </React.Fragment>
+        );
+      }}
+      getOptionSelected={(option, value) => {
+        return option[name] === value[name];
+      }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          error={validation}
+          margin="normal"
+          variant="outlined"
+          label={label}
+          size="small"
+          placeholder="Elegir"
+          fullWidth
+          helperText={error}
+        />
+      )}
+    />
   );
 };
 

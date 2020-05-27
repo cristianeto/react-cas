@@ -23,19 +23,26 @@ const InputDate = ({
       variant="dialog"
       inputVariant="outlined"
       label={label}
-      format="yyyy-MM-dd"
+      format="dd-MM-yyyy"
       size="small"
       margin="normal"
       fullWidth
       name={name}
-      inputValue={value}
+      // inputValue={value}
       InputAdornmentProps={{ position: "end" }}
       onChange={(date) => onChange(date, name)}
-      value={value ? value : null}
-      minDate={minDate || undefined}
+      value={value ? new Date(value) : null}
+      minDate={minDate}
       maxDate={maxDate}
       disabled={disabled}
-      maskChar={"01/01/2020"}
+      clearable
+      placeholder="2018-12-31"
+      emptyLabel={""}
+      invalidDateMessage={"Fecha con formato inválido"}
+      minDateMessage={"La fecha no debe estar antes de la fecha menor"}
+      maxDateMessage={"La fecha no debe estar después de la fecha mayor"}
+      invalidLabel={"Escoja la fecha"}
+      //maskChar={"2020/01/01"}
     />
   );
 };

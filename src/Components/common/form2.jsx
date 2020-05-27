@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Input from "./input";
 import MySelect from "./select";
-import MyMultiSelect from "./multiSelect";
+import MyMultiSelect from "./multiSelectOld";
 import Textarea from "./textarea";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
@@ -50,44 +50,47 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
-  handleChangeMultiple = (event, values, nameInput) => {
-    const input = { name: nameInput, value: values };
-    const valueArray = values;
+  handleChangeMultiple = ({ target: input }) => {
+    const valueArray = input.value;
     const data = { ...this.state.data };
-    data[nameInput] = valueArray;
-
+    let entities = this.cloningArray(input.name);
+    let newArray = [];
+    entities.forEach((entity) => {
+      valueArray.forEach((val) => {
+        if (entity[input.name] === val) newArray.push(entity);
+      });
+    });
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
     if (errorMessage) errors[input.name] = errorMessage;
     else delete errors[input.name];
 
+    data[input.name] = newArray;
     this.setState({ data, errors });
   };
 
   handleChangeDate = (date, input) => {
-    const jsonDate = { name: input, value: date };
+    const jsonDate = {};
+    jsonDate["name"] = input;
+    jsonDate["value"] = date;
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(jsonDate);
     if (errorMessage) errors[input] = errorMessage;
     else delete errors[input];
 
     const data = { ...this.state.data };
-    data[input] = date; //this.formatDate(new Date(date));
+    data[input] = this.formatDate(new Date(date));
     this.setState({ data, errors });
   };
 
   formatDate(date) {
-    try {
-      var d = new Date(date),
-        month = "" + (d.getMonth() + 1),
-        day = "" + d.getDate(),
-        year = d.getFullYear();
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-      return [year, month, day].join("-");
-    } catch (error) {
-      return null;
-    }
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+    return [year, month, day].join("-");
   }
   renderButton(label) {
     let validation;
@@ -157,7 +160,7 @@ class Form extends Component {
     return (
       <MyMultiSelect
         name={name}
-        value={data[name]}
+        //value={data[name]}
         label={label}
         property={property}
         optionsSelected={data[name]}
