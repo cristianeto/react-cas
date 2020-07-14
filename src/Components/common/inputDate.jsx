@@ -23,17 +23,18 @@ const InputDate = ({
       variant="dialog"
       inputVariant="outlined"
       label={label}
-      format="dd-MM-yyyy"
+      format="yyyy-MM-dd"
       size="small"
       margin="normal"
-      fullWidth
+      // fullWidth
+      style={{ width: "30%", marginRight: "2em" }}
       name={name}
-      // inputValue={value}
+      inputValue={value}
       InputAdornmentProps={{ position: "end" }}
       onChange={(date) => onChange(date, name)}
       value={value ? new Date(value) : null}
-      minDate={minDate}
-      maxDate={maxDate}
+      minDate={new Date(minDate)}
+      maxDate={new Date(maxDate)}
       disabled={disabled}
       clearable
       placeholder="2018-12-31"
@@ -42,7 +43,7 @@ const InputDate = ({
       minDateMessage={"La fecha no debe estar antes de la fecha menor"}
       maxDateMessage={"La fecha no debe estar después de la fecha mayor"}
       invalidLabel={"Escoja la fecha"}
-      //maskChar={"2020/01/01"}
+      maskChar={"-"}
     />
   );
 };

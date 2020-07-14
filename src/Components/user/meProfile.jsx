@@ -1,10 +1,10 @@
 import React from "react";
 import Joi from "@hapi/joi";
-import { withSnackbar } from "notistack";
+import {withSnackbar} from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
 import TitleForm from "../common/titleForm";
-import { getUser, saveUser } from "../../services/userService";
+import {getUser, saveUser} from "../../services/userService";
 import auth from "../../services/authService";
 import {
   Container,
@@ -41,19 +41,19 @@ class meProfile extends Form {
     name: Joi.string().label("Nombre").max(100),
     lastname: Joi.string().label("Apellido").max(100),
     email: Joi.string()
-      .email({
-        minDomainSegments: 2,
-        tlds: { allow: ["com", "espoch", "edu", "ec"] },
-      })
-      .label("Correo")
-      .max(100),
+        .email({
+          minDomainSegments: 2,
+          tlds: {allow: ["com", "espoch", "edu", "ec"]},
+        })
+        .label("Correo")
+        .max(100),
   });
 
   async populateUser() {
     try {
       const currentUser = auth.getCurrentUser();
-      const { data: user } = await getUser(currentUser.id); //Si no.
-      this.setState({ data: this.mapToViewModel(user) });
+      const {data: user} = await getUser(currentUser.id); //Si no.
+      this.setState({data: this.mapToViewModel(user)});
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
@@ -61,9 +61,9 @@ class meProfile extends Form {
   }
 
   async componentDidMount() {
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     await this.populateUser();
-    this.setState({ isLoading: false });
+    this.setState({isLoading: false});
   }
 
   mapToViewModel(user) {
@@ -75,26 +75,21 @@ class meProfile extends Form {
       email: user.email,
     };
   }
+
   doSubmit = async () => {
     try {
       await saveUser(this.state.data);
-      this.props.enqueueSnackbar(`Usuario guardado correctamente!`, {
-        variant: "success",
-      });
+      this.successMessage();
       // this.props.history.push("/usuarios");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        this.props.enqueueSnackbar(`${ex.response.data.message}`, {
-          variant: "error",
-          preventDuplicate: true,
-        });
-        const errors = { ...this.state.errors };
-        errors.email = ex.response.data;
-        this.setState({ errors });
+        this.errorMessage(ex);
+        const errors = {...this.state.errors};
+        errors.email = ex.response.data.message;
+        this.setState({errors});
+      } else {
+        this.errorMessage(ex);
       }
-      this.props.enqueueSnackbar(`${ex.response.data.message}`, {
-        variant: "error",
-      });
     }
   };
 
@@ -118,54 +113,54 @@ class meProfile extends Form {
     };
 
     return (
-      <Container maxWidth="lg">
-        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuario"} />
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={7} md={8}>
-            <Paper style={classes.paper}>
-              <TitleForm
-                entity={"Mi perfil"}
-                isLoading={this.state.isLoading}
-              />
-              {this.state.isLoading && <LinearProgress color="secondary" />}
-              <form onSubmit={this.handleSubmit}>
-                {this.renderInput("identification_card", "C.I.")}
-                {this.renderInput("name", "Nombre")}
-                {this.renderInput("lastname", "Apellido")}
-                {this.renderInput("email", "Correo")}
-                {this.renderButton("Guardar")}
-              </form>
-            </Paper>
+        <Container maxWidth="lg">
+          <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuario"}/>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={7} md={8}>
+              <Paper style={classes.paper}>
+                <TitleForm
+                    entity={"Mi perfil"}
+                    isLoading={this.state.isLoading}
+                />
+                {this.state.isLoading && <LinearProgress color="secondary"/>}
+                <form onSubmit={this.handleSubmit}>
+                  {this.renderInput("identification_card", "C.I.")}
+                  {this.renderInput("name", "Nombre")}
+                  {this.renderInput("lastname", "Apellido")}
+                  {this.renderInput("email", "Correo")}
+                  {this.renderButton("Guardar")}
+                </form>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={5} md={4}>
+              <Paper style={classes.paper}>
+                <Typography variant="h4" gutterBottom>
+                  Mis roles
+                </Typography>
+                <div className={classes.demo}>
+                  <List dense={true}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar>
+                          <FolderIcon/>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                          primary="Administrador"
+                          secondary={"2020-12-28"}
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="delete">
+                          <DeleteIcon/>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
+                </div>
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={5} md={4}>
-            <Paper style={classes.paper}>
-              <Typography variant="h4" gutterBottom>
-                Mis roles
-              </Typography>
-              <div className={classes.demo}>
-                <List dense={true}>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <FolderIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="Administrador"
-                      secondary={"2020-12-28"}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-              </div>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
+        </Container>
     );
   }
 }

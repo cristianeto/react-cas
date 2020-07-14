@@ -1,16 +1,16 @@
 import React from "react";
 import Joi from "@hapi/joi";
-import { withSnackbar } from "notistack";
+import {withSnackbar} from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
 import Panel from "../common/panel";
 
-import { getDependencies } from "../../services/dependencyService";
-import { getGroupTypes } from "../../services/groupTypeService";
-import { getGroup, saveGroup } from "../../services/groupService";
-import { getLines } from "../../services/lineService";
-import { Container, Typography, Paper, Grid } from "@material-ui/core";
-import { getPrograms } from "../../services/programService";
+import {getDependencies} from "../../services/dependencyService";
+import {getGroupTypes} from "../../services/groupTypeService";
+import {getGroup, saveGroup} from "../../services/groupService";
+import {getLines} from "../../services/lineService";
+import {Container, Typography, Paper, Grid} from "@material-ui/core";
+import {getPrograms} from "../../services/programService";
 import TitleForm from "../common/titleForm";
 
 class GroupForm extends Form {
@@ -48,27 +48,31 @@ class GroupForm extends Form {
   });
 
   async populateDependencies() {
-    const { data: dependencies } = await getDependencies();
-    this.setState({ dependencies });
+    const {data: dependencies} = await getDependencies();
+    this.setState({dependencies});
   }
+
   async populateGroupTypes() {
-    const { data: groupTypes } = await getGroupTypes();
-    this.setState({ groupTypes });
+    const {data: groupTypes} = await getGroupTypes();
+    this.setState({groupTypes});
   }
+
   async populateLines() {
-    const { data: lines } = await getLines();
-    this.setState({ lines });
+    const {data: lines} = await getLines();
+    this.setState({lines});
   }
+
   async populatePrograms() {
-    const { data: programs } = await getPrograms();
-    this.setState({ programs });
+    const {data: programs} = await getPrograms();
+    this.setState({programs});
   }
+
   async populateGroup() {
     try {
       const groupId = this.props.match.params.id; //Pasando por URL id movie
       if (groupId === "new") return; //Si si
-      const { data: group } = await getGroup(groupId); //Si no.
-      this.setState({ data: this.mapToViewModel(group) });
+      const {data: group} = await getGroup(groupId); //Si no.
+      this.setState({data: this.mapToViewModel(group)});
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
@@ -76,22 +80,16 @@ class GroupForm extends Form {
   }
 
   async componentDidMount() {
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     await this.populateDependencies();
     await this.populateGroupTypes();
     await this.populateGroup();
     await this.populateLines();
     await this.populatePrograms();
-    this.setState({ isLoading: false });
+    this.setState({isLoading: false});
   }
 
   mapToViewModel(group) {
-    // let lines = [];
-    // group.lines.forEach((line) => {
-    //   lines.push(line.id_researchLine);
-    // });
-    //console.log("Lines:", lines);
-
     return {
       id_group: group.id_group,
       code_group: group.code_group,
@@ -105,51 +103,19 @@ class GroupForm extends Form {
       id_program: group.programs,
     };
   }
+
   doSubmit = async () => {
     try {
       await saveGroup(this.state.data);
-      this.props.enqueueSnackbar(`Registro guardado correctamente!`, {
-        variant: "success",
-      });
+      this.successMessage();
       this.props.history.push("/grupos-investigacion");
     } catch (ex) {
-      this.props.enqueueSnackbar(`${ex.response.data.message}`, {
-        variant: "error",
-      });
+      this.errorMessage(ex);
     }
   };
 
-  /*   cloningArray(inputName) {
-    let entities = [];
-    switch (inputName) {
-      case "id_researchLine":
-        entities = [...this.state["lines"]];
-        break;
-      case "id_program":
-        entities = [...this.state["programs"]];
-        break;
-      default:
-        break;
-    }
-    return entities;
-  } */
-  /*  getLinesSelected() {
-    const linesSelected = [...this.state.data.id_researchLine];
-    const allLines = [...this.state.lines];
-    let optionsSelected = [];
-    allLines.forEach((line) => {
-      linesSelected.forEach((lineSelected) => {
-        if (line.id_line === lineSelected.id_line) {
-          optionsSelected.push(line);
-          console.log("funtioncOptionSelected: ", optionsSelected);
-        }
-      });
-    });
-    return optionsSelected;
-  } */
-
   render() {
-    const { isLoading, dependencies, lines, programs, groupTypes } = this.state;
+    const {isLoading, dependencies, lines, programs, groupTypes} = this.state;
     // const optionsSelected = this.getLinesSelected();
     const listBreadcrumbs = [
       {
@@ -169,92 +135,92 @@ class GroupForm extends Form {
       },
     };
     return (
-      <Container maxWidth="lg">
-        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={7} md={8}>
-            <Paper style={classes.paper}>
-              <TitleForm entity={"Grupo"} isLoading={isLoading} />
-              <form onSubmit={this.handleSubmit}>
-                {this.renderInput("code_group", "Código")}
-                {this.renderInput("acronym_group", "Siglas")}
-                {this.renderInput("name_group", "Nombre")}
-                {this.renderTextarea("mission_group", "Misión")}
-                {this.renderTextarea("vision_group", "Visión")}
-                {this.renderSelect(
-                  "id_dependency",
-                  "Facultad",
-                  75,
-                  "name_dependency",
-                  dependencies
-                )}
-                {this.renderMultiSelect(
-                  "id_researchLine",
-                  "Líneas de investigación",
-                  "name_researchLine",
-                  lines
-                )}
-                {this.renderMultiSelect(
-                  "id_program",
-                  "Programas",
-                  "name_program",
-                  programs
-                )}
-                {this.renderSelect(
-                  "id_groupType",
-                  "Tipo proyecto",
-                  115,
-                  "name_groupType",
-                  groupTypes
-                )}
-                {this.renderButton("Guardar")}
-              </form>
-            </Paper>
-          </Grid>
-          <Grid container item xs={12} sm={5} md={4} spacing={3}>
-            <Grid item xs={12} sm={12}>
+        <Container maxWidth="lg">
+          <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"}/>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={7} md={8}>
               <Paper style={classes.paper}>
-                <Panel
-                  id="id_researchLine"
-                  property="name_researchLine"
-                  title="Líneas de Investigación"
-                  data={this.state.data["id_researchLine"]}
-                />
+                <TitleForm entity={"Grupo"} isLoading={isLoading}/>
+                <form onSubmit={this.handleSubmit}>
+                  {this.renderInput("code_group", "Código")}
+                  {this.renderInput("acronym_group", "Siglas")}
+                  {this.renderInput("name_group", "Nombre")}
+                  {this.renderTextarea("mission_group", "Misión")}
+                  {this.renderTextarea("vision_group", "Visión")}
+                  {this.renderSelect(
+                      "id_dependency",
+                      "Facultad",
+                      75,
+                      "name_dependency",
+                      dependencies
+                  )}
+                  {this.renderMultiSelect(
+                      "id_researchLine",
+                      "Líneas de investigación",
+                      "name_researchLine",
+                      lines
+                  )}
+                  {this.renderMultiSelect(
+                      "id_program",
+                      "Programas",
+                      "name_program",
+                      programs
+                  )}
+                  {this.renderSelect(
+                      "id_groupType",
+                      "Tipo proyecto",
+                      115,
+                      "name_groupType",
+                      groupTypes
+                  )}
+                  {this.renderButton("Guardar")}
+                </form>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={12}>
-              <Paper style={classes.paper}>
-                <Panel
-                  id="id_program"
-                  property="name_program"
-                  title="Programas"
-                  data={this.state.data["id_program"]}
-                />
-              </Paper>
+            <Grid container item xs={12} sm={5} md={4} spacing={3}>
+              <Grid item xs={12} sm={12}>
+                <Paper style={classes.paper}>
+                  <Panel
+                      id="id_researchLine"
+                      property="name_researchLine"
+                      title="Líneas de Investigación"
+                      data={this.state.data["id_researchLine"]}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Paper style={classes.paper}>
+                  <Panel
+                      id="id_program"
+                      property="name_program"
+                      title="Programas"
+                      data={this.state.data["id_program"]}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Paper style={classes.paper}>
+                  <Typography variant="h6" gutterBottom>
+                    Miembros
+                  </Typography>
+                  <div style={classes.demo}></div>
+                </Paper>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={12}>
-              <Paper style={classes.paper}>
-                <Typography variant="h6" gutterBottom>
-                  Usuarios
-                </Typography>
-                <div style={classes.demo}></div>
-              </Paper>
+            <Grid item xs={6} sm={3}>
+              <Paper style={classes.paper}>xs=6 sm=3</Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Paper style={classes.paper}>xs=6 sm=3</Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Paper style={classes.paper}>xs=6 sm=3</Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Paper style={classes.paper}>xs=6 sm=3</Paper>
             </Grid>
           </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper style={classes.paper}>xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper style={classes.paper}>xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper style={classes.paper}>xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper style={classes.paper}>xs=6 sm=3</Paper>
-          </Grid>
-        </Grid>
-      </Container>
+        </Container>
     );
   }
 }

@@ -1,15 +1,15 @@
 import React from "react";
 import Joi from "@hapi/joi";
-import { withSnackbar } from "notistack";
+import {withSnackbar} from "notistack";
 import Form from "../common/form";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getProject, saveProject } from "../../services/projectService";
-import { getPrograms } from "../../services/programService";
-import { getResearchTypes } from "../../services/researchTypeService";
-import { getProjectTypes } from "../../services/projectTypeService";
-import { getCoverageTypes } from "../../services/coverageTypeService";
-import { LinearProgress } from "@material-ui/core";
+import {getProject, saveProject} from "../../services/projectService";
+import {getPrograms} from "../../services/programService";
+import {getResearchTypes} from "../../services/researchTypeService";
+import {getProjectTypes} from "../../services/projectTypeService";
+import {getCoverageTypes} from "../../services/coverageTypeService";
+import {LinearProgress} from "@material-ui/core";
 
 class ProjectFormGeneral extends Form {
   _isMounted = false;
@@ -40,7 +40,7 @@ class ProjectFormGeneral extends Form {
     startDate_project: Joi.date().label("Fecha Inicio"),
     endDate_project: Joi.date().label("Fecha Fin"),
     endDateReal_project: Joi.date().allow("", null).label("Fecha Final Real"),
-    year_project: Joi.number().label("Año del proyecto").min(2020).max(2021),
+    year_project: Joi.number().label("Año").min(2020),
     location_project: Joi.string().label("Ubicación"),
     id_program: Joi.string().label("Programa").min(36).max(36),
     id_researchType: Joi.string().label("Tipo investigación").min(36).max(36),
@@ -49,28 +49,31 @@ class ProjectFormGeneral extends Form {
   });
 
   async populatePrograms() {
-    const { data: programs } = await getPrograms();
-    this.setState({ programs });
+    const {data: programs} = await getPrograms();
+    this.setState({programs});
   }
+
   async populateResearchTypes() {
-    const { data: researchTypes } = await getResearchTypes();
-    this.setState({ researchTypes });
+    const {data: researchTypes} = await getResearchTypes();
+    this.setState({researchTypes});
   }
+
   async populateProjectTypes() {
-    const { data: projectTypes } = await getProjectTypes();
-    this.setState({ projectTypes });
+    const {data: projectTypes} = await getProjectTypes();
+    this.setState({projectTypes});
   }
+
   async populateCoverageTypes() {
-    const { data: coverageTypes } = await getCoverageTypes();
-    this.setState({ coverageTypes });
+    const {data: coverageTypes} = await getCoverageTypes();
+    this.setState({coverageTypes});
   }
 
   async populateProject() {
     try {
       const projectId = this.props.projectId; //Pasando por URL id movie
       if (projectId === "new") return; //Si si
-      const { data: project } = await getProject(projectId); //Si no.
-      this.setState({ data: this.mapToViewModel(project) });
+      const {data: project} = await getProject(projectId); //Si no.
+      this.setState({data: this.mapToViewModel(project)});
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.enqueueSnackbar(ex.response.data.message, {
@@ -82,17 +85,16 @@ class ProjectFormGeneral extends Form {
 
   async componentDidMount() {
     this._isMounted = true;
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     await this.populatePrograms();
     await this.populateResearchTypes();
     await this.populateProjectTypes();
     await this.populateCoverageTypes();
     await this.populateProject();
-    if (this._isMounted) this.setState({ isLoading: false });
+    if (this._isMounted) this.setState({isLoading: false});
   }
 
   mapToViewModel(project) {
-    //console.log("Lines:", lines);
     return {
       id_project: project.id_project,
       name_project: project.name_project,
@@ -107,87 +109,85 @@ class ProjectFormGeneral extends Form {
       id_coverageType: project.id_coverageType,
     };
   }
+
   doSubmit = async () => {
     try {
       await saveProject(this.state.data);
-      this.props.enqueueSnackbar(`Proyecto guardado correctamente!`, {
-        variant: "success",
-      });
+      this.successMessage();
       // this.props.history.push("/proyectos");
     } catch (ex) {
-      this.props.enqueueSnackbar(`${ex.response.data.message}`, {
-        variant: "error",
-      });
+      this.errorMessage(ex);
     }
   };
 
   componentWillUnmount() {
     this._isMounted = false;
   }
+
   render() {
     return (
-      <React.Fragment>
-        {this.state.isLoading && <LinearProgress color="secondary" />}
-        <form onSubmit={this.handleSubmit}>
-          {this.renderTextarea("name_project", "Nombre")}
-          {/* {this.renderInputDate("startDate_project", "Fecha Inicio")} */}
+        <React.Fragment>
+          {this.state.isLoading && <LinearProgress color="secondary"/>}
+          <form onSubmit={this.handleSubmit}>
+            {this.renderTextarea("name_project", "Nombre")}
+            {/* {this.renderInputDate("startDate_project", "Fecha Inicio")} */}
 
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            {this.renderDatePicker(
-              "startDate_project",
-              "Fecha Inicio",
-              "2020-01-01",
-              "2020-12-31",
-              false
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              {this.renderDatePicker(
+                  "startDate_project",
+                  "Fecha Inicio",
+                  "2020-01-01",
+                  "2020-12-31",
+                  false
+              )}
+              {this.renderDatePicker(
+                  "endDate_project",
+                  "Fecha Fin",
+                  "2020-02-01",
+                  "2020-12-31",
+                  false
+              )}
+              {this.renderDatePicker(
+                  "endDateReal_project",
+                  "Fecha fin real",
+                  "2020-02-01",
+                  "2020-12-31",
+                  false
+              )}
+            </MuiPickersUtilsProvider>
+            {this.renderInput("year_project", "Año")}
+            {this.renderInput("location_project", "Ubicación")}
+            {this.renderSelect(
+                "id_program",
+                "Programa",
+                85,
+                "name_program",
+                this.state.programs
             )}
-            {this.renderDatePicker(
-              "endDate_project",
-              "Fecha Fin",
-              "2020-02-01",
-              "2020-12-31",
-              false
+            {this.renderSelect(
+                "id_researchType",
+                "Tipo investigación",
+                145,
+                "name_researchType",
+                this.state.researchTypes
             )}
-            {this.renderDatePicker(
-              "endDateReal_project",
-              "Fecha fin real",
-              "2020-02-01",
-              "2020-12-31",
-              false
+            {this.renderSelect(
+                "id_projectType",
+                "Tipo proyecto",
+                110,
+                "name_projectType",
+                this.state.projectTypes
             )}
-          </MuiPickersUtilsProvider>
-          {this.renderInput("year_project", "Año")}
-          {this.renderInput("location_project", "Ubicación")}
-          {this.renderSelect(
-            "id_program",
-            "Programa",
-            85,
-            "name_program",
-            this.state.programs
-          )}
-          {this.renderSelect(
-            "id_researchType",
-            "Tipo investigación",
-            145,
-            "name_researchType",
-            this.state.researchTypes
-          )}
-          {this.renderSelect(
-            "id_projectType",
-            "Tipo proyecto",
-            110,
-            "name_projectType",
-            this.state.projectTypes
-          )}
-          {this.renderSelect(
-            "id_coverageType",
-            "Cobertura",
-            85,
-            "name_coverageType",
-            this.state.coverageTypes
-          )}
-          {this.renderButton("Guardar")}
-        </form>
-      </React.Fragment>
+            {this.renderSelect(
+                "id_coverageType",
+                "Cobertura",
+                85,
+                "name_coverageType",
+                this.state.coverageTypes
+            )}
+            {this.renderButton("Guardar")}
+          </form>
+        </React.Fragment>
     );
   }
 }

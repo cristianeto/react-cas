@@ -1,33 +1,33 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { TEXT_LABELS } from "../../configTable";
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
+import {TEXT_LABELS} from "../../configTable";
 import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography } from "@material-ui/core";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {LinearProgress, Typography} from "@material-ui/core";
 import ButtonAdd from "../common/buttonAdd";
 
 class ProjectsTable extends Component {
   getMuiTheme = () =>
-    createMuiTheme({
-      overrides: {
-        MUIDataTableBodyCell: {
-          root: {},
-        },
-        MuiIconButton: {
-          sizeSmall: {
-            // Adjust spacing to reach minimal touch target hitbox
-            marginLeft: 4,
-            marginRight: 4,
-            padding: 12,
+      createMuiTheme({
+        overrides: {
+          MUIDataTableBodyCell: {
+            root: {},
+          },
+          MuiIconButton: {
+            sizeSmall: {
+              // Adjust spacing to reach minimal touch target hitbox
+              marginLeft: 4,
+              marginRight: 4,
+              padding: 12,
+            },
           },
         },
-      },
-      props: {
-        MuiTable: {
-          size: "small",
+        props: {
+          MuiTable: {
+            size: "small",
+          },
         },
-      },
-    });
+      });
 
   /* handleDelete(rowsIndex) {
     rowsIndex.map((r) => {
@@ -53,12 +53,12 @@ class ProjectsTable extends Component {
           sort: true,
           customBodyRender: (value, tableMeta) => {
             return (
-              <Link
-                style={{ textDecoration: "none" }}
-                to={`/proyecto/${tableMeta.rowData[0]}`}
-              >
-                {value}
-              </Link>
+                <Link
+                    style={{textDecoration: "none"}}
+                    to={`/proyecto/${tableMeta.rowData[0]}`}
+                >
+                  {value}
+                </Link>
             );
           },
         },
@@ -131,20 +131,20 @@ class ProjectsTable extends Component {
     const options = options_config;
 
     return (
-      <MuiThemeProvider theme={this.getMuiTheme()}>
-        <MUIDataTable
-          title={
-            <Typography variant="h6">
-              Lista de proyectos <ButtonAdd entity={"proyecto"} />
-              {isLoading && <LinearProgress color="secondary" />}
-            </Typography>
-          }
-          data={data}
-          columns={columns}
-          options={options}
-          responsive={"scrollFullHeight"}
-        />
-      </MuiThemeProvider>
+        <MuiThemeProvider theme={this.getMuiTheme()}>
+          <MUIDataTable
+              title={
+                <Typography variant="h6">
+                  Lista de proyectos <ButtonAdd entity={"proyecto"}/>
+                  {isLoading && <LinearProgress color="secondary"/>}
+                </Typography>
+              }
+              data={data}
+              columns={columns}
+              options={options}
+              responsive={"scrollFullHeight"}
+          />
+        </MuiThemeProvider>
     );
   }
 }
