@@ -1,4 +1,4 @@
-export let TEXT_LABELS = {
+export const TEXT_LABELS = {
   body: {
     noMatch: "Lo sentimos, no se han encontrado registros",
     toolTip: "Ordenar",

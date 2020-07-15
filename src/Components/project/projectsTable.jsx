@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
-import {TEXT_LABELS} from "../../configTable";
+import {TEXT_LABELS} from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import {LinearProgress, Typography} from "@material-ui/core";
@@ -29,13 +29,8 @@ class ProjectsTable extends Component {
         },
       });
 
-  /* handleDelete(rowsIndex) {
-    rowsIndex.map((r) => {
-      return console.log(this.props.datas[0]);
-    });
-  } */
-
   render() {
+    const {datas, onLoading} = this.props
     const columns = [
       {
         name: "id_project",
@@ -112,7 +107,7 @@ class ProjectsTable extends Component {
         },
       },
     ];
-    const options_config = {
+    const options = {
       filterType: "dropdown",
       responsive: "scroll",
       rowsPerPage: 5,
@@ -120,15 +115,11 @@ class ProjectsTable extends Component {
       textLabels: TEXT_LABELS,
       //selectableRows: "single",
       onRowsDelete: (rowsDeleted) => {
-        const data = this.props.datas; //lista de todos los proyectos
-        const projectsToDelete = rowsDeleted.data.map((d) => data[d.dataIndex]); //Array de todos los proyectos a borrar.
-        this.props.onDelete(projectsToDelete);
+        const items = datas; //lista de todos los proyectos
+        const itemsToDelete = rowsDeleted.data.map((item) => items[item.dataIndex]); //Array de todos los proyectos a borrar.
+        this.props.onDelete(itemsToDelete);
       },
     };
-
-    const data = this.props.datas;
-    const isLoading = this.props.onLoading;
-    const options = options_config;
 
     return (
         <MuiThemeProvider theme={this.getMuiTheme()}>
@@ -136,10 +127,10 @@ class ProjectsTable extends Component {
               title={
                 <Typography variant="h6">
                   Lista de proyectos <ButtonAdd entity={"proyecto"}/>
-                  {isLoading && <LinearProgress color="secondary"/>}
+                  {onLoading && <LinearProgress color="secondary"/>}
                 </Typography>
               }
-              data={data}
+              data={datas}
               columns={columns}
               options={options}
               responsive={"scrollFullHeight"}

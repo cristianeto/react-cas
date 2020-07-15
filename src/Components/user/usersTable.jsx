@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { TEXT_LABELS } from "../../configTable";
+import { TEXT_LABELS } from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
