@@ -3,6 +3,7 @@
 /src/config.json
 # dependencies
 /node_modules
+/.idea
 /.pnp
 .pnp.js
 
