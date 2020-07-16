@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { withSnackbar } from "notistack";
+import Breadcum from "../common/breadcum";
 import GroupsTable from "./groupsTable";
 import { getDependencies } from "../../services/dependencyService";
-import { getGroups, saveGroup } from "../../services/groupService";
-import Breadcum from "../common/breadcum";
-import { Container } from "@material-ui/core";
-import { withSnackbar } from "notistack";
+import { getGroups, saveGroup, deleteGroup } from "../../services/groupService";
+import {Container, Button} from "@material-ui/core";
 
 class Groups extends Component {
   state = {
@@ -52,6 +52,51 @@ class Groups extends Component {
     }
   };
 
+  handleUndo(groupsToDelete, originalGroups) {
+    const action = (key) => (
+        <Fragment>
+          <Button
+              onClick={() => {
+                //this.setState({ groups: originalGroups });
+                this.props.closeSnackbar(key);
+              }}
+              style={{color: "#fff"}}
+          >
+            ACEPTAR
+          </Button>
+        </Fragment>
+    );
+    const lenghtArray = groupsToDelete.length;
+    const mensaje =
+        lenghtArray === 1
+            ? `Registro eliminado`
+            : `${lenghtArray} registros eliminados`;
+    this.props.enqueueSnackbar(mensaje, {
+      autoHideDuration: 3000,
+      action,
+    });
+  }
+
+  handleDelete = async (groupsToDelete) => {
+    const originalGroups = this.state.groups;
+    const groups = originalGroups.filter(
+        (group) => !groupsToDelete.includes(group)
+    );
+    this.setState({groups});
+    groupsToDelete.forEach(async (group) => {
+      try {
+        await deleteGroup(group.id_group);
+        this.handleUndo(groupsToDelete, originalGroups);
+      } catch (ex) {
+        if (ex.response && ex.response.status === 404) console.log(ex);
+        this.props.enqueueSnackbar(`${ex.response.data.message}`, {
+          variant: "error",
+        });
+        this.setState({groups: originalGroups});
+      }
+    });
+  };
+
   render() {
     const listBreadcrumbs = [
       {
@@ -71,10 +116,11 @@ class Groups extends Component {
           <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupos"} />
           <GroupsTable
             datas={this.state.groups}
-            onGetGroup={this.getGroup}
+            //onGetGroup={this.getGroup}
             onLoading={this.state.isLoading}
             onActive={this.handleActive}
             style={classes.table}
+            onDelete={this.handleDelete}
           />
         </Container>
       </main>

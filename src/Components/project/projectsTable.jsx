@@ -110,7 +110,7 @@ class ProjectsTable extends Component {
     const options = {
       filterType: "dropdown",
       responsive: "scroll",
-      rowsPerPage: 5,
+      rowsPerPage: 10,
       rowsPerPageOptions: [5, 10, 20],
       textLabels: TEXT_LABELS,
       //selectableRows: "single",

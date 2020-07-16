@@ -36,6 +36,7 @@ class GroupsTable extends Component {
     }
   };
   render() {
+    const {datas, onLoading} = this.props
     const columns = [
       {
         name: "id_group",
@@ -104,17 +105,20 @@ class GroupsTable extends Component {
         },
       },
     ];
-    const options_config = {
+    const options = {
       filterType: "dropdown",
       responsive: "scroll",
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
+      // selectableRows:'none',
       textLabels: TEXT_LABELS,
+      onRowsDelete: (rowsDeleted) => {
+        const items = datas; //lista de todos los proyectos
+        const itemsToDelete = rowsDeleted.data.map((item) => items[item.dataIndex]); //Array de todos los proyectos a borrar.
+        this.props.onDelete(itemsToDelete);
+      },
     };
 
-    const data = this.props.datas;
-    const isLoading = this.props.onLoading;
-    const options = options_config;
 
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
@@ -122,10 +126,10 @@ class GroupsTable extends Component {
           title={
             <Typography variant="h6">
               Lista de grupos de investigación <ButtonAdd entity={"grupo"} />
-              {isLoading && <LinearProgress color="secondary" />}
+              {onLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
-          data={data}
+          data={datas}
           columns={columns}
           options={options}
         />

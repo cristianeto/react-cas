@@ -59,8 +59,8 @@ class Projects extends Component {
     const lenghtArray = projectsToDelete.length;
     const mensaje =
         lenghtArray === 1
-            ? `Proyecto eliminado`
-            : `${lenghtArray} proyectos eliminados`;
+            ? `Registro eliminado`
+            : `${lenghtArray} registros eliminados`;
     this.props.enqueueSnackbar(mensaje, {
       autoHideDuration: 3000,
       action,
