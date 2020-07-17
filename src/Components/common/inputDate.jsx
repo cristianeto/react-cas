@@ -33,15 +33,15 @@ const InputDate = ({
       InputAdornmentProps={{ position: "end" }}
       onChange={(date) => onChange(date, name)}
       value={value ? new Date(value) : null}
-      minDate={new Date(minDate)}
-      maxDate={new Date(maxDate)}
+      minDate={minDate}
+      maxDate={maxDate}
       disabled={disabled}
       clearable
       placeholder="2018-12-31"
       emptyLabel={""}
       invalidDateMessage={"Fecha con formato inválido"}
-      minDateMessage={"La fecha no debe estar antes de la fecha menor"}
-      maxDateMessage={"La fecha no debe estar después de la fecha mayor"}
+      minDateMessage={`No debe estar antes de ${minDate}`}
+      maxDateMessage={`No debe estar después  ${maxDate}`}
       invalidLabel={"Escoja la fecha"}
       maskChar={"-"}
     />

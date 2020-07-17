@@ -80,19 +80,13 @@ class UserForm extends Form {
       await saveUser(this.state.data);
       this.successMessage();
       this.props.history.push("/usuarios");
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        this.props.enqueueSnackbar(`${ex.response.data.message}`, {
-          variant: "error",
-          preventDuplicate: true,
-        });
+    } catch (ex) {      
+      if (ex.response && ex.response.status === 422) {
+        this.errorMessage(ex);
         const errors = {...this.state.errors};
-        errors.email = ex.response.data;
+        errors.email = ex.response.data.message;
         this.setState({errors});
       }
-      this.props.enqueueSnackbar(`${ex.response.data.message}`, {
-        variant: "error",
-      });
     }
   };
 

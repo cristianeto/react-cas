@@ -111,6 +111,14 @@ class GroupForm extends Form {
       this.props.history.push("/grupos-investigacion");
     } catch (ex) {
       this.errorMessage(ex);
+      const errors = {...this.state.errors};
+      if(ex.response && ex.response.status === 422){
+        errors.code_group = ex.response.data.errors.code_group;
+        errors.name_group = ex.response.data.errors.name_group;
+        errors.acronym_group = ex.response.data.errors.acronym_group;      
+        this.setState({errors});
+      }
+      //console.log(ex.response.data.errors);
     }
   };
 
