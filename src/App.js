@@ -105,7 +105,12 @@ class App extends Component {
   render() {
     const { user, roles } = this.state;
     return (
-      <div style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
+      <div
+        style={{
+          backgroundColor: "#f5f5f5",
+          minHeight: "100vh",
+        }}
+      >
         <NavBar
           user={user}
           roles={roles}
@@ -114,29 +119,40 @@ class App extends Component {
           onLogout={this.handleLogout}
           selectedRole={this.state.selectedRole}
         />
-        <Switch>
-          {/* <Route path="/login" component={LoginForm} />
-            <Route path="/customers" component={Customers} />
-          <Route path="/rentals" component={Rentals} /> */}
-          <Route path="/proyecto/:id" exact component={ProjectForm} />
-          <Route path="/proyectos" exact component={Projects} />
-          {auth.getCurrentUser() !== null && (
-            <Route path="/mi/perfil" component={meProfile} />
-          )}
-          <Route path="/usuario/:id" component={UserForm} />
-          {this.state.selectedRole.id_role === 1 && (
-            <Route path="/usuarios" component={Users} />
-          )}
-          <Route path="/" exact component={Welcome} />
-          <Route path="/logout" exact component={Logout} />
-          <Route path="/dependencias" component={Dependencies} />
-          <Route path="/dependencia/:id" component={DependencyForm} />
-          <Route path="/grupos-investigacion" component={Groups} />
-          <Route path="/grupo/:id" component={GroupForm} />
-          <Route path="/not-found" component={NotFound} />
-          {/* <Redirect from="/" exact to="/" /> */}
-          <Redirect to="/not-found" />
-        </Switch>
+        <main style={{ flexGrow: "1", padding: "3em 0" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "2em 0 2em 5em",
+            }}
+          >
+            <Switch>
+              {/* <Route path="/login" component={LoginForm} />
+                <Route path="/customers" component={Customers} />
+              <Route path="/rentals" component={Rentals} /> */}
+              <Route path="/proyecto/:id" exact component={ProjectForm} />
+              <Route path="/proyectos" exact component={Projects} />
+              {auth.getCurrentUser() !== null && (
+                <Route path="/mi/perfil" component={meProfile} />
+              )}
+              <Route path="/usuario/:id" component={UserForm} />
+              {this.state.selectedRole.id_role === 1 && (
+                <Route path="/usuarios" component={Users} />
+              )}
+              <Route path="/" exact component={Welcome} />
+              <Route path="/logout" exact component={Logout} />
+              <Route path="/dependencias" component={Dependencies} />
+              <Route path="/dependencia/:id" component={DependencyForm} />
+              <Route path="/grupos-investigacion" component={Groups} />
+              <Route path="/grupo/:id" component={GroupForm} />
+              <Route path="/not-found" component={NotFound} />
+              {/* <Redirect from="/" exact to="/" /> */}
+              <Redirect to="/not-found" />
+            </Switch>
+          </div>
+        </main>
       </div>
     );
   }

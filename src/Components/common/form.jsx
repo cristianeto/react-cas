@@ -6,7 +6,7 @@ import Textarea from "./textarea";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import InputDate from "./inputDate";
-import { messages, errors2 } from "./es_ES.js";
+// import { messages } from "./es_ES.js";
 
 class Form extends Component {
   state = {
@@ -95,8 +95,8 @@ class Form extends Component {
   }
 
   renderButton(label) {
-    let validation;
-    this.validate() === null ? (validation = false) : (validation = true);
+    // let validation;
+    // this.validate() === null ? (validation = false) : (validation = true);
     return (
       <Button
         disabled={false}
