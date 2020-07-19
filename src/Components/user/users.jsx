@@ -80,21 +80,16 @@ class Users extends Component {
       },
     };
     return (
-      <main>
-        <Container maxWidth="xl">
-          <Breadcum
-            onListBreadcrumbs={listBreadcrumbs}
-            lastLabel={"Usuarios"}
-          />
-          <UsersTable
-            datas={this.state.users}
-            onGetUser={this.getUser}
-            onLoading={this.state.isLoading}
-            style={classes.table}
-            onDelete={this.handleDelete}
-          />
-        </Container>
-      </main>
+      <Container maxWidth="xl">
+        <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuarios"} />
+        <UsersTable
+          datas={this.state.users}
+          onGetUser={this.getUser}
+          onLoading={this.state.isLoading}
+          style={classes.table}
+          onDelete={this.handleDelete}
+        />
+      </Container>
     );
   }
 }

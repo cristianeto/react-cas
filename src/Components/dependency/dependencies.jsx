@@ -37,20 +37,18 @@ class Dependencies extends Component {
       },
     };
     return (
-      <main>
-        <Container maxWidth="xl">
-          <Breadcum
-            onListBreadcrumbs={listBreadcrumbs}
-            lastLabel={"Dependencias"}
-          />
-          <DependenciesTable
-            datas={this.state.dependencies}
-            onGetGroup={this.getDependency}
-            onLoading={this.state.isLoading}
-            style={classes.table}
-          />
-        </Container>
-      </main>
+      <Container maxWidth="xl">
+        <Breadcum
+          onListBreadcrumbs={listBreadcrumbs}
+          lastLabel={"Dependencias"}
+        />
+        <DependenciesTable
+          datas={this.state.dependencies}
+          onGetGroup={this.getDependency}
+          onLoading={this.state.isLoading}
+          style={classes.table}
+        />
+      </Container>
     );
   }
 }
