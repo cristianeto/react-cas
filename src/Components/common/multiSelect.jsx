@@ -11,7 +11,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const MyMultiSelect = ({
   name,
   label,
-  property,
+  property1,
+  property2,
   optionsSelected,
   options,
   onChange,
@@ -29,7 +30,7 @@ const MyMultiSelect = ({
       limitTags={2}
       options={options}
       disableCloseOnSelect
-      getOptionLabel={(option) => option[property]}
+      getOptionLabel={(option) => option[property2]}
       onChange={(event, values) => onChange(event, values, name)}
       {...rest}
       value={optionsSelected}
@@ -44,12 +45,12 @@ const MyMultiSelect = ({
               style={{ marginRight: 8 }}
               checked={selected}
             />
-            {option[property]}
+            {option[property2]}
           </React.Fragment>
         );
       }}
       getOptionSelected={(option, value) => {
-        return option[name] === value[name];
+        return option[property1] === value[property1];
       }}
       renderInput={(params) => (
         <TextField

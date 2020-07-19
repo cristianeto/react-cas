@@ -159,14 +159,15 @@ class Form extends Component {
     );
   }
 
-  renderMultiSelect(name, label, property, options) {
+  renderMultiSelect(name, label, property1, property2, options) {
     const { data, errors } = this.state;
     return (
       <MyMultiSelect
         name={name}
         value={data[name]}
         label={label}
-        property={property}
+        property1={property1}
+        property2={property2}
         optionsSelected={data[name]}
         options={options}
         onChange={this.handleChangeMultiple}
