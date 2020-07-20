@@ -79,7 +79,9 @@ class UserForm extends Form {
     try {
       await saveUser(this.state.data);
       this.successMessage();
-      this.props.history.push("/usuarios");
+      if (this.props.match.params.id !== "se") {
+        this.props.history.push("/usuarios");
+      }
     } catch (ex) {
       if (ex.response && ex.response.status === 422) {
         this.errorMessage(ex);
@@ -120,7 +122,9 @@ class UserForm extends Form {
           <Grid item xs={12} sm={7} md={8}>
             <Paper style={classes.paper}>
               <Typography variant="h4" gutterBottom>
-                Usuario
+                {this.props.match.params.id === "se"
+                  ? "Registrarse"
+                  : "Usuario"}
               </Typography>
               {this.state.isLoading && <LinearProgress color="secondary" />}
               <form onSubmit={this.handleSubmit}>

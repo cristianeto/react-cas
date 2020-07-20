@@ -3,7 +3,6 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import { withSnackbar } from "notistack";
 import cas from "./services/casService";
 import auth from "./services/authService";
-import { getRolesByUser } from "./services/userRolesService";
 import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
 import Groups from "./Components/group/groups";
@@ -38,7 +37,6 @@ class App extends Component {
       if (cas.isAuthenticated() && cas.getLogin() && !auth.isAuthenticated()) {
         console.log("logueando al backend");
         const user = await auth.login(cas.getLogin());
-
         this.setState({ user, emailCas: cas.getLogin() });
       }
       //console.log(this.state.user);
@@ -56,7 +54,6 @@ class App extends Component {
 
   async getRoles() {
     if (auth.isAuthenticated()) {
-      //const { data: roles } = await getRolesByUser(this.state.user.id);
       const selectedRole = auth.getSelectedRole();
       this.setState({ roles: this.state.user.roles, selectedRole });
     } else {

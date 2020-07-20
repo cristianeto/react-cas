@@ -6,13 +6,7 @@ import Form from "../common/form";
 import TitleForm from "../common/titleForm";
 import { getUser, saveUser } from "../../services/userService";
 import auth from "../../services/authService";
-import {
-  Container,
-  LinearProgress,
-  Typography,
-  Paper,
-  Grid,
-} from "@material-ui/core";
+import { Container, Typography, Paper, Grid } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
