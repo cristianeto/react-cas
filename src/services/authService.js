@@ -3,6 +3,7 @@ import http from "./httpService";
 const apiEndpoint = "/auth";
 const tokenKey = "passport";
 const userKey = "user";
+const roleKey = "selectedRole";
 
 http.setPassport(getPassport());
 
@@ -11,6 +12,7 @@ export async function login(email) {
     const { data } = await http.post(apiEndpoint, { email });
     sessionStorage.setItem(tokenKey, data.access_token);
     sessionStorage.setItem(userKey, JSON.stringify(data.user));
+    sessionStorage.setItem(roleKey, JSON.stringify(data.user.roles[0]));
     http.setPassport(getPassport());
     return data.user;
   } catch (ex) {
@@ -32,6 +34,10 @@ export function getPassport() {
   return sessionStorage.getItem(tokenKey);
 }
 
+export function getSelectedRole() {
+  return JSON.parse(sessionStorage.getItem(roleKey));
+}
+
 export function isAuthenticated() {
   const rawIdToken = getPassport();
   return isNotEmpty(rawIdToken);
@@ -50,11 +56,13 @@ async function logout() {
 function remove() {
   window.sessionStorage.removeItem(tokenKey);
   window.sessionStorage.removeItem(userKey);
+  window.sessionStorage.removeItem(roleKey);
 }
 export default {
   login,
   getPassport,
   getCurrentUser,
+  getSelectedRole,
   isAuthenticated,
   logout,
 };

@@ -40,8 +40,8 @@ class Users extends Component {
     const lenghtArray = usersToDelete.length;
     const mensaje =
       lenghtArray === 1
-        ? `Usuario eliminado`
-        : `${lenghtArray} usuarios eliminados`;
+        ? `Registro eliminado`
+        : `${lenghtArray} registros eliminados`;
     this.props.enqueueSnackbar(mensaje, {
       autoHideDuration: 3000,
       action,
