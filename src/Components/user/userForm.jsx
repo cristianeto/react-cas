@@ -50,7 +50,7 @@ class UserForm extends Form {
   async populateUser() {
     try {
       const userId = this.props.match.params.id; //Pasando por URL id movie
-      if (userId === "new") return; //Si si
+      if (userId === "new" || userId === "se") return; //Si si
       const { data: user } = await getUser(userId); //Si no.
       this.setState({ data: this.mapToViewModel(user) });
     } catch (ex) {

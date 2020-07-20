@@ -115,7 +115,7 @@ export default function MiniDrawer(props) {
   const { selectedRole, user, onLogin, onLogout, roles, onChangeRole } = props;
 
   return (
-    <div className={classes.root}>
+    <React.Fragment>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -140,6 +140,13 @@ export default function MiniDrawer(props) {
               Spirit
             </Link>
           </Typography>
+          {!user && (
+            <Button color="inherit">
+              <Link to="/registrar/se" className={classes.navLink}>
+                Registrarse
+              </Link>
+            </Button>
+          )}
           {!user && (
             <Button color="inherit" onClick={onLogin}>
               Login
@@ -262,6 +269,6 @@ export default function MiniDrawer(props) {
           }}
         ></List>
       </Drawer>
-    </div>
+    </React.Fragment>
   );
 }
