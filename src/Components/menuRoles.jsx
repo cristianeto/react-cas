@@ -35,7 +35,7 @@ export default function MenuRoles(props) {
         onClick={handleClick}
       >
         <Typography variant="caption" display="block" gutterBottom>
-          {`${user.name} ${user.lastname}`} {`(${selectedRole.name_role})`}
+          {`${user.name} ${user.lastname}`} {`(${selectedRole.name})`}
         </Typography>
       </Button>
       <Menu
@@ -51,13 +51,13 @@ export default function MenuRoles(props) {
         </Link>
         {roles &&
           roles.map((role) => (
-            <Link to={"/"} key={role.id_role} className={classes.navLink}>
+            <Link to={"/"} key={role.id} className={classes.navLink}>
               <MenuItem
                 onClick={() => {
-                  onChangeRole(role.id_role, handleClose);
+                  onChangeRole(role.id, handleClose);
                 }}
               >
-                {role.name_role}
+                {role.name}
               </MenuItem>
             </Link>
           ))}

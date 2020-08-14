@@ -1,19 +1,12 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
 
-const ButtonAdd = props => {
+const ButtonAdd = (props) => {
   return (
     <React.Fragment>
-      <Tooltip title={"Agregar"}>
-        <NavLink to={`/${props.entity}/new`}>
-          <Fab size="medium" color="primary" aria-label="add">
-            <AddIcon />
-          </Fab>
-        </NavLink>
-      </Tooltip>
+      <Button variant="contained" color="primary">
+        Nuevo proyecto
+      </Button>
     </React.Fragment>
   );
 };

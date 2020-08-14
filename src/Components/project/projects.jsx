@@ -39,7 +39,7 @@ class Projects extends Component {
   }
 
   getProject(id) {
-    return this.state.projects.find((p) => p.id_project === id);
+    return this.state.projects.find((project) => project.id === id);
   }
 
   handleUndo(projectsToDelete, originalProjects) {
@@ -75,7 +75,7 @@ class Projects extends Component {
     this.setState({ projects });
     projectsToDelete.forEach(async (project) => {
       try {
-        await deleteProject(project.id_project);
+        await deleteProject(project.id);
         this.handleUndo(projectsToDelete, originalProjects);
       } catch (ex) {
         if (ex.response && ex.response.status === 404) console.log(ex);
@@ -110,6 +110,7 @@ class Projects extends Component {
           onLoading={this.state.isLoading}
           style={classes.table}
           onDelete={this.handleDelete}
+          history={this.props.history}
         />
       </Container>
     );

@@ -14,10 +14,10 @@ export function getProject(projectId) {
 }
 
 export function saveProject(project) {
-  if (project.id_project) {
+  if (project.id) {
     const body = { ...project };
-    delete body.id_project;
-    return http.put(projectUrl(project.id_project), body);
+    delete body.id;
+    return http.put(projectUrl(project.id), body);
   }
   return http.post(apiEndpoint, project);
 }

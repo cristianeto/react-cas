@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import ProjectFormGeneral from "./projectFormGeneral";
 import ProjectFormDetails from "./projectFormDetails";
+import Form from "../common/form";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,8 +74,8 @@ export default function ProjectStepper(props) {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
+        // find the first step that has been completed
+        steps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };
@@ -85,13 +86,6 @@ export default function ProjectStepper(props) {
 
   const handleStep = (step) => () => {
     setActiveStep(step);
-  };
-
-  const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
-    handleNext();
   };
 
   const handleReset = () => {
@@ -124,43 +118,31 @@ export default function ProjectStepper(props) {
             <Button onClick={handleReset}>Reset</Button>
           </div>
         ) : (
-          <div>
-            {getStepContent(activeStep, props)}
-            <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
-              >
-                Back
+            <form onSubmit={Form.handleSubmit} >
+              <div>
+                {getStepContent(activeStep, props)}
+                <div>
+                  <Button
+                    variant="outlined"
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.button}
+                  >
+                    Atrás
               </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                Next
-              </Button>
-              {activeStep !== steps.length &&
-                (completed[activeStep] ? (
-                  <Typography variant="caption" className={classes.completed}>
-                    Step {activeStep + 1} already completed
-                  </Typography>
-                ) : (
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleComplete}
+                    onClick={handleNext}
+                    className={classes.button}
                   >
-                    {completedSteps() === totalSteps() - 1
-                      ? "Finish"
-                      : "Complete Step"}
-                  </Button>
-                ))}
-            </div>
-          </div>
-        )}
+                    Siguiente
+              </Button>
+                </div>
+              </div>
+            </form>
+
+          )}
       </div>
     </div>
   );

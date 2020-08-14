@@ -142,7 +142,7 @@ class Form extends Component {
     );
   }
 
-  renderSelect(name, label, labelWidth, property, options) {
+  renderSelect(name, label, labelWidth, property1, property2, options) {
     const { data, errors } = this.state;
 
     return (
@@ -151,7 +151,8 @@ class Form extends Component {
         value={data[name]}
         label={label}
         labelWidth={labelWidth}
-        property={property}
+        property1={property1}
+        property2={property2}
         options={options}
         onChange={this.handleChange}
         error={errors[name]}

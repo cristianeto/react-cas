@@ -243,7 +243,7 @@ export default function MiniDrawer(props) {
           ))}
         </List>
         <Divider />
-        {selectedRole.id_role === 1 && (
+        {selectedRole.id === 1 && (
           <List>
             <NavLink to="/usuarios" className={classes.navLink}>
               <ListItem button>

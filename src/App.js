@@ -7,7 +7,7 @@ import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
 import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
-import ProjectForm from "./Components/project/Project";
+import Project from "./Components/project/Project";
 import UserForm from "./Components/user/userForm";
 import Users from "./Components/user/users";
 import Welcome from "./Components/welcome";
@@ -74,9 +74,9 @@ class App extends Component {
 
   handleChangeRole = (roleId, closeFunction) => {
     closeFunction();
-    const role = this.state.roles.find((role) => role.id_role === roleId);
+    const role = this.state.roles.find((role) => role.id === roleId);
     this.setState({ selectedRole: role });
-    this.props.enqueueSnackbar(`Su role cambio a ${role.name_role} `);
+    this.props.enqueueSnackbar(`Su role cambio a ${role.name} `);
   };
 
   detectedOffline() {
@@ -125,14 +125,14 @@ class App extends Component {
           {/* <Route path="/login" component={LoginForm} />
                 <Route path="/customers" component={Customers} />
               <Route path="/rentals" component={Rentals} /> */}
-          <Route path="/proyecto/:id" exact component={ProjectForm} />
+          <Route path="/proyecto/:id" exact component={Project} />
           <Route path="/proyectos" exact component={Projects} />
           {auth.getCurrentUser() !== null && (
             <Route path="/mi/perfil" component={meProfile} />
           )}
           <Route path="/usuario/:id" component={UserForm} />
           <Route path="/registrar/:id" component={UserForm} />
-          {this.state.selectedRole.id_role === 1 && (
+          {this.state.selectedRole.id === 1 && (
             <Route path="/usuarios" component={Users} />
           )}
           <Route path="/" exact component={Welcome} />

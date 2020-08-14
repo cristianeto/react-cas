@@ -15,49 +15,42 @@ class ProjectFormGeneral extends Form {
   _isMounted = false;
   state = {
     data: {
-      name_project: "",
-      startDate_project: "",
-      endDate_project: "",
-      endDateReal_project: "",
-      year_project: "",
-      location_project: "",
-      id_program: "",
-      id_researchType: "",
-      id_projectType: "",
-      id_coverageType: "",
+      name: "",
+      startDate: "",
+      endDate: "",
+      endDateReal: "",
+      year: "",
+      location: "",
+      project_type_id: "",
+      research_type_id: "",
+      coverage_type_id: "",
+      program_id: "",
     },
-    programs: [],
-    researchTypes: [],
     projectTypes: [],
+    researchTypes: [],
     coverageTypes: [],
+    programs: [],
     errors: {},
     isLoading: false,
   };
 
   schema = Joi.object({
-    id_project: Joi.string().guid({ version: ["uuidv1"] }),
-    name_project: Joi.string().label("Nombre").max(500).messages(messages),
-    startDate_project: Joi.date().label("Fecha Inicio"),
-    endDate_project: Joi.date().label("Fecha Fin"),
-    endDateReal_project: Joi.date().allow("", null).label("Fecha Final Real"),
-    year_project: Joi.number()
-      .positive()
-      .label("Año")
-      .min(2020)
-      .messages(messages),
-    location_project: Joi.string()
-      .label("Ubicación")
-      .max(30)
-      .messages(messages),
-    id_program: Joi.string().label("Programa").min(36).max(36),
-    id_researchType: Joi.string().label("Tipo investigación").min(36).max(36),
-    id_projectType: Joi.string().label("Tipo proyecto").min(36).max(36),
-    id_coverageType: Joi.string().label("Tipo cobertura").min(36).max(36),
+    id: Joi.string().guid({ version: ["uuidv1"] }),
+    name: Joi.string().label("Nombre").max(500).messages(messages),
+    startDate: Joi.date().label("Fecha Inicio"),
+    endDate: Joi.date().label("Fecha Fin"),
+    endDateReal: Joi.date().allow("", null).label("Fecha Final Real"),
+    year: Joi.number().positive().label("Año").min(2020).messages(messages),
+    location: Joi.string().label("Ubicación").max(30).messages(messages),
+    project_type_id: Joi.string().label("Tipo proyecto").min(36).max(36).messages(messages),
+    research_type_id: Joi.string().label("Tipo investigación").min(36).max(36).messages(messages),
+    coverage_type_id: Joi.string().label("Tipo cobertura").min(36).max(36).messages(messages),
+    program_id: Joi.string().label("Programa").min(36).max(36).messages(messages),
   });
 
-  async populatePrograms() {
-    const { data: programs } = await getPrograms();
-    this.setState({ programs });
+  async populateProjectTypes() {
+    const { data: projectTypes } = await getProjectTypes();
+    this.setState({ projectTypes });
   }
 
   async populateResearchTypes() {
@@ -65,14 +58,14 @@ class ProjectFormGeneral extends Form {
     this.setState({ researchTypes });
   }
 
-  async populateProjectTypes() {
-    const { data: projectTypes } = await getProjectTypes();
-    this.setState({ projectTypes });
-  }
-
   async populateCoverageTypes() {
     const { data: coverageTypes } = await getCoverageTypes();
     this.setState({ coverageTypes });
+  }
+
+  async populatePrograms() {
+    const { data: programs } = await getPrograms();
+    this.setState({ programs });
   }
 
   async populateProject() {
@@ -100,17 +93,17 @@ class ProjectFormGeneral extends Form {
 
   mapToViewModel(project) {
     return {
-      id_project: project.id_project,
-      name_project: project.name_project,
-      startDate_project: project.startDate_project,
-      endDate_project: project.endDate_project,
-      endDateReal_project: project.endDateReal_project,
-      year_project: project.year_project,
-      location_project: project.location_project,
-      id_program: project.id_program,
-      id_researchType: project.id_researchType,
-      id_projectType: project.id_projectType,
-      id_coverageType: project.id_coverageType,
+      id: project.id,
+      name: project.name,
+      startDate: project.startDate === null ? '' : project.startDate,
+      endDate: project.endDate === null ? '' : project.endDate,
+      endDateReal: project.endDateReal === null ? '' : project.endDateReal,
+      year: project.year,
+      location: project.location === null ? '' : project.location,
+      project_type_id: project.project_type_id === null ? '' : project.project_type_id,
+      research_type_id: project.research_type_id === null ? '' : project.research_type_id,
+      coverage_type_id: project.coverage_type_id === null ? '' : project.coverage_type_id,
+      program_id: project.program_id === null ? '' : project.program_id,
     };
   }
 
@@ -132,65 +125,69 @@ class ProjectFormGeneral extends Form {
     return (
       <React.Fragment>
         {this.state.isLoading && <LinearProgress color="secondary" />}
-        <form onSubmit={this.handleSubmit}>
-          {this.renderTextarea("name_project", "Nombre")}
-          {/* {this.renderInputDate("startDate_project", "Fecha Inicio")} */}
+        {/* <form onSubmit={this.handleSubmit}> */}
+        {this.renderTextarea("name", "Nombre")}
+        {/* {this.renderInputDate("startDate", "Fecha Inicio")} */}
 
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            {this.renderDatePicker(
-              "startDate_project",
-              "Fecha Inicio",
-              "2020-01-01",
-              "2020-12-31",
-              false
-            )}
-            {this.renderDatePicker(
-              "endDate_project",
-              "Fecha Fin",
-              "2020-02-01",
-              "2020-12-31",
-              false
-            )}
-            {this.renderDatePicker(
-              "endDateReal_project",
-              "Fecha fin real",
-              "2020-02-01",
-              "2020-12-31",
-              false
-            )}
-          </MuiPickersUtilsProvider>
-          {this.renderInput("year_project", "Año")}
-          {this.renderInput("location_project", "Ubicación")}
-          {this.renderSelect(
-            "id_program",
-            "Programa",
-            85,
-            "name_program",
-            this.state.programs
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          {this.renderDatePicker(
+            "startDate",
+            "Fecha Inicio",
+            "2020-01-01",
+            "2020-12-31",
+            false
           )}
-          {this.renderSelect(
-            "id_researchType",
-            "Tipo investigación",
-            145,
-            "name_researchType",
-            this.state.researchTypes
+          {this.renderDatePicker(
+            "endDate",
+            "Fecha Fin",
+            "2020-02-01",
+            "2020-12-31",
+            false
           )}
-          {this.renderSelect(
-            "id_projectType",
-            "Tipo proyecto",
-            110,
-            "name_projectType",
-            this.state.projectTypes
+          {this.renderDatePicker(
+            "endDateReal",
+            "Fecha fin real",
+            "2020-02-01",
+            "2020-12-31",
+            false
           )}
-          {this.renderSelect(
-            "id_coverageType",
-            "Cobertura",
-            85,
-            "name_coverageType",
-            this.state.coverageTypes
-          )}
-          {this.renderButton("Guardar")}
-        </form>
+        </MuiPickersUtilsProvider>
+        {this.renderInput("year", "Año")}
+        {this.renderInput("location", "Ubicación")}
+        {this.renderSelect(
+          "project_type_id",
+          "Tipo proyecto",
+          110,
+          "id",
+          "name",
+          this.state.projectTypes
+        )}
+        {this.renderSelect(
+          "research_type_id",
+          "Tipo investigación",
+          145,
+          "id",
+          "name",
+          this.state.researchTypes
+        )}
+        {this.renderSelect(
+          "coverage_type_id",
+          "Cobertura",
+          85,
+          "id",
+          "name",
+          this.state.coverageTypes
+        )}
+        {this.renderSelect(
+          "program_id",
+          "Programa",
+          85,
+          "id",
+          "name",
+          this.state.programs
+        )}
+        {this.renderButton("Guardar")}
+        {/* </form> */}
       </React.Fragment>
     );
   }
