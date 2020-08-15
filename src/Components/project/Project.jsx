@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Breadcrumb from "../common/breadcum";
-import ProjectStepper from "./projectStepper";
+import ProjectForm from "./projectForm";
 import { Container, Paper, Grid } from "@material-ui/core";
 
-class ProjectForm extends Component {
+class Project extends Component {
   state = {};
 
   render() {
@@ -33,7 +33,7 @@ class ProjectForm extends Component {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper style={classes.paper}>
-              <ProjectStepper
+              <ProjectForm
                 projectId={this.props.match.params.id}
                 history={this.props.history}
               />
@@ -70,4 +70,4 @@ class ProjectForm extends Component {
   }
 }
 
-export default ProjectForm;
+export default Project;

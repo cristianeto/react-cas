@@ -7,7 +7,7 @@ import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
 import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
-import Project from "./Components/project/Project";
+import Project from "./Components/project/project";
 import UserForm from "./Components/user/userForm";
 import Users from "./Components/user/users";
 import Welcome from "./Components/welcome";

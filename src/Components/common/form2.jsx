@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import InputDate from "./inputDate";
 
-class Form extends Component {
+class Form2 extends Component {
   state = {
     data: {},
     errors: {},
@@ -194,4 +194,4 @@ class Form extends Component {
   } */
 }
 
-export default Form;
+export default Form2;
