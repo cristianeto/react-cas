@@ -122,11 +122,11 @@ class ProjectsTable extends Component {
       },
     ];
     const options = {
-      search: false,
+      /* search: false,
       print: false,
       download: false,
       filter: false,
-      viewColumns: false,
+      viewColumns: false, */
       sort: true,
       filterType: "dropdown",
       responsive: "scroll",
@@ -147,7 +147,7 @@ class ProjectsTable extends Component {
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Lista de proyectos{" "}
+              Lista de proyectos
               <Button
                 variant="contained"
                 color="primary"

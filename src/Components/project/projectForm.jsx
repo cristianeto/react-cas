@@ -10,10 +10,11 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Form from '../common/form';
 import { getProject, saveProject } from "../../services/projectService";
-import { getPrograms } from "../../services/programService";
-import { getResearchTypes } from "../../services/researchTypeService";
 import { getProjectTypes } from "../../services/projectTypeService";
+import { getResearchTypes } from "../../services/researchTypeService";
 import { getCoverageTypes } from "../../services/coverageTypeService";
+import { getPrograms } from "../../services/programService";
+import { getSectors } from "../../services/sectorService";
 import { messages } from "../common/es_ES";
 import { LinearProgress } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
@@ -34,11 +35,13 @@ class ProjectForm extends Form {
         research_type_id: "",
         coverage_type_id: "",
         program_id: "",
+        sectors: [],
       },
       projectTypes: [],
       researchTypes: [],
       coverageTypes: [],
       programs: [],
+      sectors: [],
       errors: {},
       isLoading: false,
 
@@ -52,10 +55,12 @@ class ProjectForm extends Form {
   }
 
   getStepContent = (step) => {
+    const { isLoading, projectTypes, researchTypes, coverageTypes, programs, sectors } = this.state;
     switch (step) {
       case 0:
+
         return (<React.Fragment>
-          {this.state.isLoading && <LinearProgress color="secondary" />}
+          {isLoading && <LinearProgress color="secondary" />}
           {/* <form onSubmit={this.handleSubmit}> */}
           {this.renderTextarea("name", "Nombre")}
           {/* {this.renderInputDate("startDate", "Fecha Inicio")} */}
@@ -83,7 +88,7 @@ class ProjectForm extends Form {
               false
             )}
           </MuiPickersUtilsProvider>
-          {this.renderInput("year", "Año")}
+          {/* {this.renderInput("year", "Año")} */}
           {this.renderInput("location", "Ubicación")}
           {this.renderSelect(
             "project_type_id",
@@ -91,7 +96,7 @@ class ProjectForm extends Form {
             110,
             "id",
             "name",
-            this.state.projectTypes
+            projectTypes
           )}
           {this.renderSelect(
             "research_type_id",
@@ -99,7 +104,7 @@ class ProjectForm extends Form {
             145,
             "id",
             "name",
-            this.state.researchTypes
+            researchTypes
           )}
           {this.renderSelect(
             "coverage_type_id",
@@ -107,7 +112,7 @@ class ProjectForm extends Form {
             85,
             "id",
             "name",
-            this.state.coverageTypes
+            coverageTypes
           )}
           {this.renderSelect(
             "program_id",
@@ -115,8 +120,16 @@ class ProjectForm extends Form {
             85,
             "id",
             "name",
-            this.state.programs
+            programs
           )}
+          {this.renderMultiSelect(
+            "sectors",
+            "Sectores Impacto",
+            "id",
+            "name",
+            sectors
+          )
+          }
           {/* {this.renderButton("Guardar")} */}
           {/* </form> */}
         </React.Fragment>)
@@ -146,6 +159,7 @@ class ProjectForm extends Form {
     research_type_id: Joi.string().label("Tipo investigación").min(36).max(36).messages(messages),
     coverage_type_id: Joi.string().label("Tipo cobertura").min(36).max(36).messages(messages),
     program_id: Joi.string().label("Programa").min(36).max(36).messages(messages),
+    sectors: Joi.array().label("Sectores impacto").min(1).messages(messages),
   });
 
   async populateProjectTypes() {
@@ -167,6 +181,10 @@ class ProjectForm extends Form {
     const { data: programs } = await getPrograms();
     this.setState({ programs });
   }
+  async populateSectors() {
+    const { data: sectors } = await getSectors();
+    this.setState({ sectors });
+  }
 
   async populateProject() {
     try {
@@ -185,10 +203,11 @@ class ProjectForm extends Form {
     this._isMounted = true;
     //this.getStepContent();
     this.setState({ isLoading: true });
-    await this.populatePrograms();
-    await this.populateResearchTypes();
     await this.populateProjectTypes();
+    await this.populateResearchTypes();
     await this.populateCoverageTypes();
+    await this.populatePrograms();
+    await this.populateSectors();
     await this.populateProject();
     if (this._isMounted) this.setState({ isLoading: false });
   }
@@ -206,6 +225,7 @@ class ProjectForm extends Form {
       research_type_id: project.research_type_id === null ? '' : project.research_type_id,
       coverage_type_id: project.coverage_type_id === null ? '' : project.coverage_type_id,
       program_id: project.program_id === null ? '' : project.program_id,
+      sectors: project.impact_sectors,
     };
   }
 
@@ -315,7 +335,7 @@ class ProjectForm extends Form {
               </div>
             ) : (
                 <div>
-                  <div >{this.getStepContent(this.state.activeStep)}</div>
+                  <div >{this.getStepContent(this.state.activeStep, this.state.sectors)}</div>
                   <div>
                     <Button variant={'outlined'} disabled={this.state.activeStep === 0} onClick={this.handleBack} style={classes.button} >
                       Atrás
@@ -334,7 +354,7 @@ class ProjectForm extends Form {
                           Step {this.state.activeStep + 1} already completed
                         </Typography>
                       ) : (
-                          <Button variant="contained" type="submit" color="primary" onClick={this.handleComplete} style={classes.button} startIcon={<SaveIcon />} >
+                          <Button variant="contained" type="submit" color="primary" style={classes.button} startIcon={<SaveIcon />} >
                             {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Guardar'}
                           </Button>
                         ))}

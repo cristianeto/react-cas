@@ -1,6 +1,5 @@
 import React from "react";
-import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
+import { Checkbox, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
@@ -21,7 +20,6 @@ const MyMultiSelect = ({
 }) => {
   let validation;
   error === undefined ? (validation = false) : (validation = true);
-
   return (
     <Autocomplete
       multiple

@@ -55,8 +55,8 @@ class AddProjectForm extends Form {
           </DialogContent>
           <DialogActions>
             <Button variant={'outlined'} onClick={this.props.onClose} color="primary">
-              Cancel
-          </Button>
+              Cancelar
+            </Button>
             {this.renderButton("Guardar")}
           </DialogActions>
         </form>

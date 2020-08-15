@@ -159,6 +159,7 @@ class GroupForm extends Form {
                   "id_dependency",
                   "Facultad",
                   75,
+                  "id_dependency",
                   "name_dependency",
                   dependencies
                 )}
@@ -172,14 +173,15 @@ class GroupForm extends Form {
                 {this.renderMultiSelect(
                   "programs",
                   "Programas",
-                  "id_program",
-                  "name_program",
+                  "id",
+                  "name",
                   programs
                 )}
                 {this.renderSelect(
                   "id_groupType",
-                  "Tipo proyecto",
+                  "Tipo Grupo",
                   115,
+                  "id_groupType",
                   "name_groupType",
                   groupTypes
                 )}
@@ -201,8 +203,8 @@ class GroupForm extends Form {
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
                 <Panel
-                  id="id_program"
-                  property="name_program"
+                  id="id"
+                  property="name"
                   title="Programas"
                   data={this.state.data["programs"]}
                 />
