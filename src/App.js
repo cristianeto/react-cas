@@ -12,6 +12,7 @@ import UserForm from "./Components/user/userForm";
 import Users from "./Components/user/users";
 import Welcome from "./Components/welcome";
 import Projects from "./Components/project/projects";
+import Members from "./Components/member/members";
 import Dependencies from "./Components/dependency/dependencies";
 import DependencyForm from "./Components/dependency/dependencyForm";
 import meProfile from "./Components/user/meProfile";
@@ -125,6 +126,7 @@ class App extends Component {
           {/* <Route path="/login" component={LoginForm} />
                 <Route path="/customers" component={Customers} />
               <Route path="/rentals" component={Rentals} /> */}
+          <Route path="/proyecto/:id/miembros" exact component={Members} />
           <Route path="/proyecto/:id" exact component={Project} />
           <Route path="/proyectos" exact component={Projects} />
           {auth.getCurrentUser() !== null && (

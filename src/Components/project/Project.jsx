@@ -32,7 +32,7 @@ class Project extends Component {
         />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
-            <Paper style={classes.paper}>
+            <Paper style={classes.paper} elevation={10} >
               <ProjectForm
                 projectId={this.props.match.params.id}
                 history={this.props.history}

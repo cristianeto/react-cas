@@ -1,9 +1,10 @@
 import http from "./httpService";
 
-const apiEndpoint = "/usersroles";
+const apiEndpoint1 = "/users";
+const apiEndpoint2 = "/roles";
 
 function userRoleUrl(id) {
-  return `${apiEndpoint}/${id}`;
+  return `${apiEndpoint1}/${id}${apiEndpoint2}`;
 }
 
 export function getRolesByUser(userId) {

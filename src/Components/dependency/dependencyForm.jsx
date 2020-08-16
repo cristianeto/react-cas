@@ -156,6 +156,7 @@ class DependencyForm extends Form {
                   "id_dependencyType",
                   "Tipo de dependencia",
                   160,
+                  "id_dependencyType",
                   "name_dependencyType",
                   dependencyTypes
                 )}

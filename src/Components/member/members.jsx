@@ -1,0 +1,126 @@
+import React, { Component, Fragment } from "react";
+import { withSnackbar } from "notistack";
+import Breadcum from "../common/breadcum";
+import MembersTable from "./membersTable";
+//import { getDependencies } from "../../services/dependencyService";
+import { getMembers } from "../../services/memberService";
+import { Container, Button } from "@material-ui/core";
+
+class Members extends Component {
+  state = {
+    members: [],
+    //dependencies: [],
+    isLoading: false,
+  };
+
+  async componentDidMount() {
+    this.setState({ isLoading: true });
+    //const { data: dependencies } = await getDependencies();
+    //const dependencies = [{ name: "All Movies", _id: "" }, ...data];
+    const { data: members } = await getMembers('157c5456-9880-11ea-bb37-0242ac130002');
+
+    this.setState({ members, isLoading: false });
+  }
+
+  // getGroup(id) {
+  //   return this.state.groups.find((g) => g.id_group === id);
+  // }
+  // handleActive = async (idGroup) => {
+  //   const originalGroups = this.state.groups;
+  //   const group = this.getGroup(idGroup);
+  //   const groups = [...this.state.groups];
+  //   const index = groups.indexOf(group);
+  //   groups[index] = { ...groups[index] };
+  //   if (groups[index].active_group === 1) {
+  //     groups[index].active_group = 0;
+  //   } else if (groups[index].active_group === 0) {
+  //     groups[index].active_group = 1;
+  //   } else {
+  //     groups[index].active_group = 3;
+  //   }
+  //   this.setState({ groups });
+  //   // groups[index].active_group = !groups[index].active_group;
+  //   try {
+  //     await saveGroup(groups[index]);
+  //   } catch (ex) {
+  //     if (ex.response && ex.response.status === 404) console.log("x");
+  //     this.props.enqueueSnackbar(`${ex.response.data.message}`);
+  //     this.setState({ groups: originalGroups });
+  //   }
+  // };
+
+  // handleUndo(groupsToDelete, originalGroups) {
+  //   const action = (key) => (
+  //     <Fragment>
+  //       <Button
+  //         onClick={() => {
+  //           //this.setState({ groups: originalGroups });
+  //           this.props.closeSnackbar(key);
+  //         }}
+  //         style={{ color: "#fff" }}
+  //       >
+  //         ACEPTAR
+  //       </Button>
+  //     </Fragment>
+  //   );
+  //   const lenghtArray = groupsToDelete.length;
+  //   const mensaje =
+  //     lenghtArray === 1
+  //       ? `Registro eliminado`
+  //       : `${lenghtArray} registros eliminados`;
+  //   this.props.enqueueSnackbar(mensaje, {
+  //     autoHideDuration: 3000,
+  //     action,
+  //   });
+  // }
+
+  // handleDelete = async (groupsToDelete) => {
+  //   const originalGroups = this.state.groups;
+  //   const groups = originalGroups.filter(
+  //     (group) => !groupsToDelete.includes(group)
+  //   );
+  //   this.setState({ groups });
+  //   groupsToDelete.forEach(async (group) => {
+  //     try {
+  //       await deleteGroup(group.id_group);
+  //       this.handleUndo(groupsToDelete, originalGroups);
+  //     } catch (ex) {
+  //       if (ex.response && ex.response.status === 404) console.log(ex);
+  //       this.props.enqueueSnackbar(`${ex.response.data.message}`, {
+  //         variant: "error",
+  //       });
+  //       this.setState({ groups: originalGroups });
+  //     }
+  //   });
+  // };
+
+  render() {
+    const listBreadcrumbs = [
+      {
+        path: "/",
+        label: "Inicio",
+      },
+    ];
+    const classes = {
+      table: {
+        padding: "2em",
+        color: "secondary",
+      },
+    };
+    return (
+      <Container maxWidth="xl">
+        <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupos"} />
+        <MembersTable
+          datas={this.state.members}
+          //onGetGroup={this.getGroup}
+          onLoading={this.state.isLoading}
+          onActive={this.handleActive}
+          style={classes.table}
+          onDelete={this.handleDelete}
+        />
+      </Container>
+    );
+  }
+}
+
+export default withSnackbar(Members);

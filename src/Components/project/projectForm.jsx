@@ -1,22 +1,18 @@
 import React from 'react';
 import Joi from "@hapi/joi";
+import Form from '../common/form';
 import { withSnackbar } from "notistack";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Form from '../common/form';
+import { Stepper, Step, StepButton, Button, Typography, LinearProgress } from '@material-ui/core';
 import { getProject, saveProject } from "../../services/projectService";
 import { getProjectTypes } from "../../services/projectTypeService";
 import { getResearchTypes } from "../../services/researchTypeService";
 import { getCoverageTypes } from "../../services/coverageTypeService";
 import { getPrograms } from "../../services/programService";
 import { getSectors } from "../../services/sectorService";
+import { getUsers } from "../../services/userService";
 import { messages } from "../common/es_ES";
-import { LinearProgress } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
 
@@ -36,12 +32,14 @@ class ProjectForm extends Form {
         coverage_type_id: "",
         program_id: "",
         sectors: [],
+        users: [],
       },
       projectTypes: [],
       researchTypes: [],
       coverageTypes: [],
       programs: [],
       sectors: [],
+      users: [],
       errors: {},
       isLoading: false,
 
@@ -55,7 +53,7 @@ class ProjectForm extends Form {
   }
 
   getStepContent = (step) => {
-    const { isLoading, projectTypes, researchTypes, coverageTypes, programs, sectors } = this.state;
+    const { isLoading, projectTypes, researchTypes, coverageTypes, programs, sectors, users } = this.state;
     switch (step) {
       case 0:
 
@@ -140,7 +138,9 @@ class ProjectForm extends Form {
           {this.renderTextarea("name", "Nombre")}
         </React.Fragment>);
       case 2:
-        return 'Step 3: This is the bit I really care about!';
+        return (<React.Fragment>
+          {this.renderMultiSelect("users", "Miembros proyecto", "id", "fullname", users)}
+        </React.Fragment>);
       case 3:
         return 'Step 4: Presupuesto';
       default:
@@ -160,6 +160,7 @@ class ProjectForm extends Form {
     coverage_type_id: Joi.string().label("Tipo cobertura").min(36).max(36).messages(messages),
     program_id: Joi.string().label("Programa").min(36).max(36).messages(messages),
     sectors: Joi.array().label("Sectores impacto").min(1).messages(messages),
+    users: Joi.array().label("Miembros Proyecto").min(1).messages(messages),
   });
 
   async populateProjectTypes() {
@@ -186,6 +187,11 @@ class ProjectForm extends Form {
     this.setState({ sectors });
   }
 
+  async populateUsers() {
+    const { data: users } = await getUsers();
+    this.setState({ users });
+  }
+
   async populateProject() {
     try {
       const projectId = this.props.projectId; //Pasando por URL id movie
@@ -208,6 +214,7 @@ class ProjectForm extends Form {
     await this.populateCoverageTypes();
     await this.populatePrograms();
     await this.populateSectors();
+    await this.populateUsers();
     await this.populateProject();
     if (this._isMounted) this.setState({ isLoading: false });
   }
@@ -226,6 +233,7 @@ class ProjectForm extends Form {
       coverage_type_id: project.coverage_type_id === null ? '' : project.coverage_type_id,
       program_id: project.program_id === null ? '' : project.program_id,
       sectors: project.impact_sectors,
+      users: project.users,
     };
   }
 

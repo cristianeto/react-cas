@@ -1,12 +1,20 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import { NavLink } from "react-router-dom";
+import AddIcon from "@material-ui/icons/Add";
+import { Button } from '@material-ui/core';
 
-const ButtonAdd = (props) => {
+const ButtonAdd = props => {
   return (
     <React.Fragment>
-      <Button variant="contained" color="primary">
-        Nuevo proyecto
-      </Button>
+      <NavLink to={`/${props.entity}/new`} style={{ textDecoration: "none" }}>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+        >
+          Agregar {props.entity}
+        </Button>
+      </NavLink>
     </React.Fragment>
   );
 };

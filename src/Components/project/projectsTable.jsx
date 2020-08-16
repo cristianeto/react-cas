@@ -5,8 +5,8 @@ import { TEXT_LABELS } from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import AddIcon from '@material-ui/icons/Add';
+import { Button, Tooltip } from "@material-ui/core";
+import { Add as AddIcon, People as PeopleIcon } from '@material-ui/icons';
 
 class ProjectsTable extends Component {
   state = {
@@ -49,6 +49,14 @@ class ProjectsTable extends Component {
       {
         name: "id",
         label: "id",
+        options: {
+          filter: false,
+          display: "excluded",
+        },
+      },
+      {
+        name: "updated_at",
+        label: "Fecha Actualización",
         options: {
           filter: false,
           display: "excluded",
@@ -120,6 +128,62 @@ class ProjectsTable extends Component {
           sort: true,
         },
       },
+      {
+        name: "users",
+        label: "Miembros",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value, tableMeta) => {
+            let fullnames = value.map(v =>
+              v.fullname
+            )
+            return (
+              <React.Fragment>
+                {fullnames.join(", ")}
+              </React.Fragment>
+            );
+          },
+        },
+      },
+      {
+        name: "human_updated_at",
+        label: "Última Actualización",
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (value, tableMeta) => {
+            return (
+              <Tooltip title={`${tableMeta.rowData[1]}`} style={{ cursor: "pointer" }}>
+                <span
+                >
+                  {`${value}`}
+                </span>
+              </Tooltip>
+            );
+          },
+        },
+      },
+      {
+        name: "",
+        label: "Acciones",
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (value, tableMeta) => {
+            return (
+              <Link
+                style={{ textDecoration: "none" }}
+                to={`/proyecto/${tableMeta.rowData[0]}/miembros`}
+              >
+                <Tooltip title="Miembros" style={{ cursor: "pointer" }}>
+                  <PeopleIcon />
+                </Tooltip>
+              </Link>
+            );
+          },
+        },
+      },
     ];
     const options = {
       /* search: false,
@@ -127,10 +191,11 @@ class ProjectsTable extends Component {
       download: false,
       filter: false,
       viewColumns: false, */
+      enableNestedDataAccess: [],
       sort: true,
       filterType: "dropdown",
       responsive: "scroll",
-      rowsPerPage: 10,
+      rowsPerPage: 20,
       rowsPerPageOptions: [5, 10, 20],
       textLabels: TEXT_LABELS,
       //selectableRows: "single",
