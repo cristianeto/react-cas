@@ -10,6 +10,8 @@ export const messages = {
   'number.positive': `{#label} debe ser un número positivo`,
   'array.base': `{#label} debe ser de tipo 'array'`,
   'array.empty': `{#label} es obligatorio`,
+  'array.min': `{#label} mínimo un elemento`,
+  'array.max': `{#label} máximo un elemento`,
 
   'date.base': '{{#label}} debe ser una fecha válida',
   'date.format': '{{#label}} must be in {msg("date.format." + #format) || #format} format',

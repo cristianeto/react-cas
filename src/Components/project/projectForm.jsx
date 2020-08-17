@@ -14,7 +14,9 @@ import { getSectors } from "../../services/sectorService";
 import { getUsers } from "../../services/userService";
 import { messages } from "../common/es_ES";
 import SaveIcon from "@material-ui/icons/Save";
-
+import Breadcrumb from "../common/breadcum";
+import { Container, Paper, Grid } from "@material-ui/core";
+import Panel from '../common/panel';
 
 class ProjectForm extends Form {
   constructor(props) {
@@ -53,10 +55,9 @@ class ProjectForm extends Form {
   }
 
   getStepContent = (step) => {
-    const { isLoading, projectTypes, researchTypes, coverageTypes, programs, sectors, users } = this.state;
+    const { isLoading, projectTypes, researchTypes, coverageTypes, programs, sectors } = this.state;
     switch (step) {
       case 0:
-
         return (<React.Fragment>
           {isLoading && <LinearProgress color="secondary" />}
           {/* <form onSubmit={this.handleSubmit}> */}
@@ -139,7 +140,7 @@ class ProjectForm extends Form {
         </React.Fragment>);
       case 2:
         return (<React.Fragment>
-          {this.renderMultiSelect("users", "Miembros proyecto", "id", "fullname", users)}
+          3er Componente
         </React.Fragment>);
       case 3:
         return 'Step 4: Presupuesto';
@@ -320,58 +321,109 @@ class ProjectForm extends Form {
         marginTop: '1em',
         marginBottom: '1em',
       },
+      paper: {
+        padding: "2em",
+        color: "secondary",
+      },
     }
+    const listBreadcrumbs = [
+      {
+        path: "/",
+        label: "Inicio",
+      },
+      {
+        path: "/proyectos",
+        label: "Proyectos",
+      },
+    ];
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className={classes.root} >
-          <Stepper nonLinear activeStep={this.state.activeStep}>
-            {this.steps.map((label, index) => (
-              <Step key={label}>
-                <StepButton onClick={this.handleStep(index)} completed={this.state.completed[index]}>
-                  {label}
-                </StepButton>
-              </Step>
-            ))}
-          </Stepper>
-          <div>
-            {this.allStepsCompleted() ? (
-              <div>
-                <Typography>
-                  All steps completed - you&apos;re finished
-            </Typography>
-                <Button onClick={this.handleReset}>Reset</Button>
-              </div>
-            ) : (
-                <div>
-                  <div >{this.getStepContent(this.state.activeStep, this.state.sectors)}</div>
+      <Container maxWidth="lg">
+        <Breadcrumb
+          onListBreadcrumbs={listBreadcrumbs}
+          lastLabel={"Proyecto"}
+        />
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={7} md={8}>
+            <Paper style={classes.paper} elevation={10} >
+              <form onSubmit={this.handleSubmit}>
+                <div className={classes.root} >
+                  <Stepper nonLinear activeStep={this.state.activeStep}>
+                    {this.steps.map((label, index) => (
+                      <Step key={label}>
+                        <StepButton onClick={this.handleStep(index)} completed={this.state.completed[index]}>
+                          {label}
+                        </StepButton>
+                      </Step>
+                    ))}
+                  </Stepper>
                   <div>
-                    <Button variant={'outlined'} disabled={this.state.activeStep === 0} onClick={this.handleBack} style={classes.button} >
-                      Atrás
-                  </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleNext}
-                      style={classes.button}
-                    >
-                      Siguiente
-              </Button>
-                    {this.state.activeStep !== this.steps.length &&
-                      (this.state.completed[this.state.activeStep] ? (
-                        <Typography variant="caption">
-                          Step {this.state.activeStep + 1} already completed
-                        </Typography>
-                      ) : (
-                          <Button variant="contained" type="submit" color="primary" style={classes.button} startIcon={<SaveIcon />} >
-                            {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Guardar'}
-                          </Button>
-                        ))}
+                    {this.allStepsCompleted() ? (
+                      <div>
+                        <Typography>
+                          All steps completed - you&apos;re finished
+            </Typography>
+                        <Button onClick={this.handleReset}>Reset</Button>
+                      </div>
+                    ) : (
+                        <div>
+                          <div >{this.getStepContent(this.state.activeStep, this.state.sectors)}</div>
+                          <div>
+                            <Button variant={'outlined'} disabled={this.state.activeStep === 0} onClick={this.handleBack} style={classes.button} >
+                              Atrás
+                            </Button>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={this.handleNext}
+                              style={classes.button}
+                            >
+                              Siguiente
+                            </Button>
+                            {this.state.activeStep !== this.steps.length &&
+                              (this.state.completed[this.state.activeStep] ? (
+                                <Typography variant="caption">
+                                  Step {this.state.activeStep + 1} already completed
+                                </Typography>
+                              ) : (
+                                  <Button variant="contained" type="submit" color="primary" style={classes.button} startIcon={<SaveIcon />} >
+                                    {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Guardar'}
+                                  </Button>
+                                ))}
+                          </div>
+                        </div>
+                      )}
                   </div>
                 </div>
-              )}
-          </div>
-        </div>
-      </form >
+              </form >
+
+            </Paper>
+          </Grid>
+          <Grid container item xs={12} sm={5} md={4} spacing={3}>
+            <Grid item xs={12} sm={12}>
+              <Paper style={classes.paper}>
+                {/* <Panel
+                  title="Miembros"
+                  projectId={this.state.data.id}
+                  data={this.state.data.users}
+                /> */}
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Paper style={classes.paper}>
+                {/* <Panel
+                  id="id_program"
+                  property="name_program"
+                  title="Programas"
+                  data={this.state.data["id_program"]}
+                /> */}
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Paper style={classes.paper}></Paper>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Container>
     )
   }
 
