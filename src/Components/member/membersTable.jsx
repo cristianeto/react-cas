@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { TEXT_LABELS } from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -36,8 +35,7 @@ class MembersTable extends Component {
     }
   };
   render() {
-    const roles = this.props.roles;
-    const { members, onLoading } = this.props
+    const { members, roles, onLoading, onChange, onDelete } = this.props
     const columns = [
       {
         name: 'count',
@@ -54,6 +52,14 @@ class MembersTable extends Component {
         options: {
           filter: false,
           display: "excluded",
+        },
+      },
+      {
+        name: "project.slug",
+        label: "Slug",
+        options: {
+          filter: false,
+          display: "excluded"
         },
       },
       {
@@ -78,16 +84,6 @@ class MembersTable extends Component {
         options: {
           filter: true,
           sort: true,
-          /* customBodyRender: (value, tableMeta) => {
-            return (
-              <Link
-                style={{ textDecoration: "none" }}
-                to={`/usuario/${tableMeta.rowData[2]}`}
-              >
-                {value}
-              </Link>
-            );
-          }, */
         },
       },
       {
@@ -98,7 +94,7 @@ class MembersTable extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
-              <Tooltip title={`${tableMeta.rowData[3]}`} style={{ cursor: "pointer" }}>
+              <Tooltip title={`${tableMeta.rowData[4]}`} style={{ cursor: "pointer" }}>
                 <span
                 >
                   {`${value}`}
@@ -121,10 +117,11 @@ class MembersTable extends Component {
                 options={roles}
                 getOptionLabel={(role) => role.name
                 }
+                disableClearable
                 style={{ width: 300 }}
                 value={value}
                 getOptionSelected={(role, value) => { return (role.id === value.id) }}
-                onChange={(event, newValue) => this.props.onChange(event, newValue, 'role_id', tableMeta.rowData[0], tableMeta.rowData[1])}
+                onChange={(event, newValue) => onChange(event, newValue, 'role_id', tableMeta.rowData[2], tableMeta.rowData[3])}
                 renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Elije el rol" variant="outlined" style={{ margin: '.25em' }} />}
               />
             )
@@ -139,34 +136,13 @@ class MembersTable extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
-              <Link
-                style={{ textDecoration: "none" }}
-                to={`/proyecto/${tableMeta.rowData[0]}/miembros`}
-              >
-                <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
-                  <DeleteIcon />
-                </Tooltip>
-              </Link>
+              <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
+                <DeleteIcon onClick={() => onDelete(tableMeta.rowData[2], tableMeta.rowData[3])} />
+              </Tooltip>
             );
           },
         },
       },
-      /*       {
-              name: "active_group",
-              label: "Estado",
-              options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta) => {
-                  return (
-                    <Active
-                      actived={value}
-                      onClick={() => this.props.onActive(tableMeta.rowData[0])}
-                    />
-                  );
-                },
-              },
-            }, */
     ];
     const options = {
       filterType: "dropdown",
@@ -179,11 +155,11 @@ class MembersTable extends Component {
       /* onRowClick: (rowData) => {
         console.log("RowClicked->", rowData);
       }, */
-      onRowsDelete: (rowsDeleted) => {
-        const items = members; //lista de todos los proyectos
-        const itemsToDelete = rowsDeleted.data.map((item) => items[item.dataIndex]); //Array de todos los proyectos a borrar.
-        this.props.onDelete(itemsToDelete);
-      },
+      /*  onRowsDelete: (rowsDeleted) => {
+         const items = members; //lista de todos los proyectos
+         const itemsToDelete = rowsDeleted.data.map((item) => items[item.dataIndex]); //Array de todos los proyectos a borrar.
+         this.props.onDelete(itemsToDelete);
+       }, */
     };
 
 

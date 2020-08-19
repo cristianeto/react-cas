@@ -3,7 +3,7 @@ import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
-import Panel from "../common/panel";
+import Panel from "../common/panelMember";
 
 import { getDependencies } from "../../services/dependencyService";
 import { getGroupTypes } from "../../services/groupTypeService";

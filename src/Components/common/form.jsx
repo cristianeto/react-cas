@@ -197,12 +197,16 @@ class Form extends Component {
   }
 
   successMessage() {
-    this.props.enqueueSnackbar(`Registro guardado correctamente!`);
+    this.props.enqueueSnackbar(`Registro guardado correctamente!`, {
+      variant: 'success'
+    });
   }
 
   errorMessage(ex) {
-    console.error("Error Message: ", ex)
-    //this.props.enqueueSnackbar(`${ex.response.data.message}`);
+    //console.error("Error Message: ", ex)
+    this.props.enqueueSnackbar(`${ex.response.data.message}`, {
+      variant: "error"
+    });
   }
 }
 

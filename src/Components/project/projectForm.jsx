@@ -16,6 +16,7 @@ import { messages } from "../common/es_ES";
 import SaveIcon from "@material-ui/icons/Save";
 import Breadcrumb from "../common/breadcum";
 import { Container, Paper, Grid } from "@material-ui/core";
+import PanelMember from '../common/panelMember';
 import Panel from '../common/panel';
 
 class ProjectForm extends Form {
@@ -24,6 +25,7 @@ class ProjectForm extends Form {
     this.state = {
       data: {
         name: "",
+        slug: "",
         startDate: "",
         endDate: "",
         endDateReal: "",
@@ -35,13 +37,13 @@ class ProjectForm extends Form {
         program_id: "",
         sectors: [],
         users: [],
+
       },
       projectTypes: [],
       researchTypes: [],
       coverageTypes: [],
       programs: [],
       sectors: [],
-      users: [],
       errors: {},
       isLoading: false,
 
@@ -151,6 +153,7 @@ class ProjectForm extends Form {
   schema = Joi.object({
     id: Joi.string().guid({ version: ["uuidv1"] }),
     name: Joi.string().label("Nombre").max(500).messages(messages),
+    slug: Joi.string().label("Slug").max(60).messages(messages),
     startDate: Joi.date().label("Fecha Inicio"),
     endDate: Joi.date().label("Fecha Fin"),
     endDateReal: Joi.date().allow("", null).label("Fecha Final Real"),
@@ -161,7 +164,7 @@ class ProjectForm extends Form {
     coverage_type_id: Joi.string().label("Tipo cobertura").min(36).max(36).messages(messages),
     program_id: Joi.string().label("Programa").min(36).max(36).messages(messages),
     sectors: Joi.array().label("Sectores impacto").min(1).messages(messages),
-    users: Joi.array().label("Miembros Proyecto").min(1).messages(messages),
+    users: Joi.array().label("Usuarios").allow('').messages(messages),
   });
 
   async populateProjectTypes() {
@@ -187,7 +190,6 @@ class ProjectForm extends Form {
     const { data: sectors } = await getSectors();
     this.setState({ sectors });
   }
-
   async populateUsers() {
     const { data: users } = await getUsers();
     this.setState({ users });
@@ -195,10 +197,10 @@ class ProjectForm extends Form {
 
   async populateProject() {
     try {
-      const projectId = this.props.projectId; //Pasando por URL id movie
-      //const projectId = this.props.match.params.id; //Pasando por URL id movie
-      if (projectId === "new") return; //Si si
-      const { data: project } = await getProject(projectId); //Si no.
+      //const projectSlug = this.props.projectSlug; //Pasando por URL id movie
+      const projectSlug = this.props.match.params.slug; //Pasando por URL id movie
+      if (projectSlug === "new") return; //Si si
+      const { data: project } = await getProject(projectSlug); //Si no.
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
       if (ex.response && ex.response.status === 404) this.errorMessage(ex);
@@ -224,6 +226,7 @@ class ProjectForm extends Form {
     return {
       id: project.id,
       name: project.name,
+      slug: project.slug,
       startDate: project.startDate === null ? '' : project.startDate,
       endDate: project.endDate === null ? '' : project.endDate,
       endDateReal: project.endDateReal === null ? '' : project.endDateReal,
@@ -237,12 +240,18 @@ class ProjectForm extends Form {
       users: project.users,
     };
   }
+  handleChangeSlug(res) {
+    const data = { ...this.state.data }
+    data.slug = res.data.slug
+    this.setState({ data })
+  }
 
   doSubmit = async () => {
     try {
-      await saveProject(this.state.data);
+      const res = await saveProject(this.state.data);
+      this.handleChangeSlug(res);
       this.successMessage();
-      // this.props.history.push("/proyectos");
+      this.props.history.push(`/proyecto/${res.data.slug}`);
     } catch (ex) {
       this.errorMessage(ex);
     }
@@ -401,21 +410,21 @@ class ProjectForm extends Form {
           <Grid container item xs={12} sm={5} md={4} spacing={3}>
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
-                {/* <Panel
+                <PanelMember
                   title="Miembros"
-                  projectId={this.state.data.id}
+                  projectSlug={this.state.data.slug}
                   data={this.state.data.users}
-                /> */}
+                />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
-                {/* <Panel
+                <Panel
                   id="id_program"
                   property="name_program"
                   title="Programas"
                   data={this.state.data["id_program"]}
-                /> */}
+                />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>

@@ -24,7 +24,7 @@ class AddProjectForm extends Form {
   schema = Joi.object({
     id: Joi.string().guid({ version: ["uuidv1"] }),
     name: Joi.string().label("Nombre").max(500).messages(messages),
-
+    slug: Joi.string().label("Slug").max(500).messages(messages),
   });
 
   doSubmit = async () => {
@@ -32,7 +32,7 @@ class AddProjectForm extends Form {
       const res = await saveProject(this.state.data);
       this.props.onClose();
       this.successMessage();
-      this.props.history.push("/proyecto/" + res.data.id);
+      this.props.history.push("/proyecto/" + res.data.slug);
     } catch (ex) {
       //console.error(ex);
       this.errorMessage(ex);

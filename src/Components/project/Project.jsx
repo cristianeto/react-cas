@@ -8,7 +8,7 @@ class Project extends Component {
     return (
 
       <ProjectForm
-        projectId={this.props.match.params.id}
+        projectSlug={this.props.match.params.slug}
         history={this.props.history}
       />
     );

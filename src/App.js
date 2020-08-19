@@ -7,7 +7,7 @@ import NavBar from "./Components/navBar";
 import NotFound from "./Components/notFound";
 import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
-import Project from "./Components/project/project";
+import ProjectForm from "./Components/project/projectForm";
 import UserForm from "./Components/user/userForm";
 import Users from "./Components/user/users";
 import Welcome from "./Components/welcome";
@@ -126,8 +126,8 @@ class App extends Component {
           {/* <Route path="/login" component={LoginForm} />
                 <Route path="/customers" component={Customers} />
               <Route path="/rentals" component={Rentals} /> */}
-          <Route path="/proyecto/:id/miembros" exact component={Members} />
-          <Route path="/proyecto/:id" exact component={Project} />
+          <Route path="/proyecto/:slug/miembros" exact component={Members} />
+          <Route path="/proyecto/:slug" exact component={ProjectForm} />
           <Route path="/proyectos" exact component={Projects} />
           {auth.getCurrentUser() !== null && (
             <Route path="/mi/perfil" component={meProfile} />

@@ -2,26 +2,26 @@ import http from "./httpService";
 
 const apiEndpoint = "/projects";
 
-function projectUrl(id) {
-  return `${apiEndpoint}/${id}`;
+function projectUrl(slug) {
+  return `${apiEndpoint}/${slug}`;
 }
 
 export function getProjects() {
   return http.get(apiEndpoint);
 }
-export function getProject(projectId) {
-  return http.get(projectUrl(projectId));
+export function getProject(projectSlug) {
+  return http.get(projectUrl(projectSlug));
 }
 
 export function saveProject(project) {
-  if (project.id) {
+  if (project.slug) {
     const body = { ...project };
-    delete body.id;
-    return http.put(projectUrl(project.id), body);
+    //delete body.slug;
+    return http.put(projectUrl(project.slug), body);
   }
   return http.post(apiEndpoint, project);
 }
 
-export function deleteProject(projectId) {
-  return http.delete(projectUrl(projectId));
+export function deleteProject(projectSlug) {
+  return http.delete(projectUrl(projectSlug));
 }

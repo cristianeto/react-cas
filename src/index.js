@@ -14,7 +14,7 @@ const onClickDismiss = (key) => () => {
 
 ReactDOM.render(
   <SnackbarProvider
-    preventDuplicate
+    //preventDuplicate
     maxSnack={3}
     ref={notistackRef}
     action={(key) => (
