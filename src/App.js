@@ -4,7 +4,8 @@ import { withSnackbar } from "notistack";
 import cas from "./services/casService";
 import auth from "./services/authService";
 import NavBar from "./Components/navBar";
-import NotFound from "./Components/notFound";
+import NotFound from "./Components/error/notFound";
+import NotAuthorized from "./Components/error/notAuthorized";
 import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
 import ProjectForm from "./Components/project/projectForm";
@@ -126,6 +127,7 @@ class App extends Component {
           {/* <Route path="/login" component={LoginForm} />
                 <Route path="/customers" component={Customers} />
               <Route path="/rentals" component={Rentals} /> */}
+          <Route path="/" exact component={Welcome} />
           <Route path="/proyecto/:slug/miembros" exact component={Members} />
           <Route path="/proyecto/:slug" exact component={ProjectForm} />
           <Route path="/proyectos" exact component={Projects} />
@@ -137,15 +139,16 @@ class App extends Component {
           {this.state.selectedRole.id === 1 && (
             <Route path="/usuarios" component={Users} />
           )}
-          <Route path="/" exact component={Welcome} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/dependencias" component={Dependencies} />
           <Route path="/dependencia/:id" component={DependencyForm} />
           <Route path="/grupos-investigacion" component={Groups} />
           <Route path="/grupo/:id" component={GroupForm} />
           <Route path="/not-found" component={NotFound} />
+          <Route path="/not-authorized" component={NotAuthorized} />
           {/* <Redirect from="/" exact to="/" /> */}
           <Redirect to="/not-found" />
+          <Redirect to="/not-authorized" />
         </Switch>
       </div>
     );

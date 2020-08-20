@@ -203,8 +203,11 @@ class ProjectForm extends Form {
       const { data: project } = await getProject(projectSlug); //Si no.
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
-      if (ex.response && ex.response.status === 404) this.errorMessage(ex);
-      this.props.history.replace("/not-found");
+      if (ex.response && ex.response.status === 404) {
+        this.errorMessage(ex);
+        this.props.history.replace("/not-found");
+      } else if (ex.response.status === 403)
+        this.props.history.replace("/not-authorized");
     }
   }
 
@@ -420,10 +423,10 @@ class ProjectForm extends Form {
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
                 <Panel
-                  id="id_program"
-                  property="name_program"
-                  title="Programas"
-                  data={this.state.data["id_program"]}
+                  id="id"
+                  property="name"
+                  title="Sectores de Impacto"
+                  data={this.state.data["sectors"]}
                 />
               </Paper>
             </Grid>

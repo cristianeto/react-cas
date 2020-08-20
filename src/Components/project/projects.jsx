@@ -97,11 +97,15 @@ class Projects extends Component {
         variant: 'success'
       });
     } catch (ex) {
-      if (ex.response && ex.response.status === 404)
+      if (ex.response && ex.response.status === 404) {
         this.props.enqueueSnackbar(`${ex.response.data.message}`, {
           variant: "error"
         });
-
+      } else if (ex.response.status === 403) {
+        this.props.enqueueSnackbar(`Operación no autorizada`, {
+          variant: "error"
+        });
+      }
       this.setState({ projects: originalProjects });
     }
   }
