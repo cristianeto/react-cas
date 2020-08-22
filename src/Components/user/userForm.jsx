@@ -22,6 +22,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import TitleForm from '../common/titleForm';
 import { getRoles } from '../../services/roleService';
+import CheckboxesGroup from './userRoles';
 
 class UserForm extends Form {
   state = {
@@ -35,6 +36,7 @@ class UserForm extends Form {
       projects: [],
       permissions: [],
     },
+    rolesChecked: [],
     roles: [],
     errors: {},
     isLoading: false,
@@ -53,10 +55,6 @@ class UserForm extends Form {
       .label("Correo")
       .max(100),
   });
-  async populateRoles() {
-    const { data: roles } = await getRoles();
-    this.setState({ roles });
-  }
 
   async populateUser() {
     try {
@@ -70,10 +68,25 @@ class UserForm extends Form {
     }
   }
 
+  async populateRoles() {
+    const { data: roles } = await getRoles();
+    this.setState({ roles });
+  }
+
+  populateCheckedRoles() {
+    const roles = [...this.state.roles]
+    const rolesUser = [...this.state.data.roles];
+    roles.map((role) => rolesUser.filter(r => r.id === role.id).length > 0 ? role.isChecked = true : role.isChecked = false);
+    this.setState({ rolesChecked: roles });
+    console.log("populateRoles: ", this.state.rolesChecked);
+
+  }
+
   async componentDidMount() {
     this.setState({ isLoading: true });
-    await this.populateRoles();
     await this.populateUser();
+    await this.populateRoles();
+    this.populateCheckedRoles();
     this.setState({ isLoading: false });
   }
 
@@ -112,12 +125,23 @@ class UserForm extends Form {
     }
   };
 
+  getRole(id) {
+    return this.state.roles.find((rol) => rol.id === id);
+  }
   handleChangeCheckbox = (event) => {
-    console.log(event.target.checked);
+    let roles = [...this.state.roles];
+    roles.map(role => {
+      console.log(role.name, " === ", event.target.value);
+      if (role.name === event.target.value)
+        role.isChecked = event.target.checked
+    })
+    this.setState({ roles })
+    console.log('afterCheck: ', this.state.roles);
+
   }
 
   render() {
-    const { data, isLoading } = this.state;
+    const { data, isLoading, rolesChecked } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -165,30 +189,24 @@ class UserForm extends Form {
                 <FormControl component="fieldset" className={classes.formControl}>
                   <FormLabel component="legend">Asignando roles</FormLabel>
                   <FormGroup>
-                    {this.state.roles.length > 0 ? this.state.roles.map(role => (
-                      /* vendors contains the element we're looking for */
+                    {rolesChecked.map(role =>
                       <FormControlLabel
                         key={role.id}
-                        control={
-                          <Checkbox
-                            checked={data.roles.filter(r => r.id === role.id).length > 0 ? true : false}
-                            onChange={this.handleChangeCheckbox}
-                            name="roles[]" />
-                        }
+                        control={<Checkbox checked={role.isChecked} onChange={(event) => this.handleChangeCheckbox(event)} name={role.name} value={role.name} />}
                         label={role.name}
                       />
-                    ))
-                      :
-                      <ListItem>
-                        <ListItemText
-                          primary={"No tienes asignado un role"}
-                        />
-                      </ListItem>
-                    }
+
+                    )}
                   </FormGroup>
                   <FormHelperText>Se cuidadoso</FormHelperText>
                 </FormControl>
               </div>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6}>
+            <Paper className="paper">
+              <TitleForm entity={"Roles"} isLoading={isLoading} />
+              {/* <CheckboxesGroup></CheckboxesGroup> */}
             </Paper>
           </Grid>
         </Grid>
