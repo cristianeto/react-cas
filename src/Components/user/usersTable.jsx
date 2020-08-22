@@ -63,16 +63,8 @@ class UsersTable extends Component {
         },
       },
       {
-        name: "name",
+        name: "fullname",
         label: "Nombre",
-        options: {
-          filter: true,
-          sort: true,
-        },
-      },
-      {
-        name: "lastname",
-        label: "Apellido",
         options: {
           filter: true,
           sort: true,
@@ -87,6 +79,24 @@ class UsersTable extends Component {
         },
       },
       {
+        name: "roles",
+        label: "Roles",
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (value, tableMeta) => {
+            let nameRoles = value.map(v =>
+              v.name
+            )
+            return (
+              <React.Fragment>
+                {nameRoles.join(", ")}
+              </React.Fragment>
+            );
+          },
+        },
+      },
+      {
         name: "created_at",
         label: "Fecha creación",
         options: {
@@ -95,7 +105,7 @@ class UsersTable extends Component {
         },
       },
       {
-        name: "updated_at",
+        name: "human_updated_at",
         label: "Última actualización",
         options: {
           filter: true,

@@ -137,7 +137,7 @@ class App extends Component {
           <Route path="/usuario/:id" component={UserForm} />
           <Route path="/registrar/:id" component={UserForm} />
           {this.state.selectedRole.id === 1 && (
-            <Route path="/usuarios" component={Users} />
+            <Route path="/usuarios" exact component={Users} />
           )}
           <Route path="/logout" exact component={Logout} />
           <Route path="/dependencias" component={Dependencies} />

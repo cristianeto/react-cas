@@ -69,7 +69,7 @@ class ProjectsTable extends Component {
         label: "slug",
         options: {
           filter: false,
-          //display: "excluded",
+          display: "excluded",
         },
       },
       {
