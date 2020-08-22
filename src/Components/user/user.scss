@@ -26,6 +26,7 @@
     &__data {
       .data__roles{
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
       }
     }

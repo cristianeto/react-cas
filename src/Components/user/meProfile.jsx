@@ -3,9 +3,9 @@ import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
-import { getUser, saveUser } from "../../services/userService";
+import { getUser } from "../../services/userService";
 import auth from "../../services/authService";
-import { Container, Typography, Paper, Grid, Chip, Divider, Button } from "@material-ui/core";
+import { Container, Paper, Grid, Chip, Divider, Button } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -16,6 +16,7 @@ import img_avatar from "../../static/img/img_avatar.png";
 import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from 'react-router-dom';
 import './user.scss';
+import TitleForm from '../common/titleForm';
 
 class meProfile extends Form {
   state = {
@@ -80,25 +81,6 @@ class meProfile extends Form {
     };
   }
 
-  doSubmit = async () => {
-    try {
-      await saveUser(this.state.data);
-      this.successMessage();
-      // this.props.history.push("/usuarios");
-    } catch (ex) {
-      if (ex.response && ex.response.status === 422) {
-        this.errorMessage(ex);
-        const errors = { ...this.state.errors };
-        errors.email = ex.response.data.errors.email;
-        errors.identification_card =
-          ex.response.data.errors.identification_card;
-        this.setState({ errors });
-      } else {
-        this.errorMessage(ex);
-      }
-    }
-  };
-
   render() {
     const listBreadcrumbs = [
       {
@@ -113,7 +95,7 @@ class meProfile extends Form {
         textDecoration: "none",
       },
     };
-    const { data } = this.state;
+    const { data, isLoading } = this.state;
     return (
       <Container maxWidth="xl" id="user">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Mi perfil"} />
@@ -158,21 +140,11 @@ class meProfile extends Form {
                   </Link>
                 </ListItem>
               </List>
-
-              {/* <form onSubmit={this.handleSubmit}>
-                {this.renderInput("identification_card", "C.I.")}
-                {this.renderInput("name", "Nombre")}
-                {this.renderInput("lastname", "Apellido")}
-                {this.renderInput("email", "Correo")}
-                {this.renderButton("Guardar")}
-              </form> */}
             </Paper>
           </Grid>
           <Grid item xs={12} s={12} md={5} xl={5}>
             <Paper className="paper">
-              <Typography variant="h5" gutterBottom>
-                Proyectos
-              </Typography>
+              <TitleForm entity={"Proyectos"} isLoading={isLoading} />
               <Divider />
               <div className={classes.demo}>
                 <List dense={true}>
@@ -215,9 +187,7 @@ class meProfile extends Form {
           <Grid container item xs={12} s={12} md={3} xl={4}>
             <Grid item xs={12}>
               <Paper className="paper">
-                <Typography variant="h5" gutterBottom>
-                  Roles
-                </Typography>
+                <TitleForm entity={"Roles"} isLoading={isLoading} />
                 <Divider />
                 <div className={classes.demo}>
                   <List dense={true}>
@@ -248,9 +218,7 @@ class meProfile extends Form {
             </Grid>
             <Grid item xs={12}>
               <Paper className="paper">
-                <Typography variant="h5" gutterBottom>
-                  Permisos extra
-                </Typography>
+                <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
                 <Divider />
                 <div className={classes.demo}>
                   <List dense={true}>

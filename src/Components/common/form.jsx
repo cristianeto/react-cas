@@ -106,6 +106,7 @@ class Form extends Component {
         color="primary"
         margin="normal"
         startIcon={<SaveIcon />}
+        style={{ width: '100%' }}
       >
         {label}
       </Button>

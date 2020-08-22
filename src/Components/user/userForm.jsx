@@ -5,21 +5,23 @@ import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
 import { getUser, saveUser } from "../../services/userService";
 import {
-  Container,
-  LinearProgress,
-  Typography,
-  Paper,
   Grid,
+  Paper,
+  Divider,
+  Container,
+  FormGroup,
+  FormLabel,
+  Typography,
+  FormControl,
+  FormHelperText,
+  LinearProgress,
+  FormControlLabel,
 } from "@material-ui/core";
-import List from "@material-ui/core/List";
+import Checkbox from '@material-ui/core/Checkbox';
 import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import FolderIcon from "@material-ui/icons/Folder";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Avatar from "@material-ui/core/Avatar";
+import TitleForm from '../common/titleForm';
+import { getRoles } from '../../services/roleService';
 
 class UserForm extends Form {
   state = {
@@ -27,8 +29,13 @@ class UserForm extends Form {
       identification_card: "",
       name: "",
       lastname: "",
+      fullname: "",
       email: "",
+      roles: [],
+      projects: [],
+      permissions: [],
     },
+    roles: [],
     errors: {},
     isLoading: false,
   };
@@ -46,6 +53,10 @@ class UserForm extends Form {
       .label("Correo")
       .max(100),
   });
+  async populateRoles() {
+    const { data: roles } = await getRoles();
+    this.setState({ roles });
+  }
 
   async populateUser() {
     try {
@@ -61,6 +72,7 @@ class UserForm extends Form {
 
   async componentDidMount() {
     this.setState({ isLoading: true });
+    await this.populateRoles();
     await this.populateUser();
     this.setState({ isLoading: false });
   }
@@ -71,7 +83,11 @@ class UserForm extends Form {
       identification_card: user.identification_card,
       name: user.name,
       lastname: user.lastname,
+      fullname: user.fullname,
       email: user.email,
+      roles: user.roles,
+      projects: user.projects,
+      permissions: user.permissions,
     };
   }
 
@@ -96,15 +112,20 @@ class UserForm extends Form {
     }
   };
 
+  handleChangeCheckbox = (event) => {
+    console.log(event.target.checked);
+  }
+
   render() {
+    const { data, isLoading } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
         label: "Inicio",
       },
       {
-        path: "/usuarios",
-        label: "Usuarios",
+        path: "/mi/perfil",
+        label: "Mi perfil",
       },
     ];
 
@@ -117,9 +138,9 @@ class UserForm extends Form {
 
     return (
       <Container maxWidth="lg">
-        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuario"} />
+        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={data.fullname} />
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={7} md={8}>
+          <Grid item xs={12} sm={12} md={6}>
             <Paper style={classes.paper}>
               <Typography variant="h5" gutterBottom>
                 {this.props.match.params.id === "se"
@@ -136,30 +157,37 @@ class UserForm extends Form {
               </form>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={5} md={4}>
-            <Paper style={classes.paper}>
-              <Typography variant="h4" gutterBottom>
-                Perfiles
-              </Typography>
+          <Grid item xs={12} sm={12} md={6}>
+            <Paper className="paper">
+              <TitleForm entity={"Roles"} isLoading={isLoading} />
+              <Divider />
               <div className={classes.demo}>
-                <List dense={true}>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <FolderIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="Administrador"
-                      secondary={"2020-12-28"}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
+                <FormControl component="fieldset" className={classes.formControl}>
+                  <FormLabel component="legend">Asignando roles</FormLabel>
+                  <FormGroup>
+                    {this.state.roles.length > 0 ? this.state.roles.map(role => (
+                      /* vendors contains the element we're looking for */
+                      <FormControlLabel
+                        key={role.id}
+                        control={
+                          <Checkbox
+                            checked={data.roles.filter(r => r.id === role.id).length > 0 ? true : false}
+                            onChange={this.handleChangeCheckbox}
+                            name="roles[]" />
+                        }
+                        label={role.name}
+                      />
+                    ))
+                      :
+                      <ListItem>
+                        <ListItemText
+                          primary={"No tienes asignado un role"}
+                        />
+                      </ListItem>
+                    }
+                  </FormGroup>
+                  <FormHelperText>Se cuidadoso</FormHelperText>
+                </FormControl>
               </div>
             </Paper>
           </Grid>
