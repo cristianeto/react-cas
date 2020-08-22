@@ -18,6 +18,7 @@ import Dependencies from "./Components/dependency/dependencies";
 import DependencyForm from "./Components/dependency/dependencyForm";
 import meProfile from "./Components/user/meProfile";
 import Logout from "./Components/logout";
+import { StylesProvider } from '@material-ui/core/styles';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -106,51 +107,53 @@ class App extends Component {
   render() {
     const { user, roles } = this.state;
     return (
-      <div
-        style={{
-          display: "flex",
-          padding: "5em 2em",
-          backgroundColor: "#f5f5f5",
-          minHeight: "100vh",
-        }}
-      >
-        <NavBar
-          user={user}
-          roles={roles}
-          onLogin={this.handleLogin}
-          onChangeRole={this.handleChangeRole}
-          onLogout={this.handleLogout}
-          selectedRole={this.state.selectedRole}
-        />
+      <StylesProvider injectFirst>
+        <div
+          style={{
+            display: "flex",
+            padding: "5em 2em",
+            backgroundColor: "#f5f5f5",
+            minHeight: "100vh",
+          }}
+        >
+          <NavBar
+            user={user}
+            roles={roles}
+            onLogin={this.handleLogin}
+            onChangeRole={this.handleChangeRole}
+            onLogout={this.handleLogout}
+            selectedRole={this.state.selectedRole}
+          />
 
-        <Switch>
-          {/* <Route path="/login" component={LoginForm} />
+          <Switch>
+            {/* <Route path="/login" component={LoginForm} />
                 <Route path="/customers" component={Customers} />
               <Route path="/rentals" component={Rentals} /> */}
-          <Route path="/" exact component={Welcome} />
-          <Route path="/proyecto/:slug/miembros" exact component={Members} />
-          <Route path="/proyecto/:slug" exact component={ProjectForm} />
-          <Route path="/proyectos" exact component={Projects} />
-          {auth.getCurrentUser() !== null && (
-            <Route path="/mi/perfil" component={meProfile} />
-          )}
-          <Route path="/usuario/:id" component={UserForm} />
-          <Route path="/registrar/:id" component={UserForm} />
-          {this.state.selectedRole.id === 1 && (
-            <Route path="/usuarios" exact component={Users} />
-          )}
-          <Route path="/logout" exact component={Logout} />
-          <Route path="/dependencias" component={Dependencies} />
-          <Route path="/dependencia/:id" component={DependencyForm} />
-          <Route path="/grupos-investigacion" component={Groups} />
-          <Route path="/grupo/:id" component={GroupForm} />
-          <Route path="/not-found" component={NotFound} />
-          <Route path="/not-authorized" component={NotAuthorized} />
-          {/* <Redirect from="/" exact to="/" /> */}
-          <Redirect to="/not-found" />
-          <Redirect to="/not-authorized" />
-        </Switch>
-      </div>
+            <Route path="/" exact component={Welcome} />
+            <Route path="/proyecto/:slug/miembros" exact component={Members} />
+            <Route path="/proyecto/:slug" exact component={ProjectForm} />
+            <Route path="/proyectos" exact component={Projects} />
+            {auth.getCurrentUser() !== null && (
+              <Route path="/mi/perfil" component={meProfile} />
+            )}
+            <Route path="/usuario/:id" component={UserForm} />
+            <Route path="/registrar/:id" component={UserForm} />
+            {this.state.selectedRole.id === 1 && (
+              <Route path="/usuarios" exact component={Users} />
+            )}
+            <Route path="/logout" exact component={Logout} />
+            <Route path="/dependencias" component={Dependencies} />
+            <Route path="/dependencia/:id" component={DependencyForm} />
+            <Route path="/grupos-investigacion" component={Groups} />
+            <Route path="/grupo/:id" component={GroupForm} />
+            <Route path="/not-found" component={NotFound} />
+            <Route path="/not-authorized" component={NotAuthorized} />
+            {/* <Redirect from="/" exact to="/" /> */}
+            <Redirect to="/not-found" />
+            <Redirect to="/not-authorized" />
+          </Switch>
+        </div>
+      </StylesProvider>
     );
   }
 }

@@ -1,24 +1,21 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
-import TitleForm from "../common/titleForm";
 import { getUser, saveUser } from "../../services/userService";
 import auth from "../../services/authService";
-import { Container, Typography, Paper, Grid, Chip, Divider } from "@material-ui/core";
+import { Container, Typography, Paper, Grid, Chip, Divider, Button } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import FolderIcon from "@material-ui/icons/Folder";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Avatar from "@material-ui/core/Avatar";
 import img_avatar from "../../static/img/img_avatar.png";
 import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from 'react-router-dom';
+import './user.scss';
 
 class meProfile extends Form {
   state = {
@@ -30,6 +27,7 @@ class meProfile extends Form {
       email: "",
       roles: [],
       projects: [],
+      permissions: [],
       selectedRole: "",
     },
     errors: {},
@@ -77,6 +75,7 @@ class meProfile extends Form {
       email: user.email,
       roles: user.roles,
       projects: user.projects,
+      permissions: user.permissions,
       selectedRole: auth.getSelectedRole().id
     };
   }
@@ -109,19 +108,6 @@ class meProfile extends Form {
     ];
 
     const classes = {
-      mainPaper: {
-        color: "secondary",
-        borderTop: "5px solid blue"
-      },
-      paper: {
-        padding: "2em 2em 0",
-        color: "secondary",
-      },
-      large: {
-        height: "8em",
-        width: "8em",
-        textAlign: "center",
-      },
       navLink: {
         color: "inherit",
         textDecoration: "none",
@@ -129,22 +115,21 @@ class meProfile extends Form {
     };
     const { data } = this.state;
     return (
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" id="user">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Mi perfil"} />
         <Grid container spacing={3}>
-          <Grid item xs={12} md={3} xl={3}>
-            <Paper style={classes.mainPaper}>
-              <div style={classes.paper}>
-                <TitleForm
-                  entity={"Mi perfil"}
-                  isLoading={this.state.isLoading}
-                />
-                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '1em' }} >
-                  <Avatar alt={this.state.name} src={img_avatar} style={classes.large} />
+          <Grid item xs={12} s={12} md={4} xl={3}>
+            <Paper className="main-paper">
+              <div className="main-paper__content">
+                <div className="main-paper__content_avatar" >
+                  <Avatar alt={data.fullname} src={img_avatar} className="img" />
+                </div>
+                <div className="main-paper__content_name">
+                  {data.name}
                 </div>
               </div>
-              <List component="nav" className={classes.root} aria-label="mailbox folders">
-                <ListItem >
+              <List component="nav" aria-label="roles" className="main-paper__data">
+                <ListItem className="data__roles" >
                   {data.roles.map(role => (
                     (data.selectedRole === role.id) ?
                       <Chip label={role.name} key={role.id} color="primary" style={{ margin: '0.25em' }} />
@@ -153,7 +138,7 @@ class meProfile extends Form {
                   )}
                 </ListItem>
                 <ListItem divider>
-                  <ListItemText primary="# de proyectos:" />
+                  <ListItemText primary="Proyectos:" />
                   <Chip label={data.projects.length} color="primary" />
                 </ListItem>
                 <ListItem divider>
@@ -165,7 +150,15 @@ class meProfile extends Form {
                 <ListItem>
                   <ListItemText primary="E-mail:" secondary={data.email} />
                 </ListItem>
+                <ListItem>
+                  <Link to={`/usuario/${data.id}`} className="link" >
+                    <Button className="btn-edit" variant="contained" color="primary">
+                      Editar
+                    </Button>
+                  </Link>
+                </ListItem>
               </List>
+
               {/* <form onSubmit={this.handleSubmit}>
                 {this.renderInput("identification_card", "C.I.")}
                 {this.renderInput("name", "Nombre")}
@@ -175,15 +168,16 @@ class meProfile extends Form {
               </form> */}
             </Paper>
           </Grid>
-          <Grid item xs={12} md={5} xl={5}>
-            <Paper style={classes.paper}>
+          <Grid item xs={12} s={12} md={5} xl={5}>
+            <Paper className="paper">
               <Typography variant="h5" gutterBottom>
-                Mis proyectos
+                Proyectos
               </Typography>
+              <Divider />
               <div className={classes.demo}>
                 <List dense={true}>
                   {data.projects.length > 0 ? data.projects.map(project => (
-                    <ListItem>
+                    <ListItem divider key={project.id}>
                       <ListItemAvatar>
                         <Avatar>
                           <FolderIcon />
@@ -214,62 +208,66 @@ class meProfile extends Form {
                       />
                     </ListItem>
                   }
-                  <Divider />
                 </List>
               </div>
             </Paper>
           </Grid>
-          <Grid container item xs={12} md={4} xl={4}>
+          <Grid container item xs={12} s={12} md={3} xl={4}>
             <Grid item xs={12}>
-              <Paper style={classes.paper}>
+              <Paper className="paper">
                 <Typography variant="h5" gutterBottom>
-                  Mis roles
-              </Typography>
+                  Roles
+                </Typography>
+                <Divider />
                 <div className={classes.demo}>
                   <List dense={true}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar>
-                          <FolderIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Administrador"
-                        secondary={"2020-12-28"}
-                      />
-                      <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
+                    {data.roles.length > 0 ? data.roles.map(role => (
+                      <ListItem divider key={role.id}>
+                        <ListItemText
+                          primary={role.name}
+                          secondary={role.permissions.length > 0 &&
+                            <React.Fragment>
+                              <span variant="caption">
+                                Permisos: {(role.permissions.map(p => p.name).join(', '))}
+                              </span>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                    ))
+                      :
+                      <ListItem>
+                        <ListItemText
+                          primary={"No tienes asignado un role"}
+                        />
+                      </ListItem>
+                    }
                   </List>
                 </div>
               </Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper style={classes.paper}>
+              <Paper className="paper">
                 <Typography variant="h5" gutterBottom>
-                  Mis permisos
-              </Typography>
+                  Permisos extra
+                </Typography>
+                <Divider />
                 <div className={classes.demo}>
                   <List dense={true}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar>
-                          <FolderIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Administrador"
-                        secondary={"2020-12-28"}
-                      />
-                      <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
+                    {data.permissions.length > 0 ? data.permissions.map(permission => (
+                      <ListItem divider key={permission.id}>
+                        <ListItemText
+                          primary={permission.name}
+                        />
+                      </ListItem>
+                    ))
+                      :
+                      <ListItem>
+                        <ListItemText
+                          primary={"No tienes permisos extra"}
+                        />
+                      </ListItem>
+                    }
                   </List>
                 </div>
               </Paper>

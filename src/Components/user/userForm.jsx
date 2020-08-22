@@ -121,7 +121,7 @@ class UserForm extends Form {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper style={classes.paper}>
-              <Typography variant="h4" gutterBottom>
+              <Typography variant="h5" gutterBottom>
                 {this.props.match.params.id === "se"
                   ? "Registrarse"
                   : "Usuario"}
