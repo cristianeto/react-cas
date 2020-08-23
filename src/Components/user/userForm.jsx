@@ -4,14 +4,16 @@ import { withSnackbar } from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
 import { getUser, saveUser } from "../../services/userService";
+import { getRoles } from '../../services/roleService';
 import { saveRolesByUser } from "../../services/userRolesService";
+import { getPermissions } from '../../services/permissionService';
+import { savePermissionsByUser } from "../../services/userPermissionsService";
 import {
   Grid,
   Paper,
   Divider,
   Container,
   FormGroup,
-  FormLabel,
   Typography,
   FormControl,
   FormHelperText,
@@ -20,7 +22,7 @@ import {
 } from "@material-ui/core";
 import Checkbox from '@material-ui/core/Checkbox';
 import TitleForm from '../common/titleForm';
-import { getRoles } from '../../services/roleService';
+import { messages } from '../common/es_ES';
 
 class UserForm extends Form {
   state = {
@@ -35,7 +37,9 @@ class UserForm extends Form {
       permissions: [],
     },
     rolesChecked: [],
+    permissionsChecked: [],
     roles: [],
+    permissions: [],
     errors: {},
     isLoading: false,
   };
@@ -45,6 +49,7 @@ class UserForm extends Form {
     identification_card: Joi.string().label("C.I.").min(10).max(10),
     name: Joi.string().label("Nombre").max(100),
     lastname: Joi.string().label("Apellido").max(100),
+    fullname: Joi.string().allow('').label("Apellido").max(100),
     email: Joi.string()
       .email({
         minDomainSegments: 2,
@@ -52,6 +57,9 @@ class UserForm extends Form {
       })
       .label("Correo")
       .max(100),
+    roles: Joi.array().label("Roles").allow('').messages(messages),
+    projects: Joi.array().label("Proyectos").allow('').messages(messages),
+    permissions: Joi.array().label("Permissions").allow('').messages(messages),
   });
 
   async populateUser() {
@@ -74,16 +82,39 @@ class UserForm extends Form {
   populateCheckedRoles() {
     const roles = [...this.state.roles]
     const rolesUser = [...this.state.data.roles];
-    roles.map((role) => rolesUser.filter(r => r.id === role.id).length > 0 ? role.isChecked = true : role.isChecked = false);
+    roles.forEach((element1, i) => {
+      element1.permissions = [];
+      rolesUser.forEach((element2, j) => {
+        if (element1.id === element2.id) {
+          element2.isChecked = true;
+          roles[i] = element2;
+        }
+      });
+    });
+    console.log(roles);
+    //roles.map((role) => rolesUser.filter(r => r.id === role.id).length > 0 ? role.isChecked = true : role.isChecked = false);
     this.setState({ rolesChecked: roles });
-    console.log("populateRoles: ", this.state.rolesChecked);
+  }
+
+  async populatePermissions() {
+    const { data: permissions } = await getPermissions();
+    this.setState({ permissions });
+  }
+
+  populateCheckedPermissions() {
+    const permissions = [...this.state.permissions]
+    const permissionsUser = [...this.state.data.permissions];
+    permissions.map((role) => permissionsUser.filter(r => r.id === role.id).length > 0 ? role.isChecked = true : role.isChecked = false);
+    this.setState({ permissionsChecked: permissions });
   }
 
   async componentDidMount() {
     this.setState({ isLoading: true });
     await this.populateUser();
     await this.populateRoles();
+    await this.populatePermissions();
     this.populateCheckedRoles();
+    this.populateCheckedPermissions();
     this.setState({ isLoading: false });
   }
 
@@ -106,22 +137,38 @@ class UserForm extends Form {
   }
 
 
-  handleChangeCheckbox = (event) => {
-    const rolesChecked = [...this.state.rolesChecked];
-    const role = this.getRole(parseInt(event.target.value));
-    const indexRole = rolesChecked.indexOf(role);
-    rolesChecked[indexRole].isChecked = event.target.checked;
-    this.setState({ rolesChecked });
+  handleChangeCheckbox = (event, name, nameChecked) => {
+    const array = [...this.state[name]];
+    const arrayChecked = [...this.state[nameChecked]];
+    const nItem = array.find((item) => item.id === parseInt(event.target.value));
+    const indexItem = arrayChecked.indexOf(nItem);
+    arrayChecked[indexItem].isChecked = event.target.checked;
+    if (name === "roles") {
+      this.setState({ roles: arrayChecked });
+    } else if (name === "permissions") {
+      this.setState({ permissions: arrayChecked });
+    }
   }
 
-  doUpdate = async (e) => {
+  doUpdateRoles = async (e) => {
     e.preventDefault();
     const rolesChecked = [...this.state.rolesChecked];
     const arrayRolesToSave = rolesChecked.filter(role => role.isChecked === true);
     const rolesIds = arrayRolesToSave.map(role => role.name)
-    console.log(rolesIds);
     try {
       await saveRolesByUser(this.state.data.id, rolesIds);
+      this.successMessage();
+    } catch (ex) {
+      this.errorMessage(ex);
+    }
+  }
+  doUpdatePermissions = async (e) => {
+    e.preventDefault();
+    const permissionsChecked = [...this.state.permissionsChecked];
+    const arrayPermissionsToSave = permissionsChecked.filter(permissions => permissions.isChecked === true);
+    const permissionsIds = arrayPermissionsToSave.map(permission => permission.name)
+    try {
+      await savePermissionsByUser(this.state.data.id, permissionsIds);
       this.successMessage();
     } catch (ex) {
       this.errorMessage(ex);
@@ -130,11 +177,12 @@ class UserForm extends Form {
 
   doSubmit = async () => {
     try {
+      console.log('saving...');
       await saveUser(this.state.data);
       this.successMessage();
-      if (this.props.match.params.id !== "se") {
+      /* if (this.props.match.params.id !== "se") {
         this.props.history.push("/usuarios");
-      }
+      } */
     } catch (ex) {
       if (ex.response && ex.response.status === 422) {
         this.errorMessage(ex);
@@ -152,7 +200,7 @@ class UserForm extends Form {
 
 
   render() {
-    const { data, isLoading, rolesChecked } = this.state;
+    const { data, isLoading, rolesChecked, permissionsChecked } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -189,7 +237,7 @@ class UserForm extends Form {
                 {this.renderInput("name", "Nombre")}
                 {this.renderInput("lastname", "Apellido")}
                 {this.renderInput("email", "Correo")}
-                {this.renderButton("Actualizar")}
+                {this.renderButton("Guardar")}
               </form>
             </Paper>
           </Grid>
@@ -198,21 +246,36 @@ class UserForm extends Form {
               <TitleForm entity={"Roles"} isLoading={isLoading} />
               <Divider />
               <div className={classes.demo}>
-                <form onSubmit={this.doUpdate}>
+                <form onSubmit={this.doUpdateRoles}>
                   <FormControl component="fieldset" className={classes.formControl}>
                     <FormGroup>
                       {rolesChecked.map(role =>
-                        <FormControlLabel
-                          key={role.id}
-                          control={<Checkbox checked={role.isChecked} onChange={this.handleChangeCheckbox} name={role.name} value={role.id} />}
-                          label={role.name}
-                        />
+                        <div key={role.id}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={role.isChecked}
+                                onChange={(event) => this.handleChangeCheckbox(event, 'roles', 'rolesChecked')}
+                                name={role.name}
+                                value={role.id}
+                              />
+                            }
+                            label={role.name}
+                          />
+                          <div>
+                            <small>
+                              {
+                                role.permissions.map(p => p.name).join(", ")
+                              }
+                            </small>
+                          </div>
+                        </div>
 
                       )}
                     </FormGroup>
                     <FormHelperText>Se cuidadoso</FormHelperText>
                   </FormControl>
-                  {this.renderButton("Actualizar")}
+                  {this.renderButton("Guardar")}
                 </form>
 
               </div>
@@ -220,24 +283,24 @@ class UserForm extends Form {
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <Paper className="paper">
-              <TitleForm entity={"Permisos"} isLoading={isLoading} />
+              <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
               <Divider />
               <div className={classes.demo}>
-                <form onSubmit={this.doUpdate}>
+                <form onSubmit={this.doUpdatePermissions}>
                   <FormControl component="fieldset" className={classes.formControl}>
                     <FormGroup>
-                      {rolesChecked.map(role =>
+                      {permissionsChecked.map(permission =>
                         <FormControlLabel
-                          key={role.id}
-                          control={<Checkbox checked={role.isChecked} onChange={this.handleChangeCheckbox} name={role.name} value={role.id} />}
-                          label={role.name}
+                          key={permission.id}
+                          control={<Checkbox checked={permission.isChecked} onChange={(event) => this.handleChangeCheckbox(event, 'permissions', 'permissionsChecked')} name={permission.name} value={permission.id} />}
+                          label={permission.name}
                         />
 
                       )}
                     </FormGroup>
                     <FormHelperText>Se cuidadoso</FormHelperText>
                   </FormControl>
-                  {this.renderButton("Actualizar")}
+                  {this.renderButton("Guardar")}
                 </form>
 
               </div>

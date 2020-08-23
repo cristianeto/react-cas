@@ -14,6 +14,7 @@ export function getUser(userId) {
 }
 
 export function saveUser(user) {
+  console.log('saving...');
   if (user.id) {
     const body = { ...user };
     delete body.id;

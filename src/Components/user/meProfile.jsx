@@ -134,7 +134,7 @@ class meProfile extends Form {
                 </ListItem>
                 <ListItem>
                   <Link to={`/usuario/${data.id}`} className="link" >
-                    <Button className="btn-edit" variant="contained" color="primary">
+                    <Button variant="contained" color="primary" className="btn btn-guardar ">
                       Editar
                     </Button>
                   </Link>
@@ -215,8 +215,6 @@ class meProfile extends Form {
                   </List>
                 </div>
               </Paper>
-            </Grid>
-            <Grid item xs={12}>
               <Paper className="paper">
                 <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
                 <Divider />

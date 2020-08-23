@@ -1,62 +1,30 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
+class UserRoles extends Component {
+  state = {
+    data: {
+      data: {
+        user_id: this.props.match.params.id,
+        role_id: '',
+      },
+      userRoles: [],
+      users: [],
+      roles: [],
+      errors: {},
+      isLoading: false,
+    }
+  }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  formControl: {
-    margin: theme.spacing(3),
-  },
-}));
+  schema = Joi.object({
+    user_id: Joi.string().label("Miembro").min(36).max(36).messages(messages),
+    role_id: Joi.string().label("Rol").min(36).max(36).messages(messages),
+  });
 
-export default function CheckboxesGroup() {
-  const classes = useStyles();
-  const [state, setState] = React.useState([
-    { id: 1, name: "gilad", isChecked: true, },
-    { id: 2, name: "jason", isChecked: false, },
-    { id: 3, name: "antoine", isChecked: false, }
-  ]);
+  getUserRoles(userId, roleId) {
+    return this.state.userRoles.find((userRole) => userRole.user.id === roleId && userRole.model_id === userId);
+  }
 
-  const handleChange = (event) => {
-    console.log('event name: ', event.target.name);
-    const state = [...state];
-    console.log('state:', state);
-    const roles = state.map(s => {
-      if (s.name === event.target.name) {
-        s.isChecked = event.target.checked
-      }
-    });
-    console.log('roless:', roles);
-
-  };
-
-
-  //const error = [gilad, jason, antoine].filter((v) => v).length !== 2;
-  console.log("state: ", state);
-  return (
-    <div className={classes.root}>
-      <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Assign responsibility</FormLabel>
-        <FormGroup>
-          {state.map(s =>
-            <FormControlLabel
-              key={s.id}
-              control={<Checkbox checked={s.isChecked} onChange={handleChange} name={s.name} value={s.name} />}
-              label={s.name}
-            />
-
-          )}
-
-        </FormGroup>
-        <FormHelperText>Be careful</FormHelperText>
-      </FormControl>
-    </div>
-  );
+  render() {
+    return (  );
+  }
 }
+
+export default UserRoles;
