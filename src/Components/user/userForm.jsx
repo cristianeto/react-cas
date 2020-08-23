@@ -4,6 +4,7 @@ import { withSnackbar } from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
 import { getUser, saveUser } from "../../services/userService";
+import { saveRolesByUser } from "../../services/userRolesService";
 import {
   Grid,
   Paper,
@@ -18,11 +19,8 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import Checkbox from '@material-ui/core/Checkbox';
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import TitleForm from '../common/titleForm';
 import { getRoles } from '../../services/roleService';
-import CheckboxesGroup from './userRoles';
 
 class UserForm extends Form {
   state = {
@@ -79,7 +77,6 @@ class UserForm extends Form {
     roles.map((role) => rolesUser.filter(r => r.id === role.id).length > 0 ? role.isChecked = true : role.isChecked = false);
     this.setState({ rolesChecked: roles });
     console.log("populateRoles: ", this.state.rolesChecked);
-
   }
 
   async componentDidMount() {
@@ -104,6 +101,33 @@ class UserForm extends Form {
     };
   }
 
+  getRole(roleId) {
+    return this.state.roles.find((role) => role.id === roleId);
+  }
+
+
+  handleChangeCheckbox = (event) => {
+    const rolesChecked = [...this.state.rolesChecked];
+    const role = this.getRole(parseInt(event.target.value));
+    const indexRole = rolesChecked.indexOf(role);
+    rolesChecked[indexRole].isChecked = event.target.checked;
+    this.setState({ rolesChecked });
+  }
+
+  doUpdate = async (e) => {
+    e.preventDefault();
+    const rolesChecked = [...this.state.rolesChecked];
+    const arrayRolesToSave = rolesChecked.filter(role => role.isChecked === true);
+    const rolesIds = arrayRolesToSave.map(role => role.name)
+    console.log(rolesIds);
+    try {
+      await saveRolesByUser(this.state.data.id, rolesIds);
+      this.successMessage();
+    } catch (ex) {
+      this.errorMessage(ex);
+    }
+  }
+
   doSubmit = async () => {
     try {
       await saveUser(this.state.data);
@@ -125,20 +149,7 @@ class UserForm extends Form {
     }
   };
 
-  getRole(id) {
-    return this.state.roles.find((rol) => rol.id === id);
-  }
-  handleChangeCheckbox = (event) => {
-    let roles = [...this.state.roles];
-    roles.map(role => {
-      console.log(role.name, " === ", event.target.value);
-      if (role.name === event.target.value)
-        role.isChecked = event.target.checked
-    })
-    this.setState({ roles })
-    console.log('afterCheck: ', this.state.roles);
 
-  }
 
   render() {
     const { data, isLoading, rolesChecked } = this.state;
@@ -164,49 +175,72 @@ class UserForm extends Form {
       <Container maxWidth="lg">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={data.fullname} />
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={6}>
-            <Paper style={classes.paper}>
+          <Grid item xs={12} sm={12} md={5}>
+            <Paper className="paper">
               <Typography variant="h5" gutterBottom>
                 {this.props.match.params.id === "se"
                   ? "Registrarse"
                   : "Usuario"}
               </Typography>
+              <Divider />
               {this.state.isLoading && <LinearProgress color="secondary" />}
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("identification_card", "C.I.")}
                 {this.renderInput("name", "Nombre")}
                 {this.renderInput("lastname", "Apellido")}
                 {this.renderInput("email", "Correo")}
-                {this.renderButton("Guardar")}
+                {this.renderButton("Actualizar")}
               </form>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={3}>
             <Paper className="paper">
               <TitleForm entity={"Roles"} isLoading={isLoading} />
               <Divider />
               <div className={classes.demo}>
-                <FormControl component="fieldset" className={classes.formControl}>
-                  <FormLabel component="legend">Asignando roles</FormLabel>
-                  <FormGroup>
-                    {rolesChecked.map(role =>
-                      <FormControlLabel
-                        key={role.id}
-                        control={<Checkbox checked={role.isChecked} onChange={(event) => this.handleChangeCheckbox(event)} name={role.name} value={role.name} />}
-                        label={role.name}
-                      />
+                <form onSubmit={this.doUpdate}>
+                  <FormControl component="fieldset" className={classes.formControl}>
+                    <FormGroup>
+                      {rolesChecked.map(role =>
+                        <FormControlLabel
+                          key={role.id}
+                          control={<Checkbox checked={role.isChecked} onChange={this.handleChangeCheckbox} name={role.name} value={role.id} />}
+                          label={role.name}
+                        />
 
-                    )}
-                  </FormGroup>
-                  <FormHelperText>Se cuidadoso</FormHelperText>
-                </FormControl>
+                      )}
+                    </FormGroup>
+                    <FormHelperText>Se cuidadoso</FormHelperText>
+                  </FormControl>
+                  {this.renderButton("Actualizar")}
+                </form>
+
               </div>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={4}>
             <Paper className="paper">
-              <TitleForm entity={"Roles"} isLoading={isLoading} />
-              {/* <CheckboxesGroup></CheckboxesGroup> */}
+              <TitleForm entity={"Permisos"} isLoading={isLoading} />
+              <Divider />
+              <div className={classes.demo}>
+                <form onSubmit={this.doUpdate}>
+                  <FormControl component="fieldset" className={classes.formControl}>
+                    <FormGroup>
+                      {rolesChecked.map(role =>
+                        <FormControlLabel
+                          key={role.id}
+                          control={<Checkbox checked={role.isChecked} onChange={this.handleChangeCheckbox} name={role.name} value={role.id} />}
+                          label={role.name}
+                        />
+
+                      )}
+                    </FormGroup>
+                    <FormHelperText>Se cuidadoso</FormHelperText>
+                  </FormControl>
+                  {this.renderButton("Actualizar")}
+                </form>
+
+              </div>
             </Paper>
           </Grid>
         </Grid>

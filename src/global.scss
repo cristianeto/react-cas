@@ -5,5 +5,12 @@ $secondary-color: #F3004D;
   border-top: 4px solid $main-color;
 }
 .paper{
-  padding: 2em 2em 0;
+  padding: 2em;
+  margin-bottom: 2em;
+}
+
+form {
+  .btn {
+    width: 100%;
+  }  
 }
