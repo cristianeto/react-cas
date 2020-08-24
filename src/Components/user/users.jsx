@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import UsersTable from "./usersTable";
 import { getUsers, deleteUser } from "../../services/userService";
-import { Container, Button } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 import Breadcum from "../common/breadcum";
 
@@ -23,45 +23,26 @@ class Users extends Component {
     return this.state.users.find((u) => u.id === id);
   }
 
-  handleUndo(usersToDelete, originalUsers) {
-    const action = (key) => (
-      <Fragment>
-        <Button
-          onClick={() => {
-            //this.setState({ projects: originalProjects });
-            this.props.closeSnackbar(key);
-          }}
-          style={{ color: "#fff" }}
-        >
-          ACEPTAR
-        </Button>
-      </Fragment>
-    );
-    const lenghtArray = usersToDelete.length;
-    const mensaje =
-      lenghtArray === 1
-        ? `Registro eliminado`
-        : `${lenghtArray} registros eliminados`;
-    this.props.enqueueSnackbar(mensaje, {
-      autoHideDuration: 3000,
-      action,
-    });
-  }
-
-  handleDelete = async (usersToDelete) => {
+  handleDelete = async (userId) => {
     const originalUsers = this.state.users;
-    const users = originalUsers.filter((user) => !usersToDelete.includes(user));
+    const userToRemove = this.getUser(userId);
+    const users = originalUsers.filter(user => user !== userToRemove);
     this.setState({ users });
-    this.handleUndo(usersToDelete, originalUsers);
     try {
-      usersToDelete.forEach(async (user) => {
-        await deleteUser(user.id);
+      await deleteUser(userToRemove.id);
+      this.props.enqueueSnackbar(`Registro eliminado!`, {
+        variant: 'success'
       });
     } catch (ex) {
-      if (ex.response && ex.response.status === 404)
-        this.props.enqueueSnackbar(`Se produjo un error. ${ex}`, {
-          variant: "error",
+      if (ex.response && ex.response.status === 404) {
+        this.props.enqueueSnackbar(`${ex.response.data.message}`, {
+          variant: "error"
         });
+      } else if (ex.response.status === 403) {
+        this.props.enqueueSnackbar(`Operación no autorizada`, {
+          variant: "error"
+        });
+      }
       this.setState({ users: originalUsers });
     }
   };

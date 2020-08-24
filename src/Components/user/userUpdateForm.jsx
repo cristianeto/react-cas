@@ -20,8 +20,10 @@ import {
 } from "@material-ui/core";
 import TitleForm from '../common/titleForm';
 import { messages } from '../common/es_ES';
+import auth from "../../services/authService";
 
 class UserUpdateForm extends Form {
+  _isMounted = false;
   state = {
     data: {
       identification_card: "",
@@ -65,8 +67,11 @@ class UserUpdateForm extends Form {
       const { data: user } = await getUser(userId); //Si no.
       this.setState({ data: this.mapToViewModel(user) });
     } catch (ex) {
-      if (ex.response && ex.response.status === 404)
+      if (ex.response && ex.response.status === 404) {
+        this.errorMessage(ex);
         this.props.history.replace("/not-found");
+      } else if (ex.response.status === 403)
+        this.props.history.replace("/not-authorized");
     }
   }
   mapToViewModel(user) {
@@ -139,7 +144,13 @@ class UserUpdateForm extends Form {
       await saveRolesByUser(this.state.data.id, rolesIds);
       this.successMessage();
     } catch (ex) {
-      this.errorMessage(ex);
+      if (ex.response && ex.response.status === 404) {
+        this.errorMessage(ex);
+        this.props.history.replace("/not-found");
+      } else if (ex.response.status === 403)
+        this.props.enqueueSnackbar('Operación no autizada!', {
+          variant: 'error',
+        });
     }
   }
   doUpdatePermissions = async (e) => {
@@ -151,7 +162,13 @@ class UserUpdateForm extends Form {
       await savePermissionsByUser(this.state.data.id, permissionsIds);
       this.successMessage();
     } catch (ex) {
-      this.errorMessage(ex);
+      if (ex.response && ex.response.status === 404) {
+        this.errorMessage(ex);
+        this.props.history.replace("/not-found");
+      } else if (ex.response.status === 403)
+        this.props.enqueueSnackbar('Operación no autizada!', {
+          variant: 'error',
+        });
     }
   }
 
@@ -176,6 +193,7 @@ class UserUpdateForm extends Form {
   };
 
   async componentDidMount() {
+    this._isMounted = true;
     this.setState({ isLoading: true });
     await this.populateUser();
     await this.populateRoles();
@@ -185,6 +203,9 @@ class UserUpdateForm extends Form {
     this.setState({ isLoading: false });
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     const { data, isLoading, rolesChecked, permissionsChecked } = this.state;
@@ -198,6 +219,7 @@ class UserUpdateForm extends Form {
         label: "Mi perfil",
       },
     ];
+    const role = auth.getSelectedRole();
     return (
       <Container maxWidth="lg">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={data.fullname} />
@@ -220,26 +242,61 @@ class UserUpdateForm extends Form {
               </form>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={12} md={3}>
-            <Paper className="paper">
-              <TitleForm entity={"Roles"} isLoading={isLoading} />
-              <Divider />
-              <form onSubmit={this.doUpdateRoles}>
-                <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} />
-                {this.renderButton("Actualizar")}
-              </form>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <Paper className="paper">
-              <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
-              <Divider />
-              <form onSubmit={this.doUpdatePermissions}>
-                <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} />
-                {this.renderButton("Actualizar")}
-              </form>
-            </Paper>
-          </Grid>
+          {role.id === 1 ? (
+            <React.Fragment>
+              <Grid item xs={12} sm={12} md={3}>
+                <Paper className="paper">
+                  <TitleForm entity={"Roles"} isLoading={isLoading} />
+                  <Divider />
+                  <form onSubmit={this.doUpdateRoles}>
+                    <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} />
+                    {this.renderButton("Actualizar")}
+                  </form>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={12} md={4}>
+                <Paper className="paper">
+                  <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
+                  <Divider />
+                  <form onSubmit={this.doUpdatePermissions}>
+                    <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} />
+                    {this.renderButton("Actualizar")}
+                  </form>
+                </Paper>
+              </Grid>
+            </React.Fragment>
+          ) :
+            <React.Fragment>
+              <Grid item xs={12} sm={12} md={3}>
+                <Paper className="paper">
+                  <TitleForm entity={"Roles"} isLoading={isLoading} />
+                  <Divider />
+                  <ul>
+                    {data.length > 0 ? data.roles.map(role =>
+                      <li>{role.name}</li>
+
+                    )
+                      : "No tiene roles"
+                    }
+                  </ul>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={12} md={4}>
+                <Paper className="paper">
+                  <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
+                  <Divider />
+                  <ul>
+                    {data.length > 0 ? data.permissions.map(permission =>
+                      <li>{permission.name}</li>
+
+                    )
+                      : "No tiene permisos"
+                    }
+                  </ul>
+                </Paper>
+              </Grid>
+            </React.Fragment>
+          }
         </Grid>
       </Container>
     );

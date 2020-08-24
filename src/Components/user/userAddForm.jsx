@@ -201,7 +201,7 @@ class UserAddForm extends Form {
                   ? "Registrarse"
                   : "Usuario"}
               </Typography>
-              {this.state.isLoading && <LinearProgress color="secondary" />}
+              {isLoading && <LinearProgress color="secondary" />}
               <Divider />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("identification_card", "C.I.")}

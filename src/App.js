@@ -80,7 +80,8 @@ class App extends Component {
     closeFunction();
     const role = this.state.roles.find((role) => role.id === roleId);
     this.setState({ selectedRole: role });
-    this.props.enqueueSnackbar(`Su role cambio a ${role.name} `);
+    auth.setSelectedRole(role);
+    //this.props.enqueueSnackbar(`Su role cambio a ${role.name} `);
   };
 
   detectedOffline() {

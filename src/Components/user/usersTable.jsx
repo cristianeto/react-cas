@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { TEXT_LABELS } from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography } from "@material-ui/core";
+import { LinearProgress, Typography, Tooltip } from "@material-ui/core";
 import ButtonAdd from "../common/buttonAdd";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class UsersTable extends Component {
   getMuiTheme = () =>
@@ -35,7 +36,17 @@ class UsersTable extends Component {
   //     }
   //   };
   render() {
+    const { datas, onLoading, onDelete } = this.props;
     const columns = [
+      {
+        name: 'count',
+        label: "ID",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1
+        },
+      },
       {
         name: "id",
         label: "id",
@@ -54,7 +65,7 @@ class UsersTable extends Component {
             return (
               <Link
                 style={{ textDecoration: "none" }}
-                to={`/usuario/${tableMeta.rowData[0]}`}
+                to={`/usuario/${tableMeta.rowData[1]}`}
               >
                 {value}
               </Link>
@@ -112,23 +123,33 @@ class UsersTable extends Component {
           sort: true,
         },
       },
+      {
+        name: "",
+        label: "Acciones",
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (value, tableMeta) => {
+            return (
+              <React.Fragment>
+                <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
+                  <DeleteIcon onClick={() => onDelete(tableMeta.rowData[1])} color={'primary'} />
+                </Tooltip>
+              </React.Fragment>
+            );
+          },
+        },
+      },
     ];
-    const options_config = {
+    const options = {
       filterType: "dropdown",
       responsive: "scroll",
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
+      selectableRows: 'none',
       textLabels: TEXT_LABELS,
-      onRowsDelete: (rowsDeleted) => {
-        const data = this.props.datas; //lista
-        const usersToDelete = rowsDeleted.data.map((d) => data[d.dataIndex]); //Array de todos
-        this.props.onDelete(usersToDelete);
-      },
     };
 
-    const data = this.props.datas;
-    const isLoading = this.props.onLoading;
-    const options = options_config;
 
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
@@ -136,10 +157,10 @@ class UsersTable extends Component {
           title={
             <Typography variant="h6">
               Lista de usuarios <ButtonAdd entity={"usuario"} />
-              {isLoading && <LinearProgress color="secondary" />}
+              {onLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
-          data={data}
+          data={datas}
           columns={columns}
           options={options}
         />

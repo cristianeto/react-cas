@@ -34,6 +34,9 @@ export function getPassport() {
   return sessionStorage.getItem(tokenKey);
 }
 
+export function setSelectedRole(role) {
+  return sessionStorage.setItem(roleKey, JSON.stringify(role));;
+}
 export function getSelectedRole() {
   return JSON.parse(sessionStorage.getItem(roleKey));
 }
@@ -62,6 +65,7 @@ export default {
   login,
   getPassport,
   getCurrentUser,
+  setSelectedRole,
   getSelectedRole,
   isAuthenticated,
   logout,
