@@ -181,8 +181,8 @@ export default function MiniDrawer(props) {
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon />
-            )}
+                <ChevronLeftIcon />
+              )}
           </IconButton>
         </div>
         <Divider />
@@ -222,12 +222,12 @@ export default function MiniDrawer(props) {
               <ListItemText primary={"Componentes"} />
             </ListItem>
           </NavLink>
-          <NavLink to="/grupos-investigacion" className={classes.navLink}>
+          <NavLink to="/roles" className={classes.navLink}>
             <ListItem button>
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary={"Requerimientos"} />
+              <ListItemText primary={"Roles"} />
             </ListItem>
           </NavLink>
         </List>

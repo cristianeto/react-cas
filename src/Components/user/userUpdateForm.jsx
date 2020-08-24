@@ -272,7 +272,7 @@ class UserUpdateForm extends Form {
                   <TitleForm entity={"Roles"} isLoading={isLoading} />
                   <Divider />
                   <ul>
-                    {data.length > 0 ? data.roles.map(role =>
+                    {data.roles.length > 0 ? data.roles.map(role =>
                       <li>{role.name}</li>
 
                     )
@@ -286,7 +286,7 @@ class UserUpdateForm extends Form {
                   <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
                   <Divider />
                   <ul>
-                    {data.length > 0 ? data.permissions.map(permission =>
+                    {data.roles.length > 0 ? data.permissions.map(permission =>
                       <li>{permission.name}</li>
 
                     )

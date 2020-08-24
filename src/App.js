@@ -10,6 +10,7 @@ import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
 import ProjectForm from "./Components/project/projectForm";
 import UserUpdateForm from "./Components/user/userUpdateForm";
+import Roles from "./Components/role/roles";
 import Users from "./Components/user/users";
 import Welcome from "./Components/welcome";
 import Projects from "./Components/project/projects";
@@ -20,6 +21,7 @@ import meProfile from "./Components/user/meProfile";
 import Logout from "./Components/logout";
 import { StylesProvider } from '@material-ui/core/styles';
 import UserAddForm from "./Components/user/userAddForm";
+import { getRolesByUser } from "./services/userRolesService";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -58,8 +60,9 @@ class App extends Component {
 
   async getRoles() {
     if (auth.isAuthenticated()) {
+      const { data: roles } = await getRolesByUser(this.state.user.id);
       const selectedRole = auth.getSelectedRole();
-      this.setState({ roles: this.state.user.roles, selectedRole });
+      this.setState({ roles, selectedRole });
     } else {
       console.log("Usuario no autenticado en el Backend");
     }
@@ -143,6 +146,7 @@ class App extends Component {
             <Route path="/registrar/:id" component={UserAddForm} />
             {/* {this.state.selectedRole.id === 1 && ( */}
             <Route path="/usuarios" exact component={Users} />
+            <Route path="/roles" exact component={Roles} />
             {/* )} */}
             <Route path="/logout" exact component={Logout} />
             <Route path="/dependencias" component={Dependencies} />
