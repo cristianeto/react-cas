@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, FormHelperText } from '@material-ui/core';
 
-const Checkboxes = ({ roles, onChange }) => {
+const Checkboxes = ({ roles, onChange, label }) => {
   return (
     <React.Fragment>
       <FormControl component="fieldset">
-        <FormLabel component="legend">Roles</FormLabel>
+        <FormLabel component="legend">{label}</FormLabel>
         <FormGroup>
           {roles.map(role =>
             <div key={role.id}>
@@ -22,13 +22,10 @@ const Checkboxes = ({ roles, onChange }) => {
               />
               <div>
                 <small>
-                  {
-                    role.permissions.map(p => p.name).join(", ")
-                  }
+                  {role.permissions.map(p => p.name).join(", ")}
                 </small>
               </div>
             </div>
-
           )}
         </FormGroup>
         <FormHelperText>Se cuidadoso</FormHelperText>

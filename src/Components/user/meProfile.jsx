@@ -85,7 +85,7 @@ class meProfile extends Form {
       <Container maxWidth="xl" id="user">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Mi perfil"} />
         <Grid container spacing={3}>
-          <Grid item xs={12} s={12} md={4} xl={3}>
+          <Grid item xs={12} sm={12} md={4} xl={3}>
             <Paper className="main-paper">
               <div className="main-paper__content">
                 <div className="main-paper__content_avatar" >
@@ -127,7 +127,7 @@ class meProfile extends Form {
               </List>
             </Paper>
           </Grid>
-          <Grid item xs={12} s={12} md={5} xl={5}>
+          <Grid item xs={12} sm={12} md={8} xl={5}>
             <Paper className="paper">
               <TitleForm entity={"Proyectos"} isLoading={isLoading} />
               <Divider />
@@ -169,7 +169,7 @@ class meProfile extends Form {
               </div>
             </Paper>
           </Grid>
-          <Grid container item xs={12} s={12} md={3} xl={4}>
+          <Grid container item xs={12} sm={12} md={4} xl={4}>
             <Grid item xs={12}>
               <Paper className="paper">
                 <TitleForm entity={"Roles"} isLoading={isLoading} />

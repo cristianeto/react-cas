@@ -210,7 +210,7 @@ class UserAddForm extends Form {
                 {this.renderInput("email", "Correo")}
                 <div className="checkboxes">
                   <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} />
-                  <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} />
+                  <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} label="Permisos extra" />
                 </div>
                 {this.renderButton("Crear usuario")}
               </form>

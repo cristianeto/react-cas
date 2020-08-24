@@ -1,10 +1,10 @@
 import React from 'react';
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, FormHelperText } from '@material-ui/core';
 
-const Checkboxes = ({ permissions, onChange }) => {
+const Checkboxes = ({ permissions, onChange, label }) => {
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend">Permisos extra</FormLabel>
+      <FormLabel error={true} component="legend">{label}</FormLabel>
       <FormGroup>
         {permissions.map(permission =>
           <FormControlLabel
@@ -14,10 +14,11 @@ const Checkboxes = ({ permissions, onChange }) => {
                 checked={permission.isChecked}
                 onChange={(event) => onChange(event, 'permissions', 'permissionsChecked')}
                 name={permission.name}
-                value={permission.id} />}
+                value={permission.id}
+              />
+            }
             label={permission.name}
           />
-
         )}
       </FormGroup>
       <FormHelperText>Se cuidadoso</FormHelperText>

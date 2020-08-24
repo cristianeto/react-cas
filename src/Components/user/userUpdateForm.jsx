@@ -249,7 +249,7 @@ class UserUpdateForm extends Form {
                   <TitleForm entity={"Roles"} isLoading={isLoading} />
                   <Divider />
                   <form onSubmit={this.doUpdateRoles}>
-                    <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} />
+                    <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} label="" />
                     {this.renderButton("Actualizar")}
                   </form>
                 </Paper>
@@ -259,7 +259,7 @@ class UserUpdateForm extends Form {
                   <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
                   <Divider />
                   <form onSubmit={this.doUpdatePermissions}>
-                    <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} />
+                    <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} label="" />
                     {this.renderButton("Actualizar")}
                   </form>
                 </Paper>

@@ -21,6 +21,7 @@ import meProfile from "./Components/user/meProfile";
 import Logout from "./Components/logout";
 import { StylesProvider } from '@material-ui/core/styles';
 import UserAddForm from "./Components/user/userAddForm";
+import RoleAddForm from "./Components/role/roleAddForm";
 import { getRolesByUser } from "./services/userRolesService";
 class App extends Component {
   constructor(props) {
@@ -141,6 +142,7 @@ class App extends Component {
             {auth.getCurrentUser() !== null && (
               <Route path="/mi/perfil" component={meProfile} />
             )}
+            <Route path="/role/new" component={RoleAddForm} />
             <Route path="/usuario/new" component={UserAddForm} />
             <Route path="/usuario/:id" component={UserUpdateForm} />
             <Route path="/registrar/:id" component={UserAddForm} />
