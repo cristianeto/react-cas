@@ -9,7 +9,7 @@ import NotAuthorized from "./Components/error/notAuthorized";
 import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
 import ProjectForm from "./Components/project/projectForm";
-import UserForm from "./Components/user/userForm";
+import UserUpdateForm from "./Components/user/userUpdateForm";
 import Users from "./Components/user/users";
 import Welcome from "./Components/welcome";
 import Projects from "./Components/project/projects";
@@ -19,6 +19,7 @@ import DependencyForm from "./Components/dependency/dependencyForm";
 import meProfile from "./Components/user/meProfile";
 import Logout from "./Components/logout";
 import { StylesProvider } from '@material-ui/core/styles';
+import UserAddForm from "./Components/user/userAddForm";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -136,11 +137,12 @@ class App extends Component {
             {auth.getCurrentUser() !== null && (
               <Route path="/mi/perfil" component={meProfile} />
             )}
-            <Route path="/usuario/:id" component={UserForm} />
-            <Route path="/registrar/:id" component={UserForm} />
-            {this.state.selectedRole.id === 1 && (
-              <Route path="/usuarios" exact component={Users} />
-            )}
+            <Route path="/usuario/new" component={UserAddForm} />
+            <Route path="/usuario/:id" component={UserUpdateForm} />
+            <Route path="/registrar/:id" component={UserAddForm} />
+            {/* {this.state.selectedRole.id === 1 && ( */}
+            <Route path="/usuarios" exact component={Users} />
+            {/* )} */}
             <Route path="/logout" exact component={Logout} />
             <Route path="/dependencias" component={Dependencies} />
             <Route path="/dependencia/:id" component={DependencyForm} />

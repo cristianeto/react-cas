@@ -1,5 +1,4 @@
 import React from "react";
-import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
@@ -34,20 +33,6 @@ class meProfile extends Form {
     errors: {},
     isLoading: false,
   };
-
-  schema = Joi.object({
-    id: Joi.string(),
-    identification_card: Joi.string().label("C.I.").min(10).max(10),
-    name: Joi.string().label("Nombre").max(100),
-    lastname: Joi.string().label("Apellido").max(100),
-    email: Joi.string()
-      .email({
-        minDomainSegments: 2,
-        tlds: { allow: ["com", "espoch", "edu", "ec"] },
-      })
-      .label("Correo")
-      .max(100),
-  });
 
   async populateUser() {
     try {

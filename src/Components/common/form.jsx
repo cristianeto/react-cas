@@ -204,7 +204,7 @@ class Form extends Component {
   }
 
   errorMessage(ex) {
-    //console.error("Error Message: ", ex)
+    console.error("Error Message: ", ex)
     this.props.enqueueSnackbar(`${ex.response.data.message}`, {
       variant: "error"
     });
