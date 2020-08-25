@@ -1,12 +1,12 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
 
-const Input = ({ name, label, placeHolder, error, ...rest }) => {
+const Input = ({ name, label, placeHolder, required, error, ...rest }) => {
   let validation;
   error === undefined ? (validation = false) : (validation = true);
   return (
     <TextField
-      required
+      required={required}
       error={validation}
       {...rest}
       id={name}

@@ -19,13 +19,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 // import InboxIcon from "@material-ui/icons/MoveToInbox";
 import GroupIcon from "@material-ui/icons/Group";
 import BusinessIcon from "@material-ui/icons/Business";
-import GroupWorkIcon from "@material-ui/icons/GroupWork";
 import FolderIcon from "@material-ui/icons/Folder";
 import SettingsIcon from "@material-ui/icons/Settings";
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import ImageProfile from "./common/imageProfile";
 import avatar from "../static/img/img_avatar.png";
 
@@ -209,9 +208,9 @@ export default function MiniDrawer(props) {
           <NavLink to="/grupos-investigacion" className={classes.navLink}>
             <ListItem button>
               <ListItemIcon>
-                <GroupWorkIcon />
+                <GroupIcon />
               </ListItemIcon>
-              <ListItemText primary={"Grupos investigación"} />
+              <ListItemText primary={"Grupos invest..."} />
             </ListItem>
           </NavLink>
           <NavLink to="/grupos-investigacion" className={classes.navLink}>
@@ -222,25 +221,6 @@ export default function MiniDrawer(props) {
               <ListItemText primary={"Componentes"} />
             </ListItem>
           </NavLink>
-          <NavLink to="/roles" className={classes.navLink}>
-            <ListItem button>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Roles"} />
-            </ListItem>
-          </NavLink>
-        </List>
-        <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
         </List>
         <Divider />
         {selectedRole.id === 1 && (
@@ -251,6 +231,14 @@ export default function MiniDrawer(props) {
                   <GroupIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Usuarios"} />
+              </ListItem>
+            </NavLink>
+            <NavLink to="/roles" className={classes.navLink}>
+              <ListItem button>
+                <ListItemIcon>
+                  <FingerprintIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Roles"} />
               </ListItem>
             </NavLink>
             <NavLink to="/configuracion" className={classes.navLink}>

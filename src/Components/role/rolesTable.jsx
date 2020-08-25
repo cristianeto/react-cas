@@ -57,7 +57,7 @@ class RolesTable extends Component {
       },
       {
         name: "name",
-        label: "Nombre",
+        label: "Identificador",
         options: {
           filter: true,
           sort: true,
@@ -74,11 +74,37 @@ class RolesTable extends Component {
         },
       },
       {
+        name: "display_name",
+        label: "Nombre",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      /* {
         name: "guard_name",
         label: "Guard",
         options: {
           filter: true,
           sort: true,
+        },
+      }, */
+      {
+        name: "permissions",
+        label: "Permisos",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value, tableMeta) => {
+            let permissions = value.map(v =>
+              v.display_name
+            )
+            return (
+              <React.Fragment>
+                {permissions.join(", ")}
+              </React.Fragment>
+            );
+          },
         },
       },
       {

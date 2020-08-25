@@ -159,6 +159,8 @@ class UserAddForm extends Form {
         this.errorMessage(ex);
         const errors = { ...this.state.errors };
         errors.email = ex.response.data.errors.email;
+        errors.name = ex.response.data.errors.name;
+        errors.lastname = ex.response.data.errors.lastname;
         errors.identification_card = ex.response.data.errors.identification_card;
         this.setState({ errors });
       } else {

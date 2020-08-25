@@ -4,7 +4,7 @@ import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, FormHelp
 const Checkboxes = ({ permissions, onChange, label }) => {
   return (
     <FormControl component="fieldset">
-      <FormLabel error={true} component="legend">{label}</FormLabel>
+      <FormLabel error={false} component="legend">{label}</FormLabel>
       <FormGroup>
         {permissions.map(permission =>
           <FormControlLabel

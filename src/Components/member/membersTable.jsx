@@ -115,8 +115,7 @@ class MembersTable extends Component {
               <Autocomplete
                 name={'role'}
                 options={roles}
-                getOptionLabel={(role) => role.name
-                }
+                getOptionLabel={(role) => role.name}
                 disableClearable
                 style={{ width: 300 }}
                 value={value}

@@ -17,6 +17,7 @@ export function saveRole(role) {
   if (role.id) {
     const body = { ...role };
     delete body.id;
+    delete body.name;
     return http.put(roleUrl(role.id), body);
   }
   return http.post(apiEndpoint, role);

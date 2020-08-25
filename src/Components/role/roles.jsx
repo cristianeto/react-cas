@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import RolesTable from "./rolesTable";
-import { getRoles, deleteRole } from "../../services/roleService";
+import { getRoles } from "../../services/roleService";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 import Breadcum from "../common/breadcum";
@@ -61,7 +61,7 @@ class Roles extends Component {
       },
     };
     return (
-      <Container maxWidth="sm" id="roles">
+      <Container maxWidth="lg" id="roles">
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuarios"} />
         <RolesTable
           datas={this.state.roles}

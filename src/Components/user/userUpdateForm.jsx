@@ -96,15 +96,12 @@ class UserUpdateForm extends Form {
     const rolesUser = [...this.state.data.roles];
     roles.forEach((element1, i) => {
       element1.isChecked = false;
-      element1.permissions = [];
       rolesUser.forEach((element2, j) => {
         if (element1.id === element2.id) {
-          element2.isChecked = true;
-          roles[i] = element2;
+          element1.isChecked = true;
         }
       });
     });
-    //roles.map((role) => rolesUser.filter(r => r.id === role.id).length > 0 ? role.isChecked = true : role.isChecked = false);
     this.setState({ rolesChecked: roles });
   }
 
