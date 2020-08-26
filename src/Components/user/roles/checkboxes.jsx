@@ -18,11 +18,11 @@ const Checkboxes = ({ roles, onChange, label }) => {
                     value={role.id}
                   />
                 }
-                label={role.name}
+                label={role.display_name}
               />
               <div>
                 <small>
-                  {role.permissions.map(p => p.name).join(", ")}
+                  {role.permissions.map(p => p.display_name).join(", ")}
                 </small>
               </div>
             </div>

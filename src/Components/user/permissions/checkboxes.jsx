@@ -17,7 +17,7 @@ const Checkboxes = ({ permissions, onChange, label }) => {
                 value={permission.id}
               />
             }
-            label={permission.name}
+            label={permission.display_name}
           />
         )}
       </FormGroup>

@@ -35,7 +35,7 @@ export default function MenuRoles(props) {
         onClick={handleClick}
       >
         <Typography variant="caption" display="block" gutterBottom>
-          {`${user.name} ${user.lastname}`} {`(${selectedRole.name})`}
+          {`${user.fullname}`} {`(${selectedRole.display_name})`}
         </Typography>
       </Button>
       <Menu
@@ -57,7 +57,7 @@ export default function MenuRoles(props) {
                   onChangeRole(role.id, handleClose);
                 }}
               >
-                {role.name}
+                {role.display_name}
               </MenuItem>
             </Link>
           ))}

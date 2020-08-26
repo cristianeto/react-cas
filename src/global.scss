@@ -1,10 +1,8 @@
 $main-color: #3347AC;
 $secondary-color: #F3004D;
 
-.MuiPaper-root{
-  border-top: 4px solid $main-color;
-}
 .paper{
+  border-top: 4px solid $main-color;
   padding: 2em;
   margin-bottom: 2em;
 }

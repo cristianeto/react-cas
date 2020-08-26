@@ -99,8 +99,8 @@ class meProfile extends Form {
                 <ListItem className="data__roles" >
                   {data.roles.map(role => (
                     (data.selectedRole === role.id) ?
-                      <Chip label={role.name} key={role.id} color="primary" style={{ margin: '0.25em' }} />
-                      : <Chip label={role.name} key={role.id} style={{ marginRight: '0.5em' }} />
+                      <Chip label={role.display_name} key={role.id} color="primary" style={{ margin: '0.25em' }} />
+                      : <Chip label={role.display_name} key={role.id} style={{ marginRight: '0.5em' }} />
                   )
                   )}
                 </ListItem>
@@ -127,64 +127,33 @@ class meProfile extends Form {
               </List>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={12} md={8} xl={5}>
-            <Paper className="paper">
-              <TitleForm entity={"Proyectos"} isLoading={isLoading} />
-              <Divider />
-              <div className={classes.demo}>
-                <List dense={true}>
-                  {data.projects.length > 0 ? data.projects.map(project => (
-                    <ListItem divider key={project.id}>
-                      <ListItemAvatar>
-                        <Avatar>
-                          <FolderIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <React.Fragment>
-                            <Link to={"/proyecto/" + project.slug} style={classes.navLink}>{project.name}</Link>
-                          </React.Fragment>
-                        }
-                        secondary={
-                          <React.Fragment>
-                            <Tooltip title={project.updated_at}>
-                              <span variant="caption">
-                                Última actualización: {project.human_updated_at}
-                              </span>
-                            </Tooltip>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                  ))
-                    :
-                    <ListItem>
-                      <ListItemText
-                        primary={"No existen proyectos"}
-                      />
-                    </ListItem>
-                  }
-                </List>
-              </div>
-            </Paper>
-          </Grid>
-          <Grid container item xs={12} sm={12} md={4} xl={4}>
+          <Grid container item xs={12} sm={12} md={8} xl={9}>
             <Grid item xs={12}>
               <Paper className="paper">
-                <TitleForm entity={"Roles"} isLoading={isLoading} />
+                <TitleForm entity={"Proyectos"} isLoading={isLoading} />
                 <Divider />
                 <div className={classes.demo}>
                   <List dense={true}>
-                    {data.roles.length > 0 ? data.roles.map(role => (
-                      <ListItem divider key={role.id}>
+                    {data.projects.length > 0 ? data.projects.map(project => (
+                      <ListItem divider key={project.id}>
+                        <ListItemAvatar>
+                          <Avatar>
+                            <FolderIcon />
+                          </Avatar>
+                        </ListItemAvatar>
                         <ListItemText
-                          primary={role.name}
-                          secondary={role.permissions.length > 0 &&
+                          primary={
                             <React.Fragment>
-                              <span variant="caption">
-                                Permisos: {(role.permissions.map(p => p.name).join(', '))}
-                              </span>
+                              <Link to={"/proyecto/" + project.slug} style={classes.navLink}>{project.name}</Link>
+                            </React.Fragment>
+                          }
+                          secondary={
+                            <React.Fragment>
+                              <Tooltip title={project.updated_at}>
+                                <span variant="caption">
+                                  Última actualización: {project.human_updated_at}
+                                </span>
+                              </Tooltip>
                             </React.Fragment>
                           }
                         />
@@ -193,29 +162,7 @@ class meProfile extends Form {
                       :
                       <ListItem>
                         <ListItemText
-                          primary={"No tienes asignado un role"}
-                        />
-                      </ListItem>
-                    }
-                  </List>
-                </div>
-              </Paper>
-              <Paper className="paper">
-                <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
-                <Divider />
-                <div className={classes.demo}>
-                  <List dense={true}>
-                    {data.permissions.length > 0 ? data.permissions.map(permission => (
-                      <ListItem divider key={permission.id}>
-                        <ListItemText
-                          primary={permission.name}
-                        />
-                      </ListItem>
-                    ))
-                      :
-                      <ListItem>
-                        <ListItemText
-                          primary={"No tienes permisos extra"}
+                          primary={"No existen proyectos"}
                         />
                       </ListItem>
                     }
@@ -223,7 +170,67 @@ class meProfile extends Form {
                 </div>
               </Paper>
             </Grid>
+            <Grid container spacing={3} >
+              <Grid item xs={12} md={12} lg={6} xl={6}>
+                <Paper className="paper">
+                  <TitleForm entity={"Roles"} isLoading={isLoading} />
+                  <Divider />
+                  <div className={classes.demo}>
+                    <List dense={true}>
+                      {data.roles.length > 0 ? data.roles.map(role => (
+                        <ListItem divider key={role.id}>
+                          <ListItemText
+                            primary={role.display_name}
+                            secondary={role.permissions.length > 0 &&
+                              <React.Fragment>
+                                <span variant="caption">
+                                  Permisos: {(role.permissions.map(p => p.display_name).join(', '))}
+                                </span>
+                              </React.Fragment>
+                            }
+                          />
+                        </ListItem>
+                      ))
+                        :
+                        <ListItem>
+                          <ListItemText
+                            primary={"No tienes asignado un role"}
+                          />
+                        </ListItem>
+                      }
+                    </List>
+                  </div>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={12} lg={6} xl={6}>
+                <Paper className="paper">
+                  <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
+                  <Divider />
+                  <div className={classes.demo}>
+                    <List dense={true}>
+                      {data.permissions.length > 0 ? data.permissions.map(permission => (
+                        <ListItem divider key={permission.id}>
+                          <ListItemText
+                            primary={permission.display_name}
+                          />
+                        </ListItem>
+                      ))
+                        :
+                        <ListItem>
+                          <ListItemText
+                            primary={"No tienes permisos extra"}
+                          />
+                        </ListItem>
+                      }
+                    </List>
+                  </div>
+                </Paper>
+              </Grid>
+            </Grid>
           </Grid>
+          {/*      <Grid container item xs={12} sm={12} md={4} xl={3}>
+            
+          </Grid> */}
         </Grid>
       </Container>
     );
