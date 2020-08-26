@@ -56,8 +56,8 @@ class UserUpdateForm extends Form {
       })
       .label("Correo")
       .max(100).messages(messages),
-    roles: Joi.array().label("Roles").min(1).messages(messages),
-    permissions: Joi.array().label("Permisos").min(1).messages(messages),
+    roles: Joi.array().label("Roles").messages(messages),
+    permissions: Joi.array().label("Permisos").messages(messages),
   });
 
   async populateUser() {
@@ -124,12 +124,14 @@ class UserUpdateForm extends Form {
 
 
   handleChangeCheckbox = (event, name, nameChecked) => {
+    const data = { ...this.state.data };
     const array = [...this.state[name]];
     const arrayChecked = [...this.state[nameChecked]];
     const nItem = array.find((item) => item.id === parseInt(event.target.value));
     const indexItem = array.indexOf(nItem);
     arrayChecked[indexItem].isChecked = event.target.checked;
-    this.setState({ [name]: arrayChecked });
+    data[name] = arrayChecked.filter(a => a.isChecked);
+    this.setState({ [name]: arrayChecked, data });
   }
 
   doUpdateRoles = async (e) => {
@@ -270,8 +272,7 @@ class UserUpdateForm extends Form {
                   <Divider />
                   <ul>
                     {data.roles.length > 0 ? data.roles.map(role =>
-                      <li>{role.name}</li>
-
+                      <li key={role.id}>{role.name}</li>
                     )
                       : "No tiene roles"
                     }

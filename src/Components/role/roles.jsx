@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import RolesTable from "./rolesTable";
-import { getRoles } from "../../services/roleService";
+import { getRoles, deleteRole } from "../../services/roleService";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 import Breadcum from "../common/breadcum";
@@ -29,7 +29,7 @@ class Roles extends Component {
     const roles = originalRoles.filter(role => role !== roleToRemove);
     this.setState({ roles });
     try {
-      //await deleteRole(roleToRemove.id);
+      await deleteRole(roleToRemove.id);
       this.props.enqueueSnackbar(`Registro eliminado!`, {
         variant: 'success'
       });
@@ -39,7 +39,8 @@ class Roles extends Component {
           variant: "error"
         });
       } else if (ex.response.status === 403) {
-        this.props.enqueueSnackbar(`Operación no autorizada`, {
+        console.log(ex);
+        this.props.enqueueSnackbar(`Operación no autorizada: ${ex.response.data.message}`, {
           variant: "error"
         });
       }
