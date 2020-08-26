@@ -72,25 +72,27 @@ class RoleForm extends Form {
     try {
       await saveRole(this.state.data);
       this.successMessage();
-      this.props.history.push("/roles");
+      if (this.getParamsId() === 'new') this.props.history.push("/roles");
     } catch (ex) {
+      this.errorMessage(ex);
       if (ex.response && ex.response.status === 422) {
-        this.errorMessage(ex);
         const errors = { ...this.state.errors };
         errors.name = ex.response.data.errors.name;
         errors.display_name = ex.response.data.errors.display_name;
         /* errors.guard_name = ex.response.data.errors.guard_name; */
         this.setState({ errors });
-      } else if (ex.response.status === 403)
-        this.props.enqueueSnackbar('Operación no autizada!', {
-          variant: 'error',
-        });
+      }
+
     }
   };
 
+  getParamsId() {
+    return this.props.match.params.id;
+  }
+
   async populateRole() {
     try {
-      const roleId = this.props.match.params.id; //Pasando por URL id movie
+      const roleId = this.getParamsId(); //Pasando por URL id movie
       console.log("roleID: ", roleId);
       if (roleId === "new") return; //Si si
       const { data: role } = await getRole(roleId); //Si no.
@@ -98,6 +100,8 @@ class RoleForm extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
+      else if (ex.response.status === 403)
+        this.props.history.replace("/not-authorized");
     }
   }
 
@@ -113,7 +117,7 @@ class RoleForm extends Form {
 
   async componentDidMount() {
     this.setState({ isLoading: true });
-    await this.populateGuards();
+    /* await this.populateGuards(); */
     await this.populateRole();
     await this.populatePermissions();
     this.populateCheckedPermissions();
@@ -122,7 +126,7 @@ class RoleForm extends Form {
 
 
   render() {
-    const { data, isLoading, permissionsChecked } = this.state;
+    const { data, isLoading, permissionsChecked, errors } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -134,7 +138,7 @@ class RoleForm extends Form {
       },
     ];
     let validation;
-    this.state.errors["name"] === undefined ? (validation = false) : (validation = true);
+    errors["name"] === undefined ? (validation = false) : (validation = true);
     return (
       <Container maxWidth="sm" id="roleForm">
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Nuevo rol"} />
@@ -150,14 +154,14 @@ class RoleForm extends Form {
                   id={"name"}
                   name={"name"}
                   value={data.name}
-                  disabled={this.props.match.params.id === 'new' ? false : true}
+                  disabled={this.getParamsId() === 'new' ? false : true}
                   label={"Identificador *"}
                   placeholder={"Ingrese el identificador"}
 
                   variant="outlined"
                   size="small"
                   margin="normal"
-                  helperText={this.state.errors["name"]}
+                  helperText={errors["name"]}
                 />
                 {this.renderInput("display_name", "Nombre *")}
                 {/* {this.renderSelect(
@@ -171,7 +175,7 @@ class RoleForm extends Form {
                 <div className="checkboxes">
                   <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} label="Permisos (opcional)" />
                 </div>
-                {this.renderButton(this.props.match.params.id === 'new' ? "Crear rol" : "Actualizar rol")}
+                {this.renderButton(this.getParamsId() === 'new' ? "Crear rol" : "Actualizar rol")}
               </form>
             </Paper>
           </Grid>

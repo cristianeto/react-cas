@@ -14,8 +14,6 @@ class Roles extends Component {
   async componentDidMount() {
     this.setState({ isLoading: true });
     const { data: roles } = await getRoles();
-    //const dependencies = [{ name: "All Movies", _id: "" }, ...data];
-
     this.setState({ roles, isLoading: false });
   }
 
@@ -40,7 +38,7 @@ class Roles extends Component {
         });
       } else if (ex.response.status === 403) {
         console.log(ex);
-        this.props.enqueueSnackbar(`Operación no autorizada: ${ex.response.data.message}`, {
+        this.props.enqueueSnackbar(`${ex.response.data.message}`, {
           variant: "error"
         });
       }
@@ -63,7 +61,7 @@ class Roles extends Component {
     };
     return (
       <Container maxWidth="lg" id="roles">
-        <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuarios"} />
+        <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Roles"} />
         <RolesTable
           datas={this.state.roles}
           onGetRole={this.getRole}

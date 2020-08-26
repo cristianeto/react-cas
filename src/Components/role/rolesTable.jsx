@@ -116,9 +116,11 @@ class RolesTable extends Component {
           customBodyRender: (value, tableMeta) => {
             return (
               <React.Fragment>
-                <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
-                  <DeleteIcon onClick={() => onDelete(tableMeta.rowData[1])} color={'primary'} />
-                </Tooltip>
+                {tableMeta.rowData[1] !== 1 &&
+                  <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
+                    <DeleteIcon onClick={() => onDelete(tableMeta.rowData[1])} color={'primary'} />
+                  </Tooltip>
+                }
               </React.Fragment>
             );
           },
