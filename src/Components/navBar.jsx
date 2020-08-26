@@ -19,6 +19,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
+import PanToolIcon from '@material-ui/icons/PanTool';
 // import InboxIcon from "@material-ui/icons/MoveToInbox";
 import GroupIcon from "@material-ui/icons/Group";
 import BusinessIcon from "@material-ui/icons/Business";
@@ -239,6 +240,14 @@ export default function MiniDrawer(props) {
                   <FingerprintIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Roles"} />
+              </ListItem>
+            </NavLink>
+            <NavLink to="/permisos" className={classes.navLink}>
+              <ListItem button>
+                <ListItemIcon>
+                  <PanToolIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Permisos"} />
               </ListItem>
             </NavLink>
             <NavLink to="/configuracion" className={classes.navLink}>

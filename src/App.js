@@ -10,19 +10,21 @@ import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
 import ProjectForm from "./Components/project/projectForm";
 import UserUpdateForm from "./Components/user/userUpdateForm";
-import Roles from "./Components/role/roles";
 import Users from "./Components/user/users";
+import Roles from "./Components/role/roles";
+import RoleForm from "./Components/role/roleForm";
+import Pemissions from "./Components/permission/permissions";
+import PemissionForm from "./Components/permission/permissionForm";
 import Welcome from "./Components/welcome";
 import Projects from "./Components/project/projects";
 import Members from "./Components/member/members";
 import Dependencies from "./Components/dependency/dependencies";
 import DependencyForm from "./Components/dependency/dependencyForm";
+import UserAddForm from "./Components/user/userAddForm";
 import meProfile from "./Components/user/meProfile";
 import Logout from "./Components/logout";
-import { StylesProvider } from '@material-ui/core/styles';
-import UserAddForm from "./Components/user/userAddForm";
-import RoleForm from "./Components/role/roleForm";
 import { getRolesByUser } from "./services/userRolesService";
+import { StylesProvider } from '@material-ui/core/styles';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -142,13 +144,15 @@ class App extends Component {
             {auth.getCurrentUser() !== null && (
               <Route path="/mi/perfil" component={meProfile} />
             )}
-            <Route path="/role/:id" component={RoleForm} />
             <Route path="/usuario/new" component={UserAddForm} />
             <Route path="/usuario/:id" component={UserUpdateForm} />
             <Route path="/registrar/:id" component={UserAddForm} />
             {/* {this.state.selectedRole.id === 1 && ( */}
             <Route path="/usuarios" exact component={Users} />
             <Route path="/roles" exact component={Roles} />
+            <Route path="/role/:id" component={RoleForm} />
+            <Route path="/permisos" exact component={Pemissions} />
+            <Route path="/permiso/:id" exact component={PemissionForm} />
             {/* )} */}
             <Route path="/logout" exact component={Logout} />
             <Route path="/dependencias" component={Dependencies} />

@@ -27,7 +27,7 @@ class RoleForm extends Form {
       permissions: [],
     },
     inputValue: "",
-    guards: [],
+    /*     guards: [], */
     permissionsChecked: [],
     permissions: [],
     errors: [],
@@ -93,7 +93,6 @@ class RoleForm extends Form {
   async populateRole() {
     try {
       const roleId = this.getParamsId(); //Pasando por URL id movie
-      console.log("roleID: ", roleId);
       if (roleId === "new") return; //Si si
       const { data: role } = await getRole(roleId); //Si no.
       this.setState({ data: this.mapToViewModel(role) });

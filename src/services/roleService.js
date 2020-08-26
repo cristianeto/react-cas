@@ -1,13 +1,13 @@
 import http from "./httpService";
 
-const apiEndpoint = "/roles";
+const apiEndPoint = "/roles";
 
 function roleUrl(id) {
-  return `${apiEndpoint}/${id}`;
+  return `${apiEndPoint}/${id}`;
 }
 
 export function getRoles() {
-  return http.get(apiEndpoint);
+  return http.get(apiEndPoint);
 }
 export function getRole(roleId) {
   return http.get(roleUrl(roleId));
@@ -18,9 +18,10 @@ export function saveRole(role) {
     const body = { ...role };
     delete body.id;
     delete body.name;
+    console.log(role);
     return http.put(roleUrl(role.id), body);
   }
-  return http.post(apiEndpoint, role);
+  //return http.post(apiEndPoint, role);
 }
 
 export function deleteRole(roleId) {
