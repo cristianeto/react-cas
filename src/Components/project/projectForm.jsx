@@ -333,10 +333,6 @@ class ProjectForm extends Form {
         marginTop: '1em',
         marginBottom: '1em',
       },
-      paper: {
-        padding: "2em",
-        color: "secondary",
-      },
     }
     const listBreadcrumbs = [
       {
@@ -356,7 +352,7 @@ class ProjectForm extends Form {
         />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
-            <Paper style={classes.paper} elevation={10} >
+            <Paper className={"paper"} elevation={10} >
               <form onSubmit={this.handleSubmit}>
                 <div className={classes.root} >
                   <Stepper nonLinear activeStep={this.state.activeStep}>
@@ -410,18 +406,24 @@ class ProjectForm extends Form {
 
             </Paper>
           </Grid>
-          <Grid container item xs={12} sm={5} md={4} spacing={3}>
+          <Grid container item xs={12} sm={5} md={4}>
             <Grid item xs={12} sm={12}>
-              <Paper style={classes.paper}>
+              <Paper className={"paper"}>
+                <Typography variant="h6" gutterBottom>
+                  Presupuesto:
+                </Typography>
+                <Typography variant="h4" gutterBottom>
+                  $ 45 000
+                </Typography>
+              </Paper>
+              <Paper className={"paper"}>
                 <PanelMember
                   title="Miembros"
                   projectSlug={this.state.data.slug}
                   data={this.state.data.users}
                 />
               </Paper>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Paper style={classes.paper}>
+              <Paper className={"paper"}>
                 <Panel
                   id="id"
                   property="name"
@@ -429,9 +431,6 @@ class ProjectForm extends Form {
                   data={this.state.data["sectors"]}
                 />
               </Paper>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Paper style={classes.paper}></Paper>
             </Grid>
           </Grid>
         </Grid>

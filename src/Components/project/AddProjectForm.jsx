@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { messages } from "../common/es_ES";
 import { saveProject } from "../../services/projectService";
@@ -50,17 +51,10 @@ class AddProjectForm extends Form {
         <DialogTitle id="form-dialog-title">Nuevo proyecto</DialogTitle>
         <form onSubmit={this.handleSubmit}>
           <DialogContent>
-            {/* <DialogContentText></DialogContentText> */}
             {this.renderTextarea("name", "Nombre")}
+            {this.renderButton("Crear proyecto")}
           </DialogContent>
-          <DialogActions>
-            <Button variant={'outlined'} onClick={this.props.onClose} color="primary">
-              Cancelar
-            </Button>
-            {this.renderButton("Guardar")}
-          </DialogActions>
         </form>
-
       </Dialog>
     );
   }

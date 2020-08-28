@@ -147,13 +147,15 @@ class App extends Component {
             <Route path="/usuario/new" component={UserAddForm} />
             <Route path="/usuario/:id" component={UserUpdateForm} />
             <Route path="/registrar/:id" component={UserAddForm} />
-            {/* {this.state.selectedRole.id === 1 && ( */}
-            <Route path="/usuarios" exact component={Users} />
-            <Route path="/roles" exact component={Roles} />
-            <Route path="/role/:id" component={RoleForm} />
-            <Route path="/permisos" exact component={Pemissions} />
-            <Route path="/permiso/:id" exact component={PemissionForm} />
-            {/* )} */}
+            {this.state.selectedRole.id === 1 && (
+              <React.Fragment>
+                <Route path="/usuarios" exact component={Users} />
+                <Route path="/roles" exact component={Roles} />
+                <Route path="/role/:id" component={RoleForm} />
+                <Route path="/permisos" exact component={Pemissions} />
+                <Route path="/permiso/:id" exact component={PemissionForm} />
+              </React.Fragment>
+            )}
             <Route path="/logout" exact component={Logout} />
             <Route path="/dependencias" component={Dependencies} />
             <Route path="/dependencia/:id" component={DependencyForm} />
