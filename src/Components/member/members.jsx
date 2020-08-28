@@ -6,7 +6,7 @@ import { Autocomplete } from '@material-ui/lab';
 import { withSnackbar } from "notistack";
 import React from "react";
 import { deleteMember, getMembers, saveMember } from "../../services/memberService";
-import { getRoles } from "../../services/roleService";
+import { getStaffs } from "../../services/staffService";
 //import { getDependencies } from "../../services/dependencyService";
 import { getUsers } from "../../services/userService";
 import Breadcrumb from "../common/breadcum";
@@ -21,12 +21,12 @@ class Members extends Form {
     data: {
       project_slug: this.props.match.params.slug,
       user_id: '',
-      role_id: '',
+      staff_id: '',
       project_name: '',
     },
     members: [],
     users: [],
-    roles: [],
+    staffs: [],
     //dependencies: [],
     errors: {},
     isLoading: false,
@@ -35,7 +35,7 @@ class Members extends Form {
   schema = Joi.object({
     project_id: Joi.string().label("Proyecto").min(36).max(36).messages(messages),
     user_id: Joi.string().label("Miembro").min(36).max(36).messages(messages),
-    role_id: Joi.string().label("Rol").min(36).max(36).messages(messages),
+    staff_id: Joi.string().label("Cargo").min(36).max(36).messages(messages),
     users: Joi.array().label("Miembros").min(1).max(1).messages(messages),
   });
 
@@ -47,8 +47,8 @@ class Members extends Form {
     const member = this.getMember(projectSlug, userId);
     const members = [...this.state.members];
     const index = members.indexOf(member);
-    members[index].role = newValues;
-    members[index].role_id = newValues.id;
+    members[index].staff = newValues;
+    members[index].staff_id = newValues.id;
     this.setState({ members });
     this.doUpdate(members[index]);
   };
@@ -96,8 +96,9 @@ class Members extends Form {
         variant: 'success'
       });
     } catch (ex) {
+      this.errorMessage(ex);
       if (ex.response && ex.response.status === 404)
-        this.errorMessage(ex);
+        this.props.history.replace("/not-found");
 
       this.setState({ members: originalMembers });
     }
@@ -108,9 +109,9 @@ class Members extends Form {
     this.setState({ users });
   }
 
-  async populateRoles() {
-    const { data: roles } = await getRoles();
-    this.setState({ roles });
+  async populateStaffs() {
+    const { data: staffs } = await getStaffs();
+    this.setState({ staffs });
   }
   async populateProject() {
     const { data: project } = await getProject(this.props.match.params.slug);
@@ -128,7 +129,7 @@ class Members extends Form {
   async componentDidMount() {
     this.setState({ isLoading: true });
     await this.populateUsers();
-    await this.populateRoles();
+    await this.populateStaffs();
     this.populateProject();
     await this.populateMembers();
     this.setState({ isLoading: false });
@@ -173,7 +174,7 @@ class Members extends Form {
             lastLabel={"Miembros proyecto"}
           />
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={10} md={10} lg={4}>
+            <Grid item xs={12} sm={12} md={6} lg={4}>
               <Paper style={classes.paper}>
                 <TitleForm entity={"Agregar miembros del proyecto"} isLoading={isLoading} />
                 <form onSubmit={this.doSubmit}>
@@ -223,28 +224,26 @@ class Members extends Form {
                   />
                   <Autocomplete
                     id={'id-custom-box2'}
-                    name={'role'}
-                    options={this.state.roles}
-                    getOptionLabel={(role) => role.name
-                    }
+                    name={'staff'}
+                    options={this.state.staffs}
+                    getOptionLabel={(staff) => staff.name}
                     disableClearable
-                    style={{ width: 300 }}
                     //inputValue={value.name}
-                    onChange={(event, newValue) => this.handleChangeSelect(event, newValue, 'role_id')}
-                    renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Elije el rol o permiso" variant="outlined" />}
+                    onChange={(event, newValue) => this.handleChangeSelect(event, newValue, 'staff_id')}
+                    renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Elije el cargo que ocupa" variant="outlined" />}
                   />
                   {this.renderButton('Guardar')}
                 </form>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={10} md={10} lg={8}>
+            <Grid item xs={12} sm={12} md={12} lg={8}>
               <MembersTable
                 members={this.state.members}
                 //onGetGroup={this.getGroup}
                 onLoading={this.state.isLoading}
                 onActive={this.handleActive}
                 style={classes.table}
-                roles={this.state.roles}
+                staffs={this.state.staffs}
                 onChange={this.handleChangeAutocompleteSelect}
                 onDelete={this.handleDelete}
               />

@@ -35,7 +35,7 @@ class MembersTable extends Component {
     }
   };
   render() {
-    const { members, roles, onLoading, onChange, onDelete } = this.props
+    const { members, staffs, onLoading, onChange, onDelete } = this.props
     const columns = [
       {
         name: 'count',
@@ -105,23 +105,23 @@ class MembersTable extends Component {
         },
       },
       {
-        name: "role",
-        label: "Rol o Permisos",
+        name: "staff",
+        label: "Cargo",
         options: {
           filter: true,
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
               <Autocomplete
-                name={'role'}
-                options={roles}
-                getOptionLabel={(role) => role.name}
+                name={'staff'}
+                options={staffs}
+                getOptionLabel={(staff) => staff.name}
                 disableClearable
                 style={{ width: 300 }}
                 value={value}
-                getOptionSelected={(role, value) => { return (role.id === value.id) }}
-                onChange={(event, newValue) => onChange(event, newValue, 'role_id', tableMeta.rowData[2], tableMeta.rowData[3])}
-                renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Elije el rol" variant="outlined" style={{ margin: '.25em' }} />}
+                getOptionSelected={(staff, value) => { return (staff.id === value.id) }}
+                onChange={(event, newValue) => onChange(event, newValue, 'staff_id', tableMeta.rowData[2], tableMeta.rowData[3])}
+                renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Cargo en el proyecto" variant="outlined" style={{ margin: '.25em' }} />}
               />
             )
           }

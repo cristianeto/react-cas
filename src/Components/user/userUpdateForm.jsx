@@ -285,8 +285,7 @@ class UserUpdateForm extends Form {
                   <Divider />
                   <ul>
                     {data.roles.length > 0 ? data.permissions.map(permission =>
-                      <li>{permission.name}</li>
-
+                      <li key={permission.id}>{permission.name}</li>
                     )
                       : "No tiene permisos"
                     }

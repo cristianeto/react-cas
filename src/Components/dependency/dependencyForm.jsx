@@ -68,7 +68,7 @@ class DependencyForm extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 404) {
         this.props.enqueueSnackbar(ex.response.data.message, {
-          variant: "warning",
+          variant: "error",
         });
       }
       this.props.history.replace("/not-found");

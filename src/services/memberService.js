@@ -17,7 +17,7 @@ export function getMembers(projectSlug) {
 
 export function saveMember(member) {
   if (member.project_id && member.user_id) {
-    const body = { "role_id": member.role_id }
+    const body = { "staff_id": member.staff_id }
     delete body.project_id;
     delete body.user_id;
     return http.put(memberUrl(member.project.slug, member.user_id), body);
