@@ -86,7 +86,7 @@ class meProfile extends Form {
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Mi perfil"} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={4} xl={3}>
-            <Paper className="main-paper">
+            <Paper className="paper main-paper">
               <div className="main-paper__content">
                 <div className="main-paper__content_avatar" >
                   <Avatar alt={data.fullname} src={img_avatar} className="img" />

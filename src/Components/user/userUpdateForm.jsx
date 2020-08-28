@@ -19,8 +19,11 @@ import {
   LinearProgress,
 } from "@material-ui/core";
 import TitleForm from '../common/titleForm';
+import ListItem from "@material-ui/core/ListItem";
 import { messages } from '../common/es_ES';
 import auth from "../../services/authService";
+import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List';
 
 class UserUpdateForm extends Form {
   _isMounted = false;
@@ -270,26 +273,44 @@ class UserUpdateForm extends Form {
                 <Paper className="paper">
                   <TitleForm entity={"Roles"} isLoading={isLoading} />
                   <Divider />
-                  <ul>
+                  <List dense={true}>
                     {data.roles.length > 0 ? data.roles.map(role =>
-                      <li key={role.id}>{role.name}</li>
+                      <ListItem key={role.id}>
+                        <ListItemText
+                          primary={role.name}
+                        />
+                      </ListItem>
                     )
-                      : "No tiene roles"
+                      :
+                      <ListItem>
+                        <ListItemText
+                          primary={"No existen proyectos"}
+                        />
+                      </ListItem>
                     }
-                  </ul>
+                  </List>
                 </Paper>
               </Grid>
               <Grid item xs={12} sm={12} md={4}>
                 <Paper className="paper">
                   <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
                   <Divider />
-                  <ul>
-                    {data.roles.length > 0 ? data.permissions.map(permission =>
-                      <li key={permission.id}>{permission.name}</li>
+                  <List dense={true}>
+                    {data.permissions.length > 0 ? data.permissions.map(permission =>
+                      <ListItem key={permission.id}>
+                        <ListItemText
+                          primary={permission.name}
+                        />
+                      </ListItem>
                     )
-                      : "No tiene permisos"
+                      :
+                      <ListItem>
+                        <ListItemText
+                          primary={"No existen proyectos"}
+                        />
+                      </ListItem>
                     }
-                  </ul>
+                  </List>
                 </Paper>
               </Grid>
             </React.Fragment>

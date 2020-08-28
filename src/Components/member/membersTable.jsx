@@ -5,6 +5,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography, Tooltip, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteIcon from '@material-ui/icons/Delete';
+import auth from '../../services/authService';
 
 class MembersTable extends Component {
   getMuiTheme = () =>
@@ -71,6 +72,14 @@ class MembersTable extends Component {
         },
       },
       {
+        name: "staff_id",
+        label: "Staff",
+        options: {
+          filter: false,
+          display: "excluded",
+        },
+      },
+      {
         name: "created_at",
         label: "Fecha Creación",
         options: {
@@ -94,7 +103,7 @@ class MembersTable extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
-              <Tooltip title={`${tableMeta.rowData[4]}`} style={{ cursor: "pointer" }}>
+              <Tooltip title={`${tableMeta.rowData[5]}`} style={{ cursor: "pointer" }}>
                 <span
                 >
                   {`${value}`}
@@ -112,17 +121,20 @@ class MembersTable extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
-              <Autocomplete
-                name={'staff'}
-                options={staffs}
-                getOptionLabel={(staff) => staff.name}
-                disableClearable
-                style={{ width: 300 }}
-                value={value}
-                getOptionSelected={(staff, value) => { return (staff.id === value.id) }}
-                onChange={(event, newValue) => onChange(event, newValue, 'staff_id', tableMeta.rowData[2], tableMeta.rowData[3])}
-                renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Cargo en el proyecto" variant="outlined" style={{ margin: '.25em' }} />}
-              />
+              (value.id !== 1 || auth.getSelectedRole().id === 1) ?
+                <Autocomplete
+                  name={'staff'}
+                  options={staffs}
+                  getOptionLabel={(staff) => staff.name}
+                  disableClearable
+                  style={{ width: 300 }}
+                  value={value}
+                  getOptionSelected={(staff, value) => { return (staff.id === value.id) }}
+                  onChange={(event, newValue) => onChange(event, newValue, 'staff_id', tableMeta.rowData[2], tableMeta.rowData[3])}
+                  renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Cargo en el proyecto" variant="outlined" style={{ margin: '.25em' }} />}
+                />
+                :
+                <span style={{ marginLeft: '1em' }}>{value.name}</span>
             )
           }
         },
@@ -135,9 +147,11 @@ class MembersTable extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
-              <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
-                <DeleteIcon onClick={() => onDelete(tableMeta.rowData[2], tableMeta.rowData[3])} />
-              </Tooltip>
+              tableMeta.rowData[4] !== 1 ?
+                <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
+                  <DeleteIcon onClick={() => onDelete(tableMeta.rowData[2], tableMeta.rowData[3])} color={'primary'} />
+                </Tooltip>
+                : ""
             );
           },
         },
