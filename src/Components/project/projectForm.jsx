@@ -190,10 +190,6 @@ class ProjectForm extends Form {
     const { data: sectors } = await getSectors();
     this.setState({ sectors });
   }
-  async populateUsers() {
-    const { data: users } = await getUsers();
-    this.setState({ users });
-  }
 
   async populateProject() {
     try {
@@ -220,7 +216,6 @@ class ProjectForm extends Form {
     await this.populateCoverageTypes();
     await this.populatePrograms();
     await this.populateSectors();
-    await this.populateUsers();
     await this.populateProject();
     if (this._isMounted) this.setState({ isLoading: false });
   }
@@ -243,18 +238,18 @@ class ProjectForm extends Form {
       users: project.users,
     };
   }
-  handleChangeSlug(res) {
+  handleChangeSlug(slug) {
     const data = { ...this.state.data }
-    data.slug = res.data.slug
+    data.slug = slug
     this.setState({ data })
   }
 
   doSubmit = async () => {
     try {
       const res = await saveProject(this.state.data);
-      this.handleChangeSlug(res);
+      this.handleChangeSlug(res.data.slug);
       this.successMessage();
-      this.props.history.push(`/proyecto/${res.data.slug}`);
+      this.props.history.push(`/proyecto/${this.state.data.slug}`);
     } catch (ex) {
       this.errorMessage(ex);
     }

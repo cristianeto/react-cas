@@ -117,13 +117,11 @@ class meProfile extends Form {
                 <ListItem>
                   <ListItemText primary="E-mail:" secondary={data.email} />
                 </ListItem>
-                <ListItem>
-                  <Link to={`/usuario/${data.id}`} className="link" >
-                    <Button variant="contained" color="primary" className="btn btn-guardar ">
-                      Editar
+                <Link to={`/usuario/${data.id}`} className="link" >
+                  <Button variant="contained" color="primary" className="btn btn-guardar ">
+                    Editar
                     </Button>
-                  </Link>
-                </ListItem>
+                </Link>
               </List>
             </Paper>
           </Grid>
