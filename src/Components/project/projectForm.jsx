@@ -4,6 +4,8 @@ import Form from '../common/form';
 import { withSnackbar } from "notistack";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { format, formatDistanceToNowStrict } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { Stepper, Step, StepButton, Button, Typography, LinearProgress } from '@material-ui/core';
 import { getProject, saveProject } from "../../services/projectService";
 import { getProjectTypes } from "../../services/projectTypeService";
@@ -11,11 +13,10 @@ import { getResearchTypes } from "../../services/researchTypeService";
 import { getCoverageTypes } from "../../services/coverageTypeService";
 import { getPrograms } from "../../services/programService";
 import { getSectors } from "../../services/sectorService";
-import { getUsers } from "../../services/userService";
 import { messages } from "../common/es_ES";
 import SaveIcon from "@material-ui/icons/Save";
 import Breadcrumb from "../common/breadcum";
-import { Container, Paper, Grid } from "@material-ui/core";
+import { Container, Paper, Grid, List, ListItem, ListItemText, Tooltip } from "@material-ui/core";
 import PanelMember from '../common/panelMember';
 import Panel from '../common/panel';
 
@@ -36,7 +37,20 @@ class ProjectForm extends Form {
         coverage_type_id: "",
         program_id: "",
         sectors: [],
+        status: [],
         users: [],
+
+        summary: '',
+        background: '',
+        justification: '',
+        current_situation: '',
+        general_objective: '',
+        specific_objectives: '',
+        sustainability: '',
+        methodology: '',
+        expected_results: '',
+        transference_results: '',
+        beneficiaries: '',
 
       },
       projectTypes: [],
@@ -63,20 +77,20 @@ class ProjectForm extends Form {
         return (<React.Fragment>
           {isLoading && <LinearProgress color="secondary" />}
           {/* <form onSubmit={this.handleSubmit}> */}
-          {this.renderTextarea("name", "Nombre")}
+          {this.renderTextarea("name", "Nombre *")}
           {/* {this.renderInputDate("startDate", "Fecha Inicio")} */}
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             {this.renderDatePicker(
               "startDate",
-              "Fecha Inicio",
+              "Fecha Inicio *",
               "2020-01-01",
               "2020-12-31",
               false
             )}
             {this.renderDatePicker(
               "endDate",
-              "Fecha Fin",
+              "Fecha Fin *",
               "2020-02-01",
               "2020-12-31",
               false
@@ -90,10 +104,10 @@ class ProjectForm extends Form {
             )}
           </MuiPickersUtilsProvider>
           {/* {this.renderInput("year", "Año")} */}
-          {this.renderInput("location", "Ubicación")}
+          {this.renderInput("location", "Ubicación *")}
           {this.renderSelect(
             "project_type_id",
-            "Tipo proyecto",
+            "Tipo proyecto *",
             110,
             "id",
             "name",
@@ -101,7 +115,7 @@ class ProjectForm extends Form {
           )}
           {this.renderSelect(
             "research_type_id",
-            "Tipo investigación",
+            "Tipo investigación *",
             145,
             "id",
             "name",
@@ -109,7 +123,7 @@ class ProjectForm extends Form {
           )}
           {this.renderSelect(
             "coverage_type_id",
-            "Cobertura",
+            "Cobertura *",
             85,
             "id",
             "name",
@@ -117,7 +131,7 @@ class ProjectForm extends Form {
           )}
           {this.renderSelect(
             "program_id",
-            "Programa",
+            "Programa *",
             85,
             "id",
             "name",
@@ -125,7 +139,7 @@ class ProjectForm extends Form {
           )}
           {this.renderMultiSelect(
             "sectors",
-            "Sectores Impacto",
+            "Sectores Impacto *",
             "id",
             "name",
             sectors
@@ -139,6 +153,19 @@ class ProjectForm extends Form {
       case 1:
         return (<React.Fragment>
           {this.renderTextarea("name", "Nombre")}
+          {this.renderTextarea("summary", "Resumen")}
+          {this.renderTextarea("background", "Antecedentes")}
+          {this.renderTextarea("justification", "Justificación")}
+          {this.renderTextarea("current_situation", "Análisis situación actual")}
+          {this.renderTextarea("general_objective", "Objetivo general")}
+          {this.renderTextarea("specific_objectives", "Objetivos específicos")}
+          {this.renderTextarea("sustainability", "Sostenibilidad")}
+          {this.renderTextarea("methodology", "Metodología")}
+          {this.renderTextarea("expected_results", "Resultados esperados")}
+          {this.renderTextarea("transference_results", "Transferencia de resultados")}
+          {this.renderTextarea("beneficiaries", "Beneficiarios")}
+          {this.renderTextarea("impacts", "Impactos bioéticos y sociales")}
+          {this.renderTextarea("aspects", "Aspectos")}
         </React.Fragment>);
       case 2:
         return (<React.Fragment>
@@ -164,7 +191,22 @@ class ProjectForm extends Form {
     coverage_type_id: Joi.string().label("Tipo cobertura").min(36).max(36).messages(messages),
     program_id: Joi.string().label("Programa").min(36).max(36).messages(messages),
     sectors: Joi.array().label("Sectores impacto").min(1).messages(messages),
+    status: Joi.array().label("Estados").allow('').messages(messages),
     users: Joi.array().label("Usuarios").allow('').messages(messages),
+
+    summary: Joi.string().label("Resumen").allow('').max(500).messages(messages),
+    background: Joi.string().label("Antecedentes").allow('').max(500).messages(messages),
+    justification: Joi.string().label("Justificación").allow('').max(500).messages(messages),
+    current_situation: Joi.string().label("Análisis situación actual").allow('').max(500).messages(messages),
+    general_objective: Joi.string().label("Objetivo General").allow('').max(500).messages(messages),
+    specific_objectives: Joi.string().label("Objetivos específicos").allow('').max(500).messages(messages),
+    sustainability: Joi.string().label("Sostenibilidad").allow('').max(500).messages(messages),
+    methodology: Joi.string().label("Metodología").allow('').max(500).messages(messages),
+    expected_results: Joi.string().label("Resultados esperados").allow('').max(500).messages(messages),
+    transference_results: Joi.string().label("Transferencia de resultados").allow('').max(500).messages(messages),
+    beneficiaries: Joi.string().label("Beneficiarios").allow('').max(500).messages(messages),
+    impacts: Joi.string().label("Impactos").allow('').max(500).messages(messages),
+    aspects: Joi.string().label("Aspectos bioéticos y sociales").allow('').max(500).messages(messages),
   });
 
   async populateProjectTypes() {
@@ -199,8 +241,9 @@ class ProjectForm extends Form {
       const { data: project } = await getProject(projectSlug); //Si no.
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
+      console.log(ex);
+      this.errorMessage(ex);
       if (ex.response && ex.response.status === 404) {
-        this.errorMessage(ex);
         this.props.history.replace("/not-found");
       } else if (ex.response.status === 403)
         this.props.history.replace("/not-authorized");
@@ -235,7 +278,22 @@ class ProjectForm extends Form {
       coverage_type_id: project.coverage_type_id === null ? '' : project.coverage_type_id,
       program_id: project.program_id === null ? '' : project.program_id,
       sectors: project.impact_sectors,
+      status: project.status,
       users: project.users,
+
+      summary: project.summary === null ? '' : project.summary,
+      background: project.background === null ? '' : project.background,
+      justification: project.justification === null ? '' : project.justification,
+      current_situation: project.current_situation === null ? '' : project.current_situation,
+      general_objective: project.general_objective === null ? '' : project.general_objective,
+      specific_objectives: project.specific_objectives === null ? '' : project.specific_objectives,
+      sustainability: project.sustainability === null ? '' : project.sustainability,
+      methodology: project.methodology === null ? '' : project.methodology,
+      expected_results: project.expected_results === null ? '' : project.expected_results,
+      transference_results: project.transference_results === null ? '' : project.transference_results,
+      beneficiaries: project.beneficiaries === null ? '' : project.beneficiaries,
+      impacts: project.impacts === null ? '' : project.impacts,
+      aspects: project.aspects === null ? '' : project.aspects,
     };
   }
   handleChangeSlug(slug) {
@@ -339,6 +397,7 @@ class ProjectForm extends Form {
         label: "Proyectos",
       },
     ];
+
     return (
       <Container maxWidth="lg">
         <Breadcrumb
@@ -346,7 +405,7 @@ class ProjectForm extends Form {
           lastLabel={"Proyecto"}
         />
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={7} md={8}>
+          <Grid item xs={12} sm={12} md={8}>
             <Paper className={"paper"} elevation={10} >
               <form onSubmit={this.handleSubmit}>
                 <div className={classes.root} >
@@ -364,7 +423,7 @@ class ProjectForm extends Form {
                       <div>
                         <Typography>
                           All steps completed - you&apos;re finished
-            </Typography>
+                        </Typography>
                         <Button onClick={this.handleReset}>Reset</Button>
                       </div>
                     ) : (
@@ -392,6 +451,7 @@ class ProjectForm extends Form {
                                     {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Guardar'}
                                   </Button>
                                 ))}
+                            {this.renderButton('Enviar')}
                           </div>
                         </div>
                       )}
@@ -401,7 +461,7 @@ class ProjectForm extends Form {
 
             </Paper>
           </Grid>
-          <Grid container item xs={12} sm={5} md={4}>
+          <Grid container item xs={12} sm={12} md={4}>
             <Grid item xs={12} sm={12}>
               <Paper className={"paper"}>
                 <Typography variant="h6" gutterBottom>
@@ -410,6 +470,25 @@ class ProjectForm extends Form {
                 <Typography variant="h4" gutterBottom>
                   $ 45 000
                 </Typography>
+              </Paper>
+              <Paper className={"paper"}>
+                <Typography variant="h6" gutterBottom>
+                  Últimos estados:
+                </Typography>
+                <List dense={true}>
+                  {this.state.data.status.map(state =>
+                    <ListItem key={state.id}>
+                      <ListItemText
+                        primary={state.name}
+                        secondary={
+                          <Tooltip title={format(new Date(state.pivot.created_at), 'dd-MM-yyyy HH:mm:ss')} placement="top">
+                            <span>{formatDistanceToNowStrict(new Date(state.pivot.created_at), { locale: es })}</span>
+                          </Tooltip>
+                        }
+                      />
+                    </ListItem>
+                  )}
+                </List>
               </Paper>
               <Paper className={"paper"}>
                 <PanelMember

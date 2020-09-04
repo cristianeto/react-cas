@@ -49,11 +49,12 @@ const PanelMember = ({ title, projectSlug, data }) => {
         </List>
         <NavLink to={`/proyecto/${projectSlug}/miembros`} style={{ textDecoration: "none" }}>
           <Button
+            className="btn btn-guardar"
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
           >
-            Agregar
+            Ver más
         </Button>
         </NavLink>
       </div>

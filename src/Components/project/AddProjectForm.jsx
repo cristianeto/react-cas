@@ -46,8 +46,8 @@ class AddProjectForm extends Form {
         fullWidth={true}
       >
         <form onSubmit={this.handleSubmit}>
+          <DialogTitle id="form-dialog-title">Nuevo proyecto</DialogTitle>
           <DialogContent>
-            <DialogTitle id="form-dialog-title">Nuevo proyecto</DialogTitle>
             {this.renderTextarea("name", "Nombre")}
             {this.renderButton("Crear proyecto")}
           </DialogContent>
