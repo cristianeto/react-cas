@@ -4,7 +4,7 @@ import Form from '../common/form';
 import { withSnackbar } from "notistack";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { format, formatDistanceToNowStrict } from 'date-fns'
+import { format, formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Stepper, Step, StepButton, Button, Typography, LinearProgress } from '@material-ui/core';
 import { getProject, saveProject } from "../../services/projectService";
@@ -186,10 +186,10 @@ class ProjectForm extends Form {
     endDateReal: Joi.date().allow("", null).label("Fecha Final Real"),
     year: Joi.number().positive().label("Año").min(2020).messages(messages),
     location: Joi.string().label("Ubicación").max(30).messages(messages),
-    project_type_id: Joi.string().label("Tipo proyecto").min(36).max(36).messages(messages),
-    research_type_id: Joi.string().label("Tipo investigación").min(36).max(36).messages(messages),
-    coverage_type_id: Joi.string().label("Tipo cobertura").min(36).max(36).messages(messages),
-    program_id: Joi.string().label("Programa").min(36).max(36).messages(messages),
+    project_type_id: Joi.number().integer().less(3).label("Tipo proyecto").messages(messages),
+    coverage_type_id: Joi.number().integer().less(7).label("Tipo cobertura").messages(messages),
+    research_type_id: Joi.number().integer().less(4).label("Tipo investigación").messages(messages),
+    program_id: Joi.number().integer().label("Programa").messages(messages),
     sectors: Joi.array().label("Sectores impacto").min(1).messages(messages),
     status: Joi.array().label("Estados").allow('').messages(messages),
     users: Joi.array().label("Usuarios").allow('').messages(messages),
@@ -481,8 +481,8 @@ class ProjectForm extends Form {
                       <ListItemText
                         primary={state.name}
                         secondary={
-                          <Tooltip title={format(new Date(state.pivot.created_at), 'dd-MM-yyyy HH:mm:ss')} placement="top">
-                            <span>{formatDistanceToNowStrict(new Date(state.pivot.created_at), { locale: es })}</span>
+                          <Tooltip title={format(new Date(state.pivot.created_at), 'dd-MMM-yyyy HH:mm:ss')} placement="top">
+                            <span>{formatDistanceToNow(new Date(state.pivot.created_at), { locale: es })}</span>
                           </Tooltip>
                         }
                       />
