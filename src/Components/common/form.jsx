@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import InputDate from "./inputDate";
 // import { messages } from "./es_ES.js";
+import Radios from '../common/radio';
 
 class Form extends Component {
   state = {
@@ -159,6 +160,20 @@ class Form extends Component {
         error={errors[name]}
       />
     );
+  }
+
+  renderRadio(name, label, options) {
+    const { data, errors } = this.state;
+    return (
+      <Radios
+        name={name}
+        value={data[name]}
+        label={label}
+        options={options}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    )
   }
 
   renderMultiSelect(name, label, property1, property2, options) {

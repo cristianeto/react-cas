@@ -4,8 +4,7 @@ import AddProjectForm from "./AddProjectForm";
 import { TEXT_LABELS } from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography } from "@material-ui/core";
-import { Button, Tooltip } from "@material-ui/core";
+import { Typography, Button, Tooltip } from "@material-ui/core";
 import { Add as AddIcon, People as PeopleIcon } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -45,7 +44,7 @@ class ProjectsTable extends Component {
     });
 
   render() {
-    const { datas, onLoading, onDelete } = this.props;
+    const { datas, onDelete } = this.props;
     const columns = [
       {
         name: 'count',
@@ -248,8 +247,6 @@ class ProjectsTable extends Component {
               >
                 Nuevo proyecto
               </Button>
-              <br></br>
-              {onLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
           data={datas}

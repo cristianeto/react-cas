@@ -4,22 +4,28 @@ import Form from '../common/form';
 import { withSnackbar } from "notistack";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { format, formatDistanceToNow } from 'date-fns'
-import { es } from 'date-fns/locale'
-import { Stepper, Step, StepButton, Button, Typography, LinearProgress } from '@material-ui/core';
+/* import { format, formatDistanceToNow } from 'date-fns'
+import { es } from 'date-fns/locale' */
+import { Stepper, Step, StepButton, Button, Typography } from '@material-ui/core';
 import { getProject, saveProject } from "../../services/projectService";
 import { getProjectTypes } from "../../services/projectTypeService";
 import { getResearchTypes } from "../../services/researchTypeService";
 import { getCoverageTypes } from "../../services/coverageTypeService";
 import { getPrograms } from "../../services/programService";
 import { getSectors } from "../../services/sectorService";
+import { getProjectStatuses } from "../../services/projectStatusService";
 import { messages } from "../common/es_ES";
 import SaveIcon from "@material-ui/icons/Save";
 import Breadcrumb from "../common/breadcum";
 import { Container, Paper, Grid, List, ListItem, ListItemText, Tooltip } from "@material-ui/core";
 import PanelMember from '../common/panelMember';
 import Panel from '../common/panel';
-
+import Fab from '@material-ui/core/Fab';
+import NavigationIcon from '@material-ui/icons/Navigation';
+import { NavLink } from "react-router-dom";
+import AddIcon from "@material-ui/icons/Add";
+import Loading from "../common/loading";
+import './project.scss';
 class ProjectForm extends Form {
   constructor(props) {
     super(props)
@@ -27,6 +33,7 @@ class ProjectForm extends Form {
       data: {
         name: "",
         slug: "",
+        kind: "",
         startDate: "",
         endDate: "",
         endDateReal: "",
@@ -37,7 +44,6 @@ class ProjectForm extends Form {
         coverage_type_id: "",
         program_id: "",
         sectors: [],
-        status: [],
         users: [],
 
         summary: '',
@@ -58,6 +64,7 @@ class ProjectForm extends Form {
       coverageTypes: [],
       programs: [],
       sectors: [],
+      projectStatuses: [],
       errors: {},
       isLoading: false,
 
@@ -67,19 +74,20 @@ class ProjectForm extends Form {
   }
 
   getSteps = () => {
-    return ['Inf. General', 'Perfil', 'Miembros', 'Presupuesto'];
+    return ['Inf. General', 'Perfil', 'Documentos'];
   }
 
   getStepContent = (step) => {
-    const { isLoading, projectTypes, researchTypes, coverageTypes, programs, sectors } = this.state;
+    const { projectTypes, researchTypes, coverageTypes, programs, sectors } = this.state;
+    const kinds = [{ 'id': 1, 'name': 'Institucional' }, { id: 2, name: 'Facultad' }];
     switch (step) {
       case 0:
         return (<React.Fragment>
-          {isLoading && <LinearProgress color="secondary" />}
+          {/* {isLoading && <LinearProgress color="secondary" />} */}
           {/* <form onSubmit={this.handleSubmit}> */}
           {this.renderTextarea("name", "Nombre *")}
           {/* {this.renderInputDate("startDate", "Fecha Inicio")} */}
-
+          {this.renderRadio("kind", "Tipo:", kinds)}
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             {this.renderDatePicker(
               "startDate",
@@ -181,6 +189,7 @@ class ProjectForm extends Form {
     id: Joi.string().guid({ version: ["uuidv1"] }),
     name: Joi.string().label("Nombre").max(500).messages(messages),
     slug: Joi.string().label("Slug").max(60).messages(messages),
+    kind: Joi.string().label("Tipo").max(60).messages(messages),
     startDate: Joi.date().label("Fecha Inicio"),
     endDate: Joi.date().label("Fecha Fin"),
     endDateReal: Joi.date().allow("", null).label("Fecha Final Real"),
@@ -191,7 +200,6 @@ class ProjectForm extends Form {
     research_type_id: Joi.number().integer().less(4).label("Tipo investigación").messages(messages),
     program_id: Joi.number().integer().label("Programa").messages(messages),
     sectors: Joi.array().label("Sectores impacto").min(1).messages(messages),
-    status: Joi.array().label("Estados").allow('').messages(messages),
     users: Joi.array().label("Usuarios").allow('').messages(messages),
 
     summary: Joi.string().label("Resumen").allow('').max(500).messages(messages),
@@ -212,25 +220,37 @@ class ProjectForm extends Form {
   async populateProjectTypes() {
     const { data: projectTypes } = await getProjectTypes();
     this.setState({ projectTypes });
+    console.log('Se obtuvieron los ProjectTypes');
   }
 
   async populateResearchTypes() {
     const { data: researchTypes } = await getResearchTypes();
     this.setState({ researchTypes });
+    console.log('Se obtuvieron los ResearchTypes');
   }
 
   async populateCoverageTypes() {
     const { data: coverageTypes } = await getCoverageTypes();
     this.setState({ coverageTypes });
+    console.log('Se obtuvieron los CoverageTypes');
   }
 
   async populatePrograms() {
     const { data: programs } = await getPrograms();
     this.setState({ programs });
+    console.log('Se obtuvieron los Programs');
   }
   async populateSectors() {
     const { data: sectors } = await getSectors();
     this.setState({ sectors });
+    console.log('Se obtuvieron los Sectors');
+  }
+
+  async populateProjectStatuses() {
+    const projectSlug = this.props.match.params.slug;
+    const { data: projectStatuses } = await getProjectStatuses(projectSlug);
+    this.setState({ projectStatuses });
+    console.log('Se obtuvieron los Statuses');
   }
 
   async populateProject() {
@@ -248,6 +268,7 @@ class ProjectForm extends Form {
       } else if (ex.response.status === 403)
         this.props.history.replace("/not-authorized");
     }
+    console.log('Se obtuvo el DataProject');
   }
 
   async componentDidMount() {
@@ -259,6 +280,7 @@ class ProjectForm extends Form {
     await this.populateCoverageTypes();
     await this.populatePrograms();
     await this.populateSectors();
+    await this.populateProjectStatuses();
     await this.populateProject();
     if (this._isMounted) this.setState({ isLoading: false });
   }
@@ -268,6 +290,7 @@ class ProjectForm extends Form {
       id: project.id,
       name: project.name,
       slug: project.slug,
+      kind: project.kind === null ? '' : project.kind,
       startDate: project.startDate === null ? '' : project.startDate,
       endDate: project.endDate === null ? '' : project.endDate,
       endDateReal: project.endDateReal === null ? '' : project.endDateReal,
@@ -278,7 +301,6 @@ class ProjectForm extends Form {
       coverage_type_id: project.coverage_type_id === null ? '' : project.coverage_type_id,
       program_id: project.program_id === null ? '' : project.program_id,
       sectors: project.impact_sectors,
-      status: project.status,
       users: project.users,
 
       summary: project.summary === null ? '' : project.summary,
@@ -296,6 +318,7 @@ class ProjectForm extends Form {
       aspects: project.aspects === null ? '' : project.aspects,
     };
   }
+
   handleChangeSlug(slug) {
     const data = { ...this.state.data }
     data.slug = slug
@@ -307,6 +330,7 @@ class ProjectForm extends Form {
       const res = await saveProject(this.state.data);
       this.handleChangeSlug(res.data.slug);
       this.successMessage();
+      this.populateProjectStatuses();
       this.props.history.push(`/proyecto/${this.state.data.slug}`);
     } catch (ex) {
       this.errorMessage(ex);
@@ -397,15 +421,29 @@ class ProjectForm extends Form {
         label: "Proyectos",
       },
     ];
+    let disabled = true;
+    if (this.validate() === null) disabled = false;
 
     return (
-      <Container maxWidth="lg">
+      <Container maxWidth="xl" id="projectForm">
+        <Loading open={this.state.isLoading} />
         <Breadcrumb
           onListBreadcrumbs={listBreadcrumbs}
           lastLabel={"Proyecto"}
         />
+        <Fab
+          variant="extended"
+          size="medium"
+          color="secondary"
+          aria-label="add"
+          className="btn btn-send"
+          disabled={disabled}
+        >
+          <NavigationIcon />
+          Enviar
+        </Fab>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={8}>
+          <Grid item xs={12} sm={12} md={8} xl={9}>
             <Paper className={"paper"} elevation={10} >
               <form onSubmit={this.handleSubmit}>
                 <div className={classes.root} >
@@ -451,7 +489,6 @@ class ProjectForm extends Form {
                                     {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Guardar'}
                                   </Button>
                                 ))}
-                            {this.renderButton('Enviar')}
                           </div>
                         </div>
                       )}
@@ -461,7 +498,7 @@ class ProjectForm extends Form {
 
             </Paper>
           </Grid>
-          <Grid container item xs={12} sm={12} md={4}>
+          <Grid container item xs={12} sm={12} md={4} xl={3}>
             <Grid item xs={12} sm={12}>
               <Paper className={"paper"}>
                 <Typography variant="h6" gutterBottom>
@@ -476,19 +513,29 @@ class ProjectForm extends Form {
                   Últimos estados:
                 </Typography>
                 <List dense={true}>
-                  {this.state.data.status.map(state =>
-                    <ListItem key={state.id}>
+                  {this.state.projectStatuses.map(projectStatus =>
+                    <ListItem key={projectStatus.id}>
                       <ListItemText
-                        primary={state.name}
+                        primary={`${projectStatus.status.name} - ${projectStatus.user.fullname}`}
                         secondary={
-                          <Tooltip title={format(new Date(state.pivot.created_at), 'dd-MMM-yyyy HH:mm:ss')} placement="top">
-                            <span>{formatDistanceToNow(new Date(state.pivot.created_at), { locale: es })}</span>
+                          <Tooltip title={projectStatus.created_at} placement="top">
+                            <span>{projectStatus.human_created_at}</span>
                           </Tooltip>
                         }
                       />
                     </ListItem>
                   )}
                 </List>
+                <NavLink to={`/proyecto/${this.state.data.slug}/estados`} style={{ textDecoration: "none" }}>
+                  <Button
+                    className="btn btn-guardar"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                  >
+                    Ver más
+                  </Button>
+                </NavLink>
               </Paper>
               <Paper className={"paper"}>
                 <PanelMember

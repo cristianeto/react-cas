@@ -8,6 +8,7 @@ import { getResearchTypes } from "../../services/researchTypeService";
 import { getProjectTypes } from "../../services/projectTypeService";
 import { getCoverageTypes } from "../../services/coverageTypeService";
 import { Container } from "@material-ui/core";
+import Loading from '../common/loading';
 
 class Projects extends Component {
   state = {
@@ -125,12 +126,12 @@ class Projects extends Component {
     };
     return (
       <Container maxWidth="xl">
+        <Loading open={this.state.isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Proyectos"} />
 
         <ProjectsTable
           datas={this.state.projects}
-          //onGetProject={this.getProject}
-          onLoading={this.state.isLoading}
+          //onGetProject={this.getProject}          
           style={classes.table}
           onDelete={this.handleDelete}
           history={this.props.history}
