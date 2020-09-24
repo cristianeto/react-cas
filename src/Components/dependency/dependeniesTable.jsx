@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { TEXT_LABELS } from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography } from "@material-ui/core";
 import ButtonAdd from "../common/buttonAdd";
-
+import { Typography, Tooltip } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 class DependenciesTable extends Component {
   getMuiTheme = () =>
     createMuiTheme({
@@ -37,7 +38,16 @@ class DependenciesTable extends Component {
   render() {
     const columns = [
       {
-        name: "id_dependency",
+        name: 'count',
+        label: "#",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1
+        },
+      },
+      {
+        name: "id",
         label: "id",
         options: {
           filter: false,
@@ -45,7 +55,7 @@ class DependenciesTable extends Component {
         },
       },
       {
-        name: "acronym_dependency",
+        name: "acronym",
         label: "Siglas",
         options: {
           filter: true,
@@ -53,7 +63,7 @@ class DependenciesTable extends Component {
         },
       },
       {
-        name: "name_dependency",
+        name: "name",
         label: "Nombre",
         options: {
           filter: true,
@@ -62,7 +72,7 @@ class DependenciesTable extends Component {
             return (
               <Link
                 style={{ textDecoration: "none" }}
-                to={`/dependencia/${tableMeta.rowData[0]}`}
+                to={`/dependencia/${tableMeta.rowData[1]}`}
               >
                 {value}
               </Link>
@@ -71,7 +81,7 @@ class DependenciesTable extends Component {
         },
       },
       {
-        name: "email_dependency",
+        name: "email",
         label: "Correo",
         options: {
           filter: true,
@@ -79,11 +89,38 @@ class DependenciesTable extends Component {
         },
       },
       {
-        name: "dependency_type.name_dependencyType",
+        name: "dependency_type.name",
         label: "Tipo",
         options: {
           filter: true,
           sort: true,
+        },
+      },
+      {
+        name: "",
+        label: "Acciones",
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (value, tableMeta) => {
+            return (
+              <React.Fragment>
+                <Tooltip title="Editar" style={{ cursor: "pointer" }}>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={`/dependencia/${tableMeta.rowData[1]}`}
+                  >
+                    <EditIcon color={'primary'} />
+                  </Link>
+                </Tooltip>
+                {tableMeta.rowData[1] !== 1 &&
+                  <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
+                    <DeleteIcon onClick={() => this.props.onDelete(tableMeta.rowData[1])} color={'primary'} />
+                  </Tooltip>
+                }
+              </React.Fragment>
+            );
+          },
         },
       },
     ];
@@ -97,7 +134,6 @@ class DependenciesTable extends Component {
     };
 
     const data = this.props.datas;
-    const isLoading = this.props.onLoading;
     const options = options_config;
 
     return (
@@ -106,7 +142,6 @@ class DependenciesTable extends Component {
           title={
             <Typography variant="h6">
               Lista de dependencias <ButtonAdd entity={"dependencia"} />
-              {isLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
           data={data}

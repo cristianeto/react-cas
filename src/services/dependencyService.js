@@ -14,12 +14,11 @@ export function getDependency(dependencyId) {
 }
 
 export function saveDependency(dependency) {
-  if (dependency.id_dependency) {
+  if (dependency.id) {
     const body = { ...dependency };
-    delete body.id_dependency;
-    return http.put(dependencyUrl(dependency.id_dependency), body);
+    delete body.id;
+    return http.put(dependencyUrl(dependency.id), body);
   }
-  console.log("Post:", dependency);
   return http.post(apiEndpoint, dependency);
 }
 

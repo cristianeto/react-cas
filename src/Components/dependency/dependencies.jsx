@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import DependenciesTable from "./dependeniesTable";
-import { getDependencies } from "../../services/dependencyService";
+import { getDependencies, deleteDependency } from "../../services/dependencyService";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 import Breadcum from "../common/breadcum";
+import Loading from "../common/loading";
 
 class Dependencies extends Component {
   state = {
@@ -15,14 +16,37 @@ class Dependencies extends Component {
     this.setState({ isLoading: true });
     const { data: dependencies } = await getDependencies();
     //const dependencies = [{ name: "All Movies", _id: "" }, ...data];
-
+    console.log(dependencies);
     this.setState({ dependencies, isLoading: false });
   }
 
   getDependency(id) {
-    return this.state.dependencies.find((d) => d.id_group === id);
+    return this.state.dependencies.find((d) => d.id === id);
   }
 
+  handleDelete = async (dependencyId) => {
+    const originalDependencies = this.state.dependencies;
+    const dependencyToRemove = this.getDependency(dependencyId);
+    const dependencies = originalDependencies.filter(dependency => dependency !== dependencyToRemove);
+    this.setState({ dependencies });
+    try {
+      await deleteDependency(dependencyToRemove.id);
+      this.props.enqueueSnackbar(`Registro eliminado!`, {
+        variant: 'success'
+      });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404) {
+        this.props.enqueueSnackbar(`${ex.response.data.message}`, {
+          variant: "error"
+        });
+      } else if (ex.response.status === 403) {
+        this.props.enqueueSnackbar(`Operación no autorizada`, {
+          variant: "error"
+        });
+      }
+      this.setState({ dependencies: originalDependencies });
+    }
+  }
   render() {
     const listBreadcrumbs = [
       {
@@ -38,14 +62,12 @@ class Dependencies extends Component {
     };
     return (
       <Container maxWidth="xl">
-        <Breadcum
-          onListBreadcrumbs={listBreadcrumbs}
-          lastLabel={"Dependencias"}
-        />
+        <Loading open={this.state.isLoading} />
+        <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Dependencias"} />
         <DependenciesTable
           datas={this.state.dependencies}
           onGetGroup={this.getDependency}
-          onLoading={this.state.isLoading}
+          onDelete={this.handleDelete}
           style={classes.table}
         />
       </Container>

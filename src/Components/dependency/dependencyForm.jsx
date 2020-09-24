@@ -13,15 +13,15 @@ import TitleForm from "../common/titleForm";
 class DependencyForm extends Form {
   state = {
     data: {
-      name_dependency: "",
-      acronym_dependency: "",
-      contact_dependency: "",
-      city_dependency: "",
-      email_dependency: "",
-      web_dependency: "",
-      phone_dependency: "",
-      participationType_dependency: "",
-      id_dependencyType: "",
+      name: "",
+      acronym: "",
+      contact: "",
+      city: "",
+      email: "",
+      web: "",
+      phone: "",
+      participation_type: "",
+      dependency_type_id: "",
     },
     dependencyTypes: [],
 
@@ -30,29 +30,29 @@ class DependencyForm extends Form {
   };
 
   schema = Joi.object({
-    id_dependency: Joi.string(),
-    name_dependency: Joi.string().label("Nombre").max(500),
-    acronym_dependency: Joi.string().alphanum().label("Sigla").max(10),
-    contact_dependency: Joi.string().allow("", null).label("Contacto").max(150),
-    city_dependency: Joi.string().allow("", null).label("Ciudad").max(100),
-    email_dependency: Joi.string()
+    id: Joi.number().integer(),
+    name: Joi.string().label("Nombre").max(500),
+    acronym: Joi.string().alphanum().label("Sigla").max(10),
+    contact: Joi.string().allow("", null).label("Contacto").max(150),
+    city: Joi.string().allow("", null).label("Ciudad").max(100),
+    email: Joi.string()
       .email({
         minDomainSegments: 2,
         tlds: { allow: ["com", "espoch", "edu", "ec"] },
       })
       .label("Correo")
       .max(100),
-    web_dependency: Joi.string().allow("", null).uri().label("Web").max(100),
-    phone_dependency: Joi.string()
+    web: Joi.string().allow("", null).uri().label("Web").max(100),
+    phone: Joi.string()
       .allow("", null)
       .label("Teléfono")
       .min(7)
       .max(20),
-    participationType_dependency: Joi.string()
+    participation_type: Joi.string()
       .allow("", null)
       .label("Tipo participación")
       .max(500),
-    id_dependencyType: Joi.string().label("Tipo dependencia"),
+    dependency_type_id: Joi.number().integer().label("Tipo dependencia"),
   });
 
   async populateDependencyTypes() {
@@ -84,16 +84,16 @@ class DependencyForm extends Form {
 
   mapToViewModel(dependency) {
     return {
-      id_dependency: dependency.id_dependency,
-      name_dependency: dependency.name_dependency,
-      acronym_dependency: dependency.acronym_dependency,
-      contact_dependency: dependency.contact_dependency,
-      city_dependency: dependency.city_dependency,
-      email_dependency: dependency.email_dependency,
-      web_dependency: dependency.web_dependency,
-      phone_dependency: dependency.phone_dependency,
-      participationType_dependency: dependency.participationType_dependency,
-      id_dependencyType: dependency.id_dependencyType,
+      id: dependency.id,
+      name: dependency.name,
+      acronym: dependency.acronym,
+      contact: dependency.contact,
+      city: dependency.city,
+      email: dependency.email,
+      web: dependency.web,
+      phone: dependency.phone,
+      participation_type: dependency.participation_type,
+      dependency_type_id: dependency.dependency_type_id,
     };
   }
   doSubmit = async () => {
@@ -141,23 +141,23 @@ class DependencyForm extends Form {
             <Paper style={classes.paper}>
               <TitleForm entity={"Dependencia"} isLoading={isLoading} />
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("name_dependency", "Nombre")}
-                {this.renderInput("acronym_dependency", "Sigla")}
-                {this.renderInput("contact_dependency", "Contacto")}
-                {this.renderInput("city_dependency", "Ciudad")}
-                {this.renderInput("email_dependency", "Correo")}
-                {this.renderInput("web_dependency", "Sitio web")}
-                {this.renderInput("phone_dependency", "Teléfono")}
+                {this.renderInput("name", "Nombre")}
+                {this.renderInput("acronym", "Sigla")}
+                {this.renderInput("contact", "Contacto")}
+                {this.renderInput("city", "Ciudad")}
+                {this.renderInput("email", "Correo")}
+                {this.renderInput("web", "Sitio web")}
+                {this.renderInput("phone", "Teléfono")}
                 {this.renderTextarea(
-                  "participationType_dependency",
+                  "participation_type",
                   "Tipo participación"
                 )}
                 {this.renderSelect(
-                  "id_dependencyType",
+                  "dependency_type_id",
                   "Tipo de dependencia",
                   160,
-                  "id_dependencyType",
-                  "name_dependencyType",
+                  "id",
+                  "name",
                   dependencyTypes
                 )}
 
