@@ -16,15 +16,15 @@ import TitleForm from "../common/titleForm";
 class GroupForm extends Form {
   state = {
     data: {
-      acronym_group: "",
-      code_group: "",
-      name_group: "",
-      mission_group: "",
-      vision_group: "",
-      id_dependency: "",
+      acronym: "",
+      code: "",
+      name: "",
+      mission: "",
+      vision: "",
+      dependency_id: "",
       lines: [],
       programs: [],
-      id_groupType: "",
+      group_type_id: "",
     },
     dependencies: [],
     groupTypes: [],
@@ -35,14 +35,14 @@ class GroupForm extends Form {
   };
 
   schema = Joi.object({
-    id_group: Joi.string(),
-    code_group: Joi.string().label("Código").max(10),
-    acronym_group: Joi.string().alphanum().label("Siglas").max(10),
-    name_group: Joi.string().label("Nombre"),
-    mission_group: Joi.string().label("Misión"),
-    vision_group: Joi.string().label("Visión"),
-    id_dependency: Joi.string().label("Dependencia"),
-    id_groupType: Joi.number().label("Tipo"),
+    id: Joi.string(),
+    code: Joi.string().label("Código").max(10),
+    acronym: Joi.string().alphanum().label("Siglas").max(10),
+    name: Joi.string().label("Nombre"),
+    mission: Joi.string().max(500).label("Misión"),
+    vision: Joi.string().max(500).label("Visión"),
+    dependency_id: Joi.number().integer().label("Dependencia"),
+    group_type_id: Joi.number().integer().label("Tipo"),
     lines: Joi.array().label("Líneas").min(1),
     programs: Joi.array().label("Programas").min(1),
   });
@@ -91,14 +91,14 @@ class GroupForm extends Form {
 
   mapToViewModel(group) {
     return {
-      id_group: group.id_group,
-      code_group: group.code_group,
-      acronym_group: group.acronym_group,
-      name_group: group.name_group,
-      mission_group: group.mission_group,
-      vision_group: group.vision_group,
-      id_dependency: group.id_dependency,
-      id_groupType: group.id_groupType,
+      id: group.id,
+      code: group.code,
+      acronym: group.acronym,
+      name: group.name,
+      mission: group.mission,
+      vision: group.vision,
+      dependency_id: group.dependency_id,
+      group_type_id: group.group_type_id,
       lines: group.lines,
       programs: group.programs,
     };
@@ -113,9 +113,9 @@ class GroupForm extends Form {
       this.errorMessage(ex);
       const errors = { ...this.state.errors };
       if (ex.response && ex.response.status === 422) {
-        errors.code_group = ex.response.data.errors.code_group;
-        errors.name_group = ex.response.data.errors.name_group;
-        errors.acronym_group = ex.response.data.errors.acronym_group;
+        errors.code = ex.response.data.errors.code;
+        errors.name = ex.response.data.errors.name;
+        errors.acronym = ex.response.data.errors.acronym;
         this.setState({ errors });
       }
       //console.log(ex.response.data.errors);
@@ -150,24 +150,24 @@ class GroupForm extends Form {
             <Paper style={classes.paper}>
               <TitleForm entity={"Grupo"} isLoading={isLoading} />
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("code_group", "Código")}
-                {this.renderInput("acronym_group", "Siglas")}
-                {this.renderInput("name_group", "Nombre")}
-                {this.renderTextarea("mission_group", "Misión")}
-                {this.renderTextarea("vision_group", "Visión")}
+                {this.renderInput("code", "Código")}
+                {this.renderInput("acronym", "Siglas")}
+                {this.renderInput("name", "Nombre")}
+                {this.renderTextarea("mission", "Misión")}
+                {this.renderTextarea("vision", "Visión")}
                 {this.renderSelect(
-                  "id_dependency",
+                  "dependency_id",
                   "Facultad",
                   75,
-                  "id_dependency",
-                  "name_dependency",
+                  "id",
+                  "name",
                   dependencies
                 )}
                 {this.renderMultiSelect(
                   "lines",
                   "Líneas de investigación",
-                  "id_researchLine",
-                  "name_researchLine",
+                  "id",
+                  "name",
                   lines
                 )}
                 {this.renderMultiSelect(
@@ -178,11 +178,11 @@ class GroupForm extends Form {
                   programs
                 )}
                 {this.renderSelect(
-                  "id_groupType",
+                  "group_type_id",
                   "Tipo Grupo",
                   115,
-                  "id_groupType",
-                  "name_groupType",
+                  "id",
+                  "name",
                   groupTypes
                 )}
                 {this.renderButton("Guardar")}
@@ -193,8 +193,8 @@ class GroupForm extends Form {
             <Grid item xs={12} sm={12}>
               <Paper style={classes.paper}>
                 <Panel
-                  id="id_researchLine"
-                  property="name_researchLine"
+                  id="id"
+                  property="name"
                   title="Líneas de Investigación"
                   data={this.state.data["lines"]}
                 />

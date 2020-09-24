@@ -36,10 +36,10 @@ class GroupsTable extends Component {
     }
   };
   render() {
-    const {datas, onLoading} = this.props
+    const { datas, onLoading } = this.props
     const columns = [
       {
-        name: "id_group",
+        name: "id",
         label: "id",
         options: {
           filter: false,
@@ -47,7 +47,7 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "code_group",
+        name: "code",
         label: "Código",
         options: {
           filter: true,
@@ -55,7 +55,7 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "name_group",
+        name: "name",
         label: "Nombre",
         options: {
           filter: true,
@@ -73,7 +73,7 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "acronym_group",
+        name: "acronym",
         label: "Siglas",
         options: {
           filter: true,
@@ -81,7 +81,7 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "dependency.name_dependency",
+        name: "dependency.name",
         label: "Facultad",
         options: {
           filter: true,
@@ -89,7 +89,7 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "active_group",
+        name: "active",
         label: "Estado",
         options: {
           filter: true,

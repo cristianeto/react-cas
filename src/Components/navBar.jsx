@@ -18,10 +18,10 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import PanToolIcon from '@material-ui/icons/PanTool';
 // import InboxIcon from "@material-ui/icons/MoveToInbox";
 import GroupIcon from "@material-ui/icons/Group";
+import WorkIcon from '@material-ui/icons/Work';
 import BusinessIcon from "@material-ui/icons/Business";
 import FolderIcon from "@material-ui/icons/Folder";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -209,17 +209,9 @@ export default function MiniDrawer(props) {
           <NavLink to="/grupos-investigacion" className={classes.navLink}>
             <ListItem button>
               <ListItemIcon>
-                <GroupIcon />
+                <WorkIcon />
               </ListItemIcon>
               <ListItemText primary={"Grupos invest..."} />
-            </ListItem>
-          </NavLink>
-          <NavLink to="/grupos-investigacion" className={classes.navLink}>
-            <ListItem button>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Componentes"} />
             </ListItem>
           </NavLink>
         </List>

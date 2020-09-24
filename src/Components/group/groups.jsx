@@ -23,7 +23,7 @@ class Groups extends Component {
   }
 
   getGroup(id) {
-    return this.state.groups.find((g) => g.id_group === id);
+    return this.state.groups.find((g) => g.id === id);
   }
   handleActive = async (idGroup) => {
     const originalGroups = this.state.groups;
@@ -31,15 +31,15 @@ class Groups extends Component {
     const groups = [...this.state.groups];
     const index = groups.indexOf(group);
     groups[index] = { ...groups[index] };
-    if (groups[index].active_group === 1) {
-      groups[index].active_group = 0;
-    } else if (groups[index].active_group === 0) {
-      groups[index].active_group = 1;
+    if (groups[index].active === 1) {
+      groups[index].active = 0;
+    } else if (groups[index].active === 0) {
+      groups[index].active = 1;
     } else {
-      groups[index].active_group = 3;
+      groups[index].active = 3;
     }
     this.setState({ groups });
-    // groups[index].active_group = !groups[index].active_group;
+    // groups[index].active = !groups[index].active_group;
     try {
       await saveGroup(groups[index]);
     } catch (ex) {
@@ -71,6 +71,7 @@ class Groups extends Component {
     this.props.enqueueSnackbar(mensaje, {
       autoHideDuration: 3000,
       action,
+      variant: 'success'
     });
   }
 
@@ -82,7 +83,7 @@ class Groups extends Component {
     this.setState({ groups });
     groupsToDelete.forEach(async (group) => {
       try {
-        await deleteGroup(group.id_group);
+        await deleteGroup(group.id);
         this.handleUndo(groupsToDelete, originalGroups);
       } catch (ex) {
         if (ex.response && ex.response.status === 404) console.log(ex);

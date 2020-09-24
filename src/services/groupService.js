@@ -14,10 +14,10 @@ export function getGroup(groupId) {
 }
 
 export function saveGroup(group) {
-  if (group.id_group) {
+  if (group.id) {
     const body = { ...group };
-    delete body.id_group;
-    return http.put(groupUrl(group.id_group), body);
+    delete body.id;
+    return http.put(groupUrl(group.id), body);
   }
   return http.post(apiEndpoint, group);
 }
