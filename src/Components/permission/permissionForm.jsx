@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { messages } from '../common/es_ES';
 import TitleForm from '../common/titleForm';
+import Loading from '../common/loading';
 
 class PermissionForm extends Form {
   state = {
@@ -93,6 +94,7 @@ class PermissionForm extends Form {
     errors["name"] === undefined ? (validation = false) : (validation = true);
     return (
       <Container maxWidth="sm" id="permissionForm">
+        <Loading open={this.state.isLoading} />
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Permiso"} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12}>

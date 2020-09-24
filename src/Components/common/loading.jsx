@@ -4,7 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Loading = ({ open }) => {
   return (
-    <Backdrop style={{ zIndex: 10000, color: '#fff' }} open={open}>
+    <Backdrop style={{ zIndex: 1000, color: '#fff' }} open={open}>
       <CircularProgress color="primary" />
     </Backdrop>
   );

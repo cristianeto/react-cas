@@ -4,6 +4,7 @@ import { getRoles, deleteRole } from "../../services/roleService";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 import Breadcum from "../common/breadcum";
+import Loading from '../common/loading';
 
 class Roles extends Component {
   state = {
@@ -61,11 +62,11 @@ class Roles extends Component {
     };
     return (
       <Container maxWidth="lg" id="roles">
+        <Loading open={this.state.isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Roles"} />
         <RolesTable
           datas={this.state.roles}
           onGetRole={this.getRole}
-          onLoading={this.state.isLoading}
           style={classes.table}
           onDelete={this.handleDelete}
         />

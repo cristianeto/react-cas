@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { TEXT_LABELS } from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography, Tooltip } from "@material-ui/core";
+import { Typography, Tooltip } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 
 class PermissionsTable extends Component {
@@ -29,13 +29,8 @@ class PermissionsTable extends Component {
       },
     });
 
-  //   getStatus = (value) => {
-  //     if (value === 1) {
-  //       return "Activo";
-  //     }
-  //   };
   render() {
-    const { datas, onLoading } = this.props;
+    const { datas } = this.props;
     const columns = [
       {
         name: 'count',
@@ -127,7 +122,6 @@ class PermissionsTable extends Component {
           title={
             <Typography variant="h6">
               Lista de permisos
-              {onLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
           data={datas}

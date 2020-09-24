@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { TEXT_LABELS } from "../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography, Tooltip } from "@material-ui/core";
+import { Typography, Tooltip } from "@material-ui/core";
 import ButtonAdd from "../common/buttonAdd";
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -36,7 +36,7 @@ class RolesTable extends Component {
   //     }
   //   };
   render() {
-    const { datas, onLoading, onDelete } = this.props;
+    const { datas, onDelete } = this.props;
     const columns = [
       {
         name: 'count',
@@ -143,7 +143,6 @@ class RolesTable extends Component {
           title={
             <Typography variant="h6">
               Lista de roles <ButtonAdd entity={"role"} />
-              {onLoading && <LinearProgress color="secondary" />}
             </Typography>
           }
           data={datas}

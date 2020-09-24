@@ -4,6 +4,7 @@ import { getUsers, deleteUser } from "../../services/userService";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 import Breadcum from "../common/breadcum";
+import Loading from '../common/loading';
 
 class Users extends Component {
   state = {
@@ -62,11 +63,11 @@ class Users extends Component {
     };
     return (
       <Container maxWidth="xl">
+        <Loading open={this.state.isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuarios"} />
         <UsersTable
           datas={this.state.users}
           onGetUser={this.getUser}
-          onLoading={this.state.isLoading}
           style={classes.table}
           onDelete={this.handleDelete}
         />

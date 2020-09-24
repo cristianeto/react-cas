@@ -16,10 +16,10 @@ import {
   Divider,
   Container,
   Typography,
-  LinearProgress,
 } from "@material-ui/core";
 import { messages } from '../common/es_ES';
 import './user.scss';
+import Loading from '../common/loading';
 
 class UserAddForm extends Form {
   state = {
@@ -194,6 +194,7 @@ class UserAddForm extends Form {
     ];
     return (
       <Container maxWidth="lg" id="userAddForm">
+        <Loading open={isLoading} />
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={data.fullname} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={6}>
@@ -203,7 +204,6 @@ class UserAddForm extends Form {
                   ? "Registrarse"
                   : "Usuario"}
               </Typography>
-              {isLoading && <LinearProgress color="secondary" />}
               <Divider />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("identification_card", "C.I.")}

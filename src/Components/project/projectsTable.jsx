@@ -151,7 +151,7 @@ class ProjectsTable extends Component {
         options: {
           filter: true,
           sort: true,
-          customBodyRender: (value, tableMeta) => {
+          customBodyRender: (value, tableMeta, updateValue) => {
             let fullnames = value.map(v =>
               v.fullname
             )
@@ -218,6 +218,7 @@ class ProjectsTable extends Component {
       viewColumns: false, */
       enableNestedDataAccess: [],
       sort: true,
+      searchPlaceholder: 'Buscar',
       filterType: "dropdown",
       responsive: "scroll",
       rowsPerPage: 20,

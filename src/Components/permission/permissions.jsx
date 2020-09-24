@@ -4,6 +4,7 @@ import { getPermissions } from '../../services/permissionService';
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 import Breadcum from "../common/breadcum";
+import Loading from '../common/loading';
 
 class Permission extends Component {
   state = {
@@ -36,11 +37,11 @@ class Permission extends Component {
     };
     return (
       <Container maxWidth="lg" id="roles">
+        <Loading open={this.state.isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Permisos"} />
         <PermissionsTable
           datas={this.state.permissions}
           onGetPermission={this.getPermission}
-          onLoading={this.state.isLoading}
           style={classes.table}
         />
       </Container>

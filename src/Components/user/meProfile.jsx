@@ -105,7 +105,7 @@ class meProfile extends Form {
                   )}
                 </ListItem>
                 <ListItem divider>
-                  <ListItemText primary="Proyectos:" />
+                  <ListItemText primary="Cantidad de proyectos:" />
                   <Chip label={data.projects.length} color="primary" />
                 </ListItem>
                 <ListItem divider>
