@@ -48,6 +48,7 @@ class Dependencies extends Component {
     }
   }
   render() {
+    const { isLoading, dependencies } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -62,10 +63,10 @@ class Dependencies extends Component {
     };
     return (
       <Container maxWidth="xl">
-        <Loading open={this.state.isLoading} />
+        <Loading open={isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Dependencias"} />
         <DependenciesTable
-          datas={this.state.dependencies}
+          datas={dependencies}
           onGetGroup={this.getDependency}
           onDelete={this.handleDelete}
           style={classes.table}

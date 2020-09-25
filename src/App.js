@@ -8,20 +8,20 @@ import NotFound from "./Components/error/notFound";
 import NotAuthorized from "./Components/error/notAuthorized";
 import Groups from "./Components/group/groups";
 import GroupForm from "./Components/group/groupForm";
-import ProjectForm from "./Components/project/projectForm";
-import UserUpdateForm from "./Components/user/userUpdateForm";
 import Users from "./Components/user/users";
+import UserAddForm from "./Components/user/userAddForm";
+import UserUpdateForm from "./Components/user/userUpdateForm";
+import MeProfile from "./Components/user/meProfile";
 import Roles from "./Components/role/roles";
 import RoleForm from "./Components/role/roleForm";
 import Pemissions from "./Components/permission/permissions";
 import PemissionForm from "./Components/permission/permissionForm";
 import Welcome from "./Components/welcome";
 import Projects from "./Components/project/projects";
-import Members from "./Components/member/members";
+import ProjectMain from './Components/project/projectMain';
+import Members from "./Components/project/member/members";
 import Dependencies from "./Components/dependency/dependencies";
 import DependencyForm from "./Components/dependency/dependencyForm";
-import UserAddForm from "./Components/user/userAddForm";
-import meProfile from "./Components/user/meProfile";
 import Logout from "./Components/logout";
 import { getRolesByUser } from "./services/userRolesService";
 import { StylesProvider } from '@material-ui/core/styles';
@@ -141,14 +141,14 @@ class App extends Component {
               <Route path="/rentals" component={Rentals} /> */}
             <Route path="/" exact component={Welcome} />
             <Route path="/proyecto/:slug/miembros" exact component={Members} />
-            <Route path="/proyecto/:slug" exact component={ProjectForm} />
+            <Route path="/proyecto/:slug" exact component={ProjectMain} />
             <Route path="/proyectos" exact component={Projects} />
             <Route path="/dependencias" exact component={Dependencies} />
             <Route path="/dependencia/:id" component={DependencyForm} />
             <Route path="/grupos-investigacion" component={Groups} />
             <Route path="/grupo/:id" component={GroupForm} />
             {auth.getCurrentUser() !== null && (
-              <Route path="/mi/perfil" component={meProfile} />
+              <Route path="/mi/perfil" component={MeProfile} />
             )}
             <Route path="/usuario/new" component={UserAddForm} />
             <Route path="/usuario/:id" component={UserUpdateForm} />

@@ -15,8 +15,9 @@ import {
   TextField,
 } from "@material-ui/core";
 import { messages } from '../common/es_ES';
-import TitleForm from '../common/titleForm';
+import TitleComponent from '../common/titleComponent';
 import "./role.scss";
+import Loading from '../common/loading';
 
 class RoleForm extends Form {
   state = {
@@ -140,11 +141,12 @@ class RoleForm extends Form {
     errors["name"] === undefined ? (validation = false) : (validation = true);
     return (
       <Container maxWidth="sm" id="roleForm">
+        <Loading open={isLoading} />
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Nuevo rol"} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12}>
             <Paper className="paper">
-              <TitleForm entity={"Rol"} isLoading={isLoading} />
+              <TitleComponent entity={"Rol"} />
               <Divider />
               <form onSubmit={this.handleSubmit}>
                 <TextField

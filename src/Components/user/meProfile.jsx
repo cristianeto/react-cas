@@ -15,7 +15,8 @@ import img_avatar from "../../static/img/img_avatar.png";
 import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from 'react-router-dom';
 import './user.scss';
-import TitleForm from '../common/titleForm';
+import TitleComponent from '../common/titleComponent';
+import Loading from '../common/loading';
 
 class meProfile extends Form {
   state = {
@@ -83,6 +84,7 @@ class meProfile extends Form {
     const { data, isLoading } = this.state;
     return (
       <Container maxWidth="xl" id="user">
+        <Loading open={isLoading} />
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Mi perfil"} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={4} xl={3}>
@@ -128,7 +130,7 @@ class meProfile extends Form {
           <Grid container item xs={12} sm={12} md={8} xl={9}>
             <Grid item xs={12}>
               <Paper className="paper">
-                <TitleForm entity={"Proyectos"} isLoading={isLoading} />
+                <TitleComponent entity={"Proyectos"} />
                 <Divider />
                 <div className={classes.demo}>
                   <List dense={true}>
@@ -171,7 +173,7 @@ class meProfile extends Form {
             <Grid container spacing={3} >
               <Grid item xs={12} md={12} lg={6} xl={6}>
                 <Paper className="paper">
-                  <TitleForm entity={"Roles"} isLoading={isLoading} />
+                  <TitleComponent entity={"Roles"} isLoading={isLoading} />
                   <Divider />
                   <div className={classes.demo}>
                     <List dense={true}>
@@ -202,7 +204,7 @@ class meProfile extends Form {
               </Grid>
               <Grid item xs={12} md={12} lg={6} xl={6}>
                 <Paper className="paper">
-                  <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
+                  <TitleComponent entity={"Permisos extra"} isLoading={isLoading} />
                   <Divider />
                   <div className={classes.demo}>
                     <List dense={true}>

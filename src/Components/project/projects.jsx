@@ -112,6 +112,7 @@ class Projects extends Component {
   }
 
   render() {
+    const { isLoading, projects } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -126,11 +127,11 @@ class Projects extends Component {
     };
     return (
       <Container maxWidth="xl">
-        <Loading open={this.state.isLoading} />
+        <Loading open={isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Proyectos"} />
 
         <ProjectsTable
-          datas={this.state.projects}
+          datas={projects}
           //onGetProject={this.getProject}          
           style={classes.table}
           onDelete={this.handleDelete}

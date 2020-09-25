@@ -7,6 +7,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Typography, Button, Tooltip } from "@material-ui/core";
 import { Add as AddIcon, People as PeopleIcon } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 class ProjectsTable extends Component {
   state = {
@@ -193,14 +194,22 @@ class ProjectsTable extends Component {
           customBodyRender: (value, tableMeta) => {
             return (
               <React.Fragment>
-                <Link
-                  style={{ textDecoration: "none", color: '#fff' }}
-                  to={`/proyecto/${tableMeta.rowData[2]}/miembros`}
-                >
-                  <Tooltip title="Miembros" style={{ cursor: "pointer" }}>
+                <Tooltip title="Editar" style={{ cursor: "pointer" }}>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={`/proyecto/${tableMeta.rowData[2]}`}
+                  >
+                    <EditIcon color={'primary'} />
+                  </Link>
+                </Tooltip>
+                <Tooltip title="Miembros" style={{ cursor: "pointer" }}>
+                  <Link
+                    style={{ textDecoration: "none", color: '#fff' }}
+                    to={`/proyecto/${tableMeta.rowData[2]}/miembros`}
+                  >
                     <PeopleIcon color={'primary'} />
-                  </Tooltip>
-                </Link>
+                  </Link>
+                </Tooltip>
                 <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
                   <DeleteIcon onClick={() => onDelete(tableMeta.rowData[2])} color={'primary'} />
                 </Tooltip>

@@ -5,16 +5,17 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import { Autocomplete } from '@material-ui/lab';
 import { withSnackbar } from "notistack";
 import React from "react";
-import { deleteMember, getMembers, saveMember } from "../../services/memberService";
-import { getStaffs } from "../../services/staffService";
+import { deleteMember, getMembers, saveMember } from "../../../services/memberService";
+import { getStaffs } from "../../../services/staffService";
 //import { getDependencies } from "../../services/dependencyService";
-import { getUsers } from "../../services/userService";
-import Breadcrumb from "../common/breadcum";
-import { messages } from '../common/es_ES';
-import Form from '../common/form';
-import TitleForm from '../common/titleForm';
+import { getUsers } from "../../../services/userService";
+import Breadcrumb from "../../common/breadcum";
+import { messages } from '../../common/es_ES';
+import Form from '../../common/form';
+import TitleComponent from '../../common/titleComponent';
 import MembersTable from "./membersTable";
-import { getProject } from "../../services/projectService";
+import { getProject } from "../../../services/projectService";
+import Loading from '../../common/loading';
 
 class Members extends Form {
   state = {
@@ -169,6 +170,7 @@ class Members extends Form {
     return (
       <React.Fragment>
         <Container maxWidth="lg">
+          <Loading open={isLoading} />
           <Breadcrumb
             onListBreadcrumbs={listBreadcrumbs}
             lastLabel={"Miembros proyecto"}
@@ -176,7 +178,8 @@ class Members extends Form {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={6} lg={4}>
               <Paper className="paper">
-                <TitleForm entity={"Agregar miembros del proyecto"} isLoading={isLoading} />
+
+                <TitleComponent entity={"Agregar miembros del proyecto"} />
                 <form onSubmit={this.doSubmit}>
                   <Autocomplete
                     //multiple

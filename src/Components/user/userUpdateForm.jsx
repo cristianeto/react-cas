@@ -15,15 +15,15 @@ import {
   Paper,
   Divider,
   Container,
-  Typography,
-  LinearProgress,
+  Typography
 } from "@material-ui/core";
-import TitleForm from '../common/titleForm';
+import TitleComponent from '../common/titleComponent';
 import ListItem from "@material-ui/core/ListItem";
 import { messages } from '../common/es_ES';
 import auth from "../../services/authService";
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
+import Loading from '../common/loading';
 
 class UserUpdateForm extends Form {
   _isMounted = false;
@@ -224,6 +224,7 @@ class UserUpdateForm extends Form {
     const role = auth.getSelectedRole();
     return (
       <Container maxWidth="lg">
+        <Loading open={isLoading} />
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={data.fullname} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={5}>
@@ -234,7 +235,6 @@ class UserUpdateForm extends Form {
                   : "Usuario"}
               </Typography>
               <Divider />
-              {this.state.isLoading && <LinearProgress color="secondary" />}
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("identification_card", "C.I.")}
                 {this.renderInput("name", "Nombre")}
@@ -248,7 +248,7 @@ class UserUpdateForm extends Form {
             <React.Fragment>
               <Grid item xs={12} sm={12} md={3}>
                 <Paper className="paper">
-                  <TitleForm entity={"Roles"} isLoading={isLoading} />
+                  <TitleComponent entity={"Roles"} isLoading={isLoading} />
                   <Divider />
                   <form onSubmit={this.doUpdateRoles}>
                     <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} label="" />
@@ -258,7 +258,7 @@ class UserUpdateForm extends Form {
               </Grid>
               <Grid item xs={12} sm={12} md={4}>
                 <Paper className="paper">
-                  <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
+                  <TitleComponent entity={"Permisos extra"} isLoading={isLoading} />
                   <Divider />
                   <form onSubmit={this.doUpdatePermissions}>
                     <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} label="" />
@@ -271,7 +271,7 @@ class UserUpdateForm extends Form {
             <React.Fragment>
               <Grid item xs={12} sm={12} md={3}>
                 <Paper className="paper">
-                  <TitleForm entity={"Roles"} isLoading={isLoading} />
+                  <TitleComponent entity={"Roles"} isLoading={isLoading} />
                   <Divider />
                   <List dense={true}>
                     {data.roles.length > 0 ? data.roles.map(role =>
@@ -293,7 +293,7 @@ class UserUpdateForm extends Form {
               </Grid>
               <Grid item xs={12} sm={12} md={4}>
                 <Paper className="paper">
-                  <TitleForm entity={"Permisos extra"} isLoading={isLoading} />
+                  <TitleComponent entity={"Permisos extra"} isLoading={isLoading} />
                   <Divider />
                   <List dense={true}>
                     {data.permissions.length > 0 ? data.permissions.map(permission =>

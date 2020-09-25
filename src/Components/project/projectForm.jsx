@@ -13,68 +13,59 @@ import { getResearchTypes } from "../../services/researchTypeService";
 import { getCoverageTypes } from "../../services/coverageTypeService";
 import { getPrograms } from "../../services/programService";
 import { getSectors } from "../../services/sectorService";
-import { getProjectStatuses } from "../../services/projectStatusService";
 import { messages } from "../common/es_ES";
 import SaveIcon from "@material-ui/icons/Save";
-import Breadcrumb from "../common/breadcum";
-import { Container, Paper, Grid, List, ListItem, ListItemText, Tooltip } from "@material-ui/core";
-import PanelMember from '../common/panelMember';
-import Panel from '../common/panel';
+import TitleComponent from '../common/titleComponent';
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
-import { NavLink } from "react-router-dom";
-import AddIcon from "@material-ui/icons/Add";
-import Loading from "../common/loading";
 import './project.scss';
+import Loading from '../common/loading';
+
 class ProjectForm extends Form {
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: {
-        name: "",
-        slug: "",
-        kind: "",
-        startDate: "",
-        endDate: "",
-        endDateReal: "",
-        year: "",
-        location: "",
-        project_type_id: "",
-        research_type_id: "",
-        coverage_type_id: "",
-        program_id: "",
-        sectors: [],
-        users: [],
-
-        summary: '',
-        background: '',
-        justification: '',
-        current_situation: '',
-        general_objective: '',
-        specific_objectives: '',
-        sustainability: '',
-        methodology: '',
-        expected_results: '',
-        transference_results: '',
-        beneficiaries: '',
-
-      },
-      projectTypes: [],
-      researchTypes: [],
-      coverageTypes: [],
-      programs: [],
+  state = {
+    data: {
+      name: "",
+      slug: "",
+      kind: "",
+      startDate: "",
+      endDate: "",
+      endDateReal: "",
+      year: "",
+      location: "",
+      project_type_id: "",
+      research_type_id: "",
+      coverage_type_id: "",
+      program_id: "",
       sectors: [],
-      projectStatuses: [],
-      errors: {},
-      isLoading: false,
 
-      activeStep: 0,
-      completed: {},
-    }
+      summary: '',
+      background: '',
+      justification: '',
+      current_situation: '',
+      general_objective: '',
+      specific_objectives: '',
+      sustainability: '',
+      methodology: '',
+      expected_results: '',
+      transference_results: '',
+      beneficiaries: '',
+
+    },
+    projectTypes: [],
+    researchTypes: [],
+    coverageTypes: [],
+    programs: [],
+    sectors: [],
+    errors: {},
+    isLoading: false,
+
+    activeStep: 0,
+    completed: {},
   }
 
+
   getSteps = () => {
-    return ['Inf. General', 'Perfil', 'Documentos'];
+    return ['Inf. General', 'Perfil'];
   }
 
   getStepContent = (step) => {
@@ -200,7 +191,6 @@ class ProjectForm extends Form {
     research_type_id: Joi.number().integer().less(4).label("Tipo investigación").messages(messages),
     program_id: Joi.number().integer().label("Programa").messages(messages),
     sectors: Joi.array().label("Sectores impacto").min(1).messages(messages),
-    users: Joi.array().label("Usuarios").allow('').messages(messages),
 
     summary: Joi.string().label("Resumen").allow('').max(500).messages(messages),
     background: Joi.string().label("Antecedentes").allow('').max(500).messages(messages),
@@ -241,16 +231,12 @@ class ProjectForm extends Form {
     this.setState({ sectors });
   }
 
-  async populateProjectStatuses() {
-    const projectSlug = this.props.match.params.slug;
-    const { data: projectStatuses } = await getProjectStatuses(projectSlug);
-    this.setState({ projectStatuses });
-  }
+
 
   async populateProject() {
     try {
-      //const projectSlug = this.props.projectSlug; //Pasando por URL id movie
-      const projectSlug = this.props.match.params.slug; //Pasando por URL id movie
+      const projectSlug = this.props.projectSlug; //Pasando por URL id movie
+      //const projectSlug = this.props.match.params.slug; //Pasando por URL id movie
       if (projectSlug === "new") return; //Si si
       const { data: project } = await getProject(projectSlug); //Si no.
       this.setState({ data: this.mapToViewModel(project) });
@@ -273,7 +259,6 @@ class ProjectForm extends Form {
     await this.populateCoverageTypes();
     await this.populatePrograms();
     await this.populateSectors();
-    await this.populateProjectStatuses();
     await this.populateProject();
     if (this._isMounted) this.setState({ isLoading: false });
   }
@@ -294,7 +279,6 @@ class ProjectForm extends Form {
       coverage_type_id: project.coverage_type_id === null ? '' : project.coverage_type_id,
       program_id: project.program_id === null ? '' : project.program_id,
       sectors: project.impact_sectors,
-      users: project.users,
 
       summary: project.summary === null ? '' : project.summary,
       background: project.background === null ? '' : project.background,
@@ -323,9 +307,10 @@ class ProjectForm extends Form {
       const res = await saveProject(this.state.data);
       this.handleChangeSlug(res.data.slug);
       this.successMessage();
-      this.populateProjectStatuses();
+      this.props.populateStatuses();
       this.props.history.push(`/proyecto/${this.state.data.slug}`);
     } catch (ex) {
+      console.log(ex);
       this.errorMessage(ex);
     }
   };
@@ -404,26 +389,12 @@ class ProjectForm extends Form {
         marginBottom: '1em',
       },
     }
-    const listBreadcrumbs = [
-      {
-        path: "/",
-        label: "Inicio",
-      },
-      {
-        path: "/proyectos",
-        label: "Proyectos",
-      },
-    ];
+
     let disabled = true;
     if (this.validate() === null) disabled = false;
 
     return (
-      <Container maxWidth="xl" id="projectForm">
-        <Loading open={this.state.isLoading} />
-        <Breadcrumb
-          onListBreadcrumbs={listBreadcrumbs}
-          lastLabel={"Proyecto"}
-        />
+      <React.Fragment>
         <Fab
           variant="extended"
           size="medium"
@@ -435,120 +406,59 @@ class ProjectForm extends Form {
           <NavigationIcon />
           Enviar
         </Fab>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={8} xl={9}>
-            <Paper className={"paper"} elevation={10} >
-              <form onSubmit={this.handleSubmit}>
-                <div className={classes.root} >
-                  <Stepper nonLinear activeStep={this.state.activeStep}>
-                    {this.steps.map((label, index) => (
-                      <Step key={label}>
-                        <StepButton onClick={this.handleStep(index)} completed={this.state.completed[index]}>
-                          {label}
-                        </StepButton>
-                      </Step>
-                    ))}
-                  </Stepper>
-                  <div>
-                    {this.allStepsCompleted() ? (
-                      <div>
-                        <Typography>
-                          All steps completed - you&apos;re finished
+        <Loading open={this.state.isLoading} />
+        <TitleComponent entity={"Proyecto"} />
+        <form onSubmit={this.handleSubmit}>
+          <div className={classes.root} >
+            <Stepper nonLinear activeStep={this.state.activeStep} style={{ width: '50%' }}>
+              {this.steps.map((label, index) => (
+                <Step key={label}>
+                  <StepButton onClick={this.handleStep(index)} completed={this.state.completed[index]}>
+                    {label}
+                  </StepButton>
+                </Step>
+              ))}
+            </Stepper>
+            <div>
+              {this.allStepsCompleted() ? (
+                <div>
+                  <Typography>
+                    All steps completed - you&apos;re finished
                         </Typography>
-                        <Button onClick={this.handleReset}>Reset</Button>
-                      </div>
-                    ) : (
-                        <div>
-                          <div >{this.getStepContent(this.state.activeStep, this.state.sectors)}</div>
-                          <div>
-                            <Button variant={'outlined'} disabled={this.state.activeStep === 0} onClick={this.handleBack} style={classes.button} >
-                              Atrás
-                            </Button>
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={this.handleNext}
-                              style={classes.button}
-                            >
-                              Siguiente
-                            </Button>
-                            {this.state.activeStep !== this.steps.length &&
-                              (this.state.completed[this.state.activeStep] ? (
-                                <Typography variant="caption">
-                                  Step {this.state.activeStep + 1} already completed
-                                </Typography>
-                              ) : (
-                                  <Button variant="contained" type="submit" color="primary" style={classes.button} startIcon={<SaveIcon />} >
-                                    {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Guardar'}
-                                  </Button>
-                                ))}
-                          </div>
-                        </div>
-                      )}
-                  </div>
+                  <Button onClick={this.handleReset}>Reset</Button>
                 </div>
-              </form >
-
-            </Paper>
-          </Grid>
-          <Grid container item xs={12} sm={12} md={4} xl={3}>
-            <Grid item xs={12} sm={12}>
-              <Paper className={"paper"}>
-                <Typography variant="h6" gutterBottom>
-                  Presupuesto:
-                </Typography>
-                <Typography variant="h4" gutterBottom>
-                  $ 45 000
-                </Typography>
-              </Paper>
-              <Paper className={"paper"}>
-                <Typography variant="h6" gutterBottom>
-                  Últimos estados:
-                </Typography>
-                <List dense={true}>
-                  {this.state.projectStatuses.map(projectStatus =>
-                    <ListItem key={projectStatus.id}>
-                      <ListItemText
-                        primary={`${projectStatus.status.name} - ${projectStatus.user.fullname}`}
-                        secondary={
-                          <Tooltip title={projectStatus.created_at} placement="top">
-                            <span>{projectStatus.human_created_at}</span>
-                          </Tooltip>
-                        }
-                      />
-                    </ListItem>
-                  )}
-                </List>
-                <NavLink to={`/proyecto/${this.state.data.slug}/estados`} style={{ textDecoration: "none" }}>
-                  <Button
-                    className="btn btn-guardar"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddIcon />}
-                  >
-                    Ver más
-                  </Button>
-                </NavLink>
-              </Paper>
-              <Paper className={"paper"}>
-                <PanelMember
-                  title="Miembros"
-                  projectSlug={this.state.data.slug}
-                  data={this.state.data.users}
-                />
-              </Paper>
-              <Paper className={"paper"}>
-                <Panel
-                  id="id"
-                  property="name"
-                  title="Sectores de Impacto"
-                  data={this.state.data["sectors"]}
-                />
-              </Paper>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Container>
+              ) : (
+                  <div>
+                    <div >{this.getStepContent(this.state.activeStep, this.state.sectors)}</div>
+                    <div>
+                      <Button variant={'outlined'} disabled={this.state.activeStep === 0} onClick={this.handleBack} style={classes.button} >
+                        Atrás
+                            </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        style={classes.button}
+                      >
+                        Siguiente
+                            </Button>
+                      {this.state.activeStep !== this.steps.length &&
+                        (this.state.completed[this.state.activeStep] ? (
+                          <Typography variant="caption">
+                            Step {this.state.activeStep + 1} already completed
+                          </Typography>
+                        ) : (
+                            <Button variant="contained" type="submit" color="primary" style={classes.button} startIcon={<SaveIcon />} >
+                              {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Guardar'}
+                            </Button>
+                          ))}
+                    </div>
+                  </div>
+                )}
+            </div>
+          </div>
+        </form >
+      </React.Fragment>
     )
   }
 

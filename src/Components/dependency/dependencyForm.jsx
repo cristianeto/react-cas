@@ -9,7 +9,8 @@ import {
   saveDependency,
 } from "../../services/dependencyService";
 import { Container, Paper, Grid } from "@material-ui/core";
-import TitleForm from "../common/titleForm";
+import TitleComponent from "../common/titleComponent";
+import Loading from '../common/loading';
 class DependencyForm extends Form {
   state = {
     data: {
@@ -132,7 +133,8 @@ class DependencyForm extends Form {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper className="paper">
-              <TitleForm entity={"Dependencia"} isLoading={isLoading} />
+              <Loading open={isLoading} />
+              <TitleComponent entity={"Dependencia"} isLoading={isLoading} />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Nombre")}
                 {this.renderInput("acronym", "Sigla")}

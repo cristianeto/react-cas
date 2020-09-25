@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { TEXT_LABELS } from "../common/configTable";
+import { TEXT_LABELS } from "../../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { LinearProgress, Typography, Tooltip, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteIcon from '@material-ui/icons/Delete';
-import auth from '../../services/authService';
+import auth from '../../../services/authService';
 
 class MembersTable extends Component {
   getMuiTheme = () =>

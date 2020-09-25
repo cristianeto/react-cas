@@ -5,8 +5,9 @@ import ImageIcon from '@material-ui/icons/Image';
 import { NavLink } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 import { Button } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 
-const PanelMember = ({ title, projectSlug, data }) => {
+const PanelMembers = ({ title, projectSlug, data: members }) => {
   const classes = {
     root: {
       flexGrow: 1,
@@ -26,7 +27,7 @@ const PanelMember = ({ title, projectSlug, data }) => {
       </Typography>
       <div style={classes.demo}>
         <List dense={true}>
-          {(data.length <= 0) ?
+          {(members.length <= 0) ?
             <ListItem >
               <ListItemAvatar>
                 <Avatar>
@@ -35,14 +36,18 @@ const PanelMember = ({ title, projectSlug, data }) => {
               </ListItemAvatar>
               <ListItemText primary={'No existen registros'} />
             </ListItem>
-            : data.map(dat => (
-              <ListItem key={dat.id}>
+            : members.map(member => (
+              <ListItem key={member.user.id}>
                 <ListItemAvatar>
                   <Avatar>
                     <ImageIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={dat.fullname} />
+                <ListItemText primary={member.user.fullname} secondary={
+                  <Tooltip title={member.created_at} placement="top">
+                    <span>{member.human_created_at}</span>
+                  </Tooltip>
+                } />
               </ListItem>
             ))
           }
@@ -63,4 +68,4 @@ const PanelMember = ({ title, projectSlug, data }) => {
   );
 };
 
-export default PanelMember;
+export default PanelMembers;

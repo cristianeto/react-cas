@@ -11,7 +11,8 @@ import { getGroup, saveGroup } from "../../services/groupService";
 import { getLines } from "../../services/lineService";
 import { Container, Typography, Paper, Grid } from "@material-ui/core";
 import { getPrograms } from "../../services/programService";
-import TitleForm from "../common/titleForm";
+import TitleComponent from "../common/titleComponent";
+import Loading from '../common/loading';
 
 class GroupForm extends Form {
   state = {
@@ -144,11 +145,12 @@ class GroupForm extends Form {
     };
     return (
       <Container maxWidth="lg">
+        <Loading open={isLoading} />
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
             <Paper className="paper" >
-              <TitleForm entity={"Grupo"} isLoading={isLoading} />
+              <TitleComponent entity={"Grupo"} />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("code", "Código")}
                 {this.renderInput("acronym", "Siglas")}

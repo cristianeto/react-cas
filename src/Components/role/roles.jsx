@@ -48,6 +48,7 @@ class Roles extends Component {
   };
 
   render() {
+    const { isLoading, roles } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -62,10 +63,10 @@ class Roles extends Component {
     };
     return (
       <Container maxWidth="lg" id="roles">
-        <Loading open={this.state.isLoading} />
+        <Loading open={isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Roles"} />
         <RolesTable
-          datas={this.state.roles}
+          datas={roles}
           onGetRole={this.getRole}
           style={classes.table}
           onDelete={this.handleDelete}

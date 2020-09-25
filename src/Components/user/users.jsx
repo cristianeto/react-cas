@@ -49,6 +49,7 @@ class Users extends Component {
   };
 
   render() {
+    const { isLoading, users } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -63,10 +64,10 @@ class Users extends Component {
     };
     return (
       <Container maxWidth="xl">
-        <Loading open={this.state.isLoading} />
+        <Loading open={isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Usuarios"} />
         <UsersTable
-          datas={this.state.users}
+          datas={users}
           onGetUser={this.getUser}
           style={classes.table}
           onDelete={this.handleDelete}

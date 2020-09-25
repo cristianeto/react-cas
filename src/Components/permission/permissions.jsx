@@ -23,6 +23,7 @@ class Permission extends Component {
   }
 
   render() {
+    const { isLoading, permissions } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -37,10 +38,10 @@ class Permission extends Component {
     };
     return (
       <Container maxWidth="lg" id="roles">
-        <Loading open={this.state.isLoading} />
+        <Loading open={isLoading} />
         <Breadcum onListBreadcrumbs={listBreadcrumbs} lastLabel={"Permisos"} />
         <PermissionsTable
-          datas={this.state.permissions}
+          datas={permissions}
           onGetPermission={this.getPermission}
           style={classes.table}
         />
