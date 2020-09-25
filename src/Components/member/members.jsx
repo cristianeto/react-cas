@@ -175,7 +175,7 @@ class Members extends Form {
           />
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={6} lg={4}>
-              <Paper style={classes.paper}>
+              <Paper className="paper">
                 <TitleForm entity={"Agregar miembros del proyecto"} isLoading={isLoading} />
                 <form onSubmit={this.doSubmit}>
                   <Autocomplete

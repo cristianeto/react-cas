@@ -220,37 +220,31 @@ class ProjectForm extends Form {
   async populateProjectTypes() {
     const { data: projectTypes } = await getProjectTypes();
     this.setState({ projectTypes });
-    console.log('Se obtuvieron los ProjectTypes');
   }
 
   async populateResearchTypes() {
     const { data: researchTypes } = await getResearchTypes();
     this.setState({ researchTypes });
-    console.log('Se obtuvieron los ResearchTypes');
   }
 
   async populateCoverageTypes() {
     const { data: coverageTypes } = await getCoverageTypes();
     this.setState({ coverageTypes });
-    console.log('Se obtuvieron los CoverageTypes');
   }
 
   async populatePrograms() {
     const { data: programs } = await getPrograms();
     this.setState({ programs });
-    console.log('Se obtuvieron los Programs');
   }
   async populateSectors() {
     const { data: sectors } = await getSectors();
     this.setState({ sectors });
-    console.log('Se obtuvieron los Sectors');
   }
 
   async populateProjectStatuses() {
     const projectSlug = this.props.match.params.slug;
     const { data: projectStatuses } = await getProjectStatuses(projectSlug);
     this.setState({ projectStatuses });
-    console.log('Se obtuvieron los Statuses');
   }
 
   async populateProject() {
@@ -268,7 +262,6 @@ class ProjectForm extends Form {
       } else if (ex.response.status === 403)
         this.props.history.replace("/not-authorized");
     }
-    console.log('Se obtuvo el DataProject');
   }
 
   async componentDidMount() {

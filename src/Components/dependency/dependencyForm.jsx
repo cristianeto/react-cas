@@ -123,13 +123,6 @@ class DependencyForm extends Form {
       },
     ];
 
-    const classes = {
-      paper: {
-        padding: "2em",
-        color: "secondary",
-      },
-    };
-
     return (
       <Container maxWidth="lg">
         <Breadcrumb
@@ -138,7 +131,7 @@ class DependencyForm extends Form {
         />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
-            <Paper style={classes.paper}>
+            <Paper className="paper">
               <TitleForm entity={"Dependencia"} isLoading={isLoading} />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Nombre")}

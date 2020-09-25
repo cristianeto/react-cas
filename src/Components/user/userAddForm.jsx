@@ -18,7 +18,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import { messages } from '../common/es_ES';
-import './user.scss';
 import Loading from '../common/loading';
 
 class UserAddForm extends Form {

@@ -25,6 +25,8 @@ import meProfile from "./Components/user/meProfile";
 import Logout from "./Components/logout";
 import { getRolesByUser } from "./services/userRolesService";
 import { StylesProvider } from '@material-ui/core/styles';
+import './app.scss';
+
 class App extends Component {
   constructor(props) {
     super(props);

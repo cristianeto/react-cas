@@ -147,7 +147,7 @@ class GroupForm extends Form {
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
-            <Paper style={classes.paper}>
+            <Paper className="paper" >
               <TitleForm entity={"Grupo"} isLoading={isLoading} />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("code", "Código")}
@@ -191,7 +191,7 @@ class GroupForm extends Form {
           </Grid>
           <Grid container item xs={12} sm={5} md={4} spacing={3}>
             <Grid item xs={12} sm={12}>
-              <Paper style={classes.paper}>
+              <Paper className="paper">
                 <Panel
                   id="id"
                   property="name"
@@ -201,7 +201,7 @@ class GroupForm extends Form {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Paper style={classes.paper}>
+              <Paper className="paper">
                 <Panel
                   id="id"
                   property="name"
@@ -211,7 +211,7 @@ class GroupForm extends Form {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Paper style={classes.paper}>
+              <Paper className="paper">
                 <Typography variant="h6" gutterBottom>
                   Miembros
                 </Typography>
@@ -220,16 +220,16 @@ class GroupForm extends Form {
             </Grid>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <Paper style={classes.paper}>xs=6 sm=3</Paper>
+            <Paper className="paper">xs=6 sm=3</Paper>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <Paper style={classes.paper}>xs=6 sm=3</Paper>
+            <Paper className="paper">xs=6 sm=3</Paper>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <Paper style={classes.paper}>xs=6 sm=3</Paper>
+            <Paper className="paper">xs=6 sm=3</Paper>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <Paper style={classes.paper}>xs=6 sm=3</Paper>
+            <Paper className="paper">xs=6 sm=3</Paper>
           </Grid>
         </Grid>
       </Container>
