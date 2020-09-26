@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, List, ListItem, ListItemText } from "@material-ui/core";
+import { Typography, List, ListItem, ListItemText, Paper } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 import Button from '@material-ui/core/Button';
@@ -7,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 const PanelStatuses = ({ title, projectSlug, data: statuses }) => {
   return (
-    <React.Fragment>
+    <Paper className="paper">
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>
@@ -35,7 +35,7 @@ const PanelStatuses = ({ title, projectSlug, data: statuses }) => {
           Ver más
                   </Button>
       </NavLink>
-    </React.Fragment>
+    </Paper>
   );
 };
 

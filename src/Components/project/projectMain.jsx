@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Breadcrumb from "../common/breadcum";
-import { Container, Paper, Grid } from "@material-ui/core";
+import { Container, Grid, Paper } from "@material-ui/core";
 import PanelMembers from './panelMembers';
 //import Panel from '../common/panel';
 import ProjectForm from './projectForm';
@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import { getProjectStatuses } from '../../services/projectStatusService';
 import { getMembers } from '../../services/memberService';
 import PanelStatuses from './panelStatuses';
+import ProjectComponents from './components/projectComponents';
+import { getProjectComponents } from '../../services/projectComponentService';
+import AddComponentForm from './components/addComponentForm';
 
 class ProjectMain extends Component {
 
@@ -17,6 +20,7 @@ class ProjectMain extends Component {
     },
     members: [],
     projectStatuses: [],
+    projectComponents: [],
     isLoading: false,
   }
 
@@ -24,6 +28,12 @@ class ProjectMain extends Component {
     const projectSlug = this.state.data.slug;
     const { data: projectStatuses } = await getProjectStatuses(projectSlug);
     this.setState({ projectStatuses });
+  }
+
+  async populateProjectComponents() {
+    const projectSlug = this.state.data.slug;
+    const { data: projectComponents } = await getProjectComponents(projectSlug);
+    this.setState({ projectComponents });
   }
 
   async populateMembers() {
@@ -38,6 +48,7 @@ class ProjectMain extends Component {
     this.setState({ isLoading: true });
 
     await this.populateProjectStatuses();
+    await this.populateProjectComponents();
     await this.populateMembers();
 
     if (this._isMounted) this.setState({ isLoading: false });
@@ -45,7 +56,7 @@ class ProjectMain extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, projectComponents, projectStatuses, members } = this.state;
     const listBreadcrumbs = [
       {
         path: "/",
@@ -58,7 +69,7 @@ class ProjectMain extends Component {
     ];
     return (
 
-      <Container maxWidth="xl" id="projectForm">
+      <Container maxWidth="xl" id="projectMain">
 
         <Breadcrumb
           onListBreadcrumbs={listBreadcrumbs}
@@ -67,26 +78,25 @@ class ProjectMain extends Component {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={8} xl={9}>
-            <Paper className={"paper"} elevation={10} >
-              <ProjectForm projectSlug={data.slug} history={this.props.history} populateStatuses={() => this.populateProjectStatuses} />
-            </Paper>
+            <ProjectForm projectSlug={data.slug} history={this.props.history} populateStatuses={() => this.populateProjectStatuses()} />
+            <AddComponentForm projectSlug={data.slug} populateComponents={() => this.populateProjectComponents()} />
+            {projectComponents.length > 0 &&
+              <ProjectComponents data={projectComponents} />
+            }
           </Grid>
           <Grid container item xs={12} sm={12} md={4} xl={3}>
             <Grid item xs={12} sm={12}>
-              <Paper className={"paper"}>
+              <Paper className="paper">
                 <Typography variant="h6" gutterBottom>
                   Presupuesto:
-                </Typography>
+                  </Typography>
                 <Typography variant="h4" gutterBottom>
                   $ 45 000
-                </Typography>
+                  </Typography>
+
               </Paper>
-              <Paper className={"paper"}>
-                <PanelStatuses title="Últimos estados" projectSlug={data.slug} data={this.state.projectStatuses} />
-              </Paper>
-              <Paper className={"paper"}>
-                <PanelMembers title="Miembros" projectSlug={data.slug} data={this.state.members} />
-              </Paper>
+              <PanelStatuses title="Últimos estados" projectSlug={data.slug} data={projectStatuses} />
+              <PanelMembers title="Miembros" projectSlug={data.slug} data={members} />
               {/*  <Paper className={"paper"}>
                 <Panel
                   id="id"
@@ -97,6 +107,7 @@ class ProjectMain extends Component {
               </Paper> */}
             </Grid>
           </Grid>
+
         </Grid>
       </Container>
     );

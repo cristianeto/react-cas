@@ -9,18 +9,16 @@ import { messages } from "../common/es_ES";
 import { saveProject } from "../../services/projectService";
 
 class AddProjectForm extends Form {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {
-        name: ''
-      },
-      errors: {}
-    };
-  }
+  state = {
+    data: {
+      name: ''
+    },
+    errors: {}
+  };
+
 
   schema = Joi.object({
-    id: Joi.string().guid({ version: ["uuidv1"] }),
+    id: Joi.string().guid(),
     name: Joi.string().label("Nombre").max(500).messages(messages),
     slug: Joi.string().label("Slug").max(500).messages(messages),
   });

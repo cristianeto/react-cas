@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, List, ListItem, ListItemText } from "@material-ui/core";
+import { Typography, List, ListItem, ListItemText, Paper } from "@material-ui/core";
 import { ListItemAvatar, Avatar } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import { NavLink } from "react-router-dom";
@@ -21,7 +21,7 @@ const PanelMembers = ({ title, projectSlug, data: members }) => {
     }
   };
   return (
-    <React.Fragment>
+    <Paper className={"paper"}>
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>
@@ -64,7 +64,7 @@ const PanelMembers = ({ title, projectSlug, data: members }) => {
         </NavLink>
       </div>
 
-    </React.Fragment>
+    </Paper>
   );
 };
 

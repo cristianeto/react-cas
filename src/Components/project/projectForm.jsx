@@ -20,6 +20,7 @@ import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import './project.scss';
 import Loading from '../common/loading';
+import { Paper } from '@material-ui/core';
 
 class ProjectForm extends Form {
   state = {
@@ -177,7 +178,7 @@ class ProjectForm extends Form {
     }
   }
   schema = Joi.object({
-    id: Joi.string().guid({ version: ["uuidv1"] }),
+    id: Joi.string().guid(),
     name: Joi.string().label("Nombre").max(500).messages(messages),
     slug: Joi.string().label("Slug").max(60).messages(messages),
     kind: Joi.string().label("Tipo").max(60).messages(messages),
@@ -394,7 +395,7 @@ class ProjectForm extends Form {
     if (this.validate() === null) disabled = false;
 
     return (
-      <React.Fragment>
+      <Paper className="paper" elevation={10}>
         <Fab
           variant="extended"
           size="medium"
@@ -458,7 +459,7 @@ class ProjectForm extends Form {
             </div>
           </div>
         </form >
-      </React.Fragment>
+      </Paper>
     )
   }
 
