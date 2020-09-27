@@ -39,6 +39,7 @@ function AddProjectComponentForm(props) {
     try {
       await saveComponent(state.data);
       enqueueSnackbar(notifications.SUCCESS, { variant: 'success', });
+      handleClose();
       setState({ ...initialState });
       props.populateComponents();
     } catch (ex) {
