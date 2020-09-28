@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import { getComponentActivities } from '../../../services/componentActivities';
+import { getComponentRequirements } from '../../../services/componentRequirements';
 import ActivitiesTable from './activities/activitiesTable';
+import RequirementsTable from './requirements/requirementsTable';
 
 function SingleComponent({ comp: component }) {
 
@@ -13,18 +14,23 @@ function SingleComponent({ comp: component }) {
     },
     meta: {},
   };
-  const [state, setState] = useState(initialState);
+  //const [state, setState] = useState(initialState);
   const [activities, setActivities] = useState([]);
+  const [requirements, setRequirements] = useState([]);
 
   useEffect(() => {
     // Actualiza el título del documento usando la API del navegador    
-    async function fetchActivities() {
-      const { data: activities } = await getComponentActivities(state.data.id);
-      console.log(activities);
+    async function populateActivities() {
+      const { data: activities } = await getComponentActivities(component.id);
       setActivities(activities);
     }
-    fetchActivities();
-  }, [state.data.id]);
+    async function populateRequirements() {
+      const { data: requirements } = await getComponentRequirements(component.id);
+      setRequirements(requirements);
+    }
+    populateActivities();
+    populateRequirements();
+  }, [component.id]);
 
   const handleSubmit = () => {
     console.log("submiting");
@@ -33,13 +39,13 @@ function SingleComponent({ comp: component }) {
   console.log("activities: ", activities)
   return (
     <div>
-      <Typography variant="body2" gutterBottom>
+      {/*       <Typography variant="body2" gutterBottom>
         {state.data.name}
 
-      </Typography>
-      <Button onClick={handleSubmit} color="primary" variant="contained" margin="normal" size="medium">
+      </Typography> */}
+      {/* <Button onClick={handleSubmit} color="primary" variant="contained" margin="normal" size="medium">
         Modificar Componente
-      </Button>
+      </Button> */}
       {/* info Component */}
 
       {/* info Meta */}
@@ -48,6 +54,7 @@ function SingleComponent({ comp: component }) {
       <ActivitiesTable datas={activities} />
 
       {/* table requirement */}
+      <RequirementsTable datas={requirements} />
     </div>
   )
 }
