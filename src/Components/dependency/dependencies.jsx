@@ -16,7 +16,6 @@ class Dependencies extends Component {
     this.setState({ isLoading: true });
     const { data: dependencies } = await getDependencies();
     //const dependencies = [{ name: "All Movies", _id: "" }, ...data];
-    console.log(dependencies);
     this.setState({ dependencies, isLoading: false });
   }
 

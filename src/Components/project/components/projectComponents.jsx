@@ -46,7 +46,6 @@ function ProjectComponents({ data: components }) {
           <SingleComponent comp={comp} />
         </TabPanel>
       )}
-
     </Paper>
   );
 }

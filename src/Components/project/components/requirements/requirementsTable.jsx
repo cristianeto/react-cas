@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { TEXT_LABELS } from '../../../common/configTable';
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { Typography, Button, Tooltip } from "@material-ui/core";
-import { Add as AddIcon, People as PeopleIcon } from '@material-ui/icons';
+import { Typography, Tooltip } from "@material-ui/core";
+import { People as PeopleIcon } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import AddRequirementForm from './addRequirementForm';
 
 class RequirementsTable extends Component {
   state = {
@@ -45,7 +46,7 @@ class RequirementsTable extends Component {
     });
 
   render() {
-    const { datas, onDelete } = this.props;
+    const { datas, onDelete, activities,populateRequirements } = this.props;
     const columns = [
       {
         name: 'count',
@@ -134,7 +135,7 @@ class RequirementsTable extends Component {
                 <Tooltip title={`${tableMeta.rowData[2]}`} style={{ cursor: "pointer" }}>
                   <span
                   >
-                    {`${tableMeta.rowData[2]}`}
+                    {`${value}`}
                   </span>
                 </Tooltip>
               </React.Fragment>
@@ -159,15 +160,7 @@ class RequirementsTable extends Component {
                   >
                     <EditIcon color={'primary'} />
                   </Link>
-                </Tooltip>
-                <Tooltip title="Miembros" style={{ cursor: "pointer" }}>
-                  <Link
-                    style={{ textDecoration: "none", color: '#fff' }}
-                    to={`/proyecto/${tableMeta.rowData[2]}/miembros`}
-                  >
-                    <PeopleIcon color={'primary'} />
-                  </Link>
-                </Tooltip>
+                </Tooltip>                
                 <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
                   <DeleteIcon onClick={() => onDelete(tableMeta.rowData[2])} color={'primary'} />
                 </Tooltip>
@@ -205,17 +198,13 @@ class RequirementsTable extends Component {
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable
           title={
-            <Typography variant="h6">
-              Lista de requerimientos
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.handleClickOpen}
-                startIcon={<AddIcon />}
-              >
-                Nueva requerimiento
-              </Button>
-            </Typography>
+            <React.Fragment>
+              <Typography variant="h6">
+                Lista de requerimientos
+              </Typography>
+              <div className="separate"></div>              
+              <AddRequirementForm activities={activities} populateRequirements={populateRequirements}/>
+            </React.Fragment>
           }
           data={datas}
           columns={columns}

@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import { TEXT_LABELS } from '../../../common/configTable';
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { Typography, Button, Tooltip } from "@material-ui/core";
-import { Add as AddIcon, People as PeopleIcon } from '@material-ui/icons';
+import { Typography, Tooltip } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import AddActivityForm from "./addActivityForm";
 
 class ActivitiesTable extends Component {
   state = {
@@ -26,7 +26,9 @@ class ActivitiesTable extends Component {
     createMuiTheme({
       overrides: {
         MUIDataTableBodyCell: {
-          root: {},
+          root: {
+            marginBottom: "2em"
+          },
         },
         MuiIconButton: {
           sizeSmall: {
@@ -45,7 +47,7 @@ class ActivitiesTable extends Component {
     });
 
   render() {
-    const { datas, onDelete } = this.props;
+    const { datas, onDelete, component, populateActivities } = this.props;
     const columns = [
       {
         name: 'count',
@@ -107,6 +109,14 @@ class ActivitiesTable extends Component {
         },
       },
       {
+        name: "responsable",
+        label: "Responsable",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
         name: "human_updated_at",
         label: "Última Actualización",
         options: {
@@ -135,22 +145,14 @@ class ActivitiesTable extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
-              <React.Fragment>
-                <Tooltip title="Editar" style={{ cursor: "pointer" }}>
+              <React.Fragment>                
+                <Tooltip title="Editar" style={{ cursor: "pointer" }}>                                                       
                   <Link
                     style={{ textDecoration: "none" }}
-                    to={`/proyecto/${tableMeta.rowData[2]}`}
+                    to={`/actividad/${tableMeta.rowData[1]}`}
                   >
                     <EditIcon color={'primary'} />
-                  </Link>
-                </Tooltip>
-                <Tooltip title="Miembros" style={{ cursor: "pointer" }}>
-                  <Link
-                    style={{ textDecoration: "none", color: '#fff' }}
-                    to={`/proyecto/${tableMeta.rowData[2]}/miembros`}
-                  >
-                    <PeopleIcon color={'primary'} />
-                  </Link>
+                  </Link>            
                 </Tooltip>
                 <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
                   <DeleteIcon onClick={() => onDelete(tableMeta.rowData[2])} color={'primary'} />
@@ -189,17 +191,13 @@ class ActivitiesTable extends Component {
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable
           title={
-            <Typography variant="h6">
-              Lista de actividades
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.handleClickOpen}
-                startIcon={<AddIcon />}
-              >
-                Nueva actividad
-              </Button>
-            </Typography>
+            <React.Fragment>
+              <Typography variant="h6">
+                Lista de actividades
+              </Typography>
+              <div className="separate"></div>
+              <AddActivityForm component={component} populateActivities={populateActivities}/>
+            </React.Fragment>
           }
           data={datas}
           columns={columns}

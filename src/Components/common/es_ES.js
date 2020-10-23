@@ -2,6 +2,7 @@ export const messages = {
   'any.required': `{#label} es un campo requerido`,
   'string.base': `{#label} debe ser de tipo 'texto'`,
   'string.empty': `{#label} es obligatorio`,
+  'string.min': `{#label} debe tener al menos {#limit} caracteres`,
   'string.max': `{#label} no debe tener mas de {#limit} caracteres`,
   'number.base': `{#label} debe ser de tipo 'número'`,
   'number.empty': `{#label} es obligatorio`,
@@ -27,7 +28,10 @@ export const messages = {
 
 export const errors2 = {
   'string.base': `{#label} debe ser de tipo 'texto'`,
-  'string': { 'empty': `{#label} es obligatorio` },
+  'string': { 
+    'empty': `{#label} es obligatorio`,
+    'min': `{#label} debe tener al menos  {#limit} caracteres`
+  },
   'string.max': `{#label} no debe tener mas de {#limit} caracteres`,
   'any.required': `{#label} es un campo requerido`,
   'number': {

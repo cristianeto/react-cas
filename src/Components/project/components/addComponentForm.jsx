@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { saveComponent } from '../../../services/projectComponentService';
 import { notifications } from '../../../utils/messages';
 import { useSnackbar } from 'notistack';
@@ -18,7 +18,7 @@ function AddProjectComponentForm(props) {
     },
   }
   const [state, setState] = useState(initialState);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -58,7 +58,7 @@ function AddProjectComponentForm(props) {
         onClick={handleClickOpen}
       >
         Agregar Componente
-            </Button>
+      </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Datos del componente</DialogTitle>
         <DialogContent>

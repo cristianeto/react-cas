@@ -1,42 +1,40 @@
-import React, { useState, useEffect } from 'react'
-import Button from '@material-ui/core/Button';
-import { getComponentActivities } from '../../../services/componentActivities';
-import { getComponentRequirements } from '../../../services/componentRequirements';
+import React, { useState, useEffect, useCallback } from 'react'
+import { getComponentActivities } from '../../../services/componentActivitiesService';
+import { getComponentRequirements } from '../../../services/componentRequirementsService';
 import ActivitiesTable from './activities/activitiesTable';
 import RequirementsTable from './requirements/requirementsTable';
 
 function SingleComponent({ comp: component }) {
 
-  const initialState = {
-    data: {
-      "id": component.id,
-      "name": component.name
-    },
-    meta: {},
-  };
-  //const [state, setState] = useState(initialState);
   const [activities, setActivities] = useState([]);
   const [requirements, setRequirements] = useState([]);
 
+  const populateActivities = useCallback(async() => {
+    const { data: activities } =  await getComponentActivities(component.id);
+      setActivities(activities);
+  },[component])
+  const populateRequirements = useCallback(async() =>  {
+    const { data: requirements } =  await getComponentRequirements(component.id);
+    setRequirements(requirements);
+  },[component])
+
   useEffect(() => {
     // Actualiza el título del documento usando la API del navegador    
-    async function populateActivities() {
+    /* async function populateActivities() {
       const { data: activities } = await getComponentActivities(component.id);
       setActivities(activities);
-    }
-    async function populateRequirements() {
+    } */
+/*     async function populateRequirements() {
       const { data: requirements } = await getComponentRequirements(component.id);
       setRequirements(requirements);
-    }
+    } */
+    console.log('iniciando');
     populateActivities();
     populateRequirements();
-  }, [component.id]);
+  },[populateActivities, populateRequirements]);
 
-  const handleSubmit = () => {
-    console.log("submiting");
-  }
-
-  console.log("activities: ", activities)
+ 
+ 
   return (
     <div>
       {/*       <Typography variant="body2" gutterBottom>
@@ -51,10 +49,10 @@ function SingleComponent({ comp: component }) {
       {/* info Meta */}
 
       {/* table activities with AddButton */}
-      <ActivitiesTable datas={activities} />
-
+      <ActivitiesTable datas={activities} component={component} populateActivities={populateActivities}/>
+      <div className="separator"></div>
       {/* table requirement */}
-      <RequirementsTable datas={requirements} />
+      <RequirementsTable datas={requirements} activities={activities} populateRequirements={populateRequirements}/>
     </div>
   )
 }

@@ -11,13 +11,15 @@ import PanelStatuses from './panelStatuses';
 import ProjectComponents from './components/projectComponents';
 import { getProjectComponents } from '../../services/projectComponentService';
 import AddComponentForm from './components/addComponentForm';
+import { getProjectBudget } from '../../services/budgetProject';
 
 class ProjectMain extends Component {
 
   state = {
     data: {
-      slug: this.props.match.params.slug
+      slug: this.props.match.params.slug,
     },
+    budget: 0.00,
     members: [],
     projectStatuses: [],
     projectComponents: [],
@@ -42,6 +44,13 @@ class ProjectMain extends Component {
     this.setState({ members });
   }
 
+  async populateBudget() {
+    const projectSlug = this.state.data.slug;
+    const { data: project } = await getProjectBudget(projectSlug);
+    if (project.budget)
+      this.setState({ budget: project.budget });
+  }
+
   async componentDidMount() {
     this._isMounted = true;
     //this.getStepContent();
@@ -50,6 +59,7 @@ class ProjectMain extends Component {
     await this.populateProjectStatuses();
     await this.populateProjectComponents();
     await this.populateMembers();
+    await this.populateBudget();
 
     if (this._isMounted) this.setState({ isLoading: false });
 
@@ -88,23 +98,20 @@ class ProjectMain extends Component {
             <Grid item xs={12} sm={12}>
               <Paper className="paper">
                 <Typography variant="h6" gutterBottom>
-                  Presupuesto:
+                  Presupuesto aprobado:
                   </Typography>
-                <Typography variant="h4" gutterBottom>
-                  $ 45 000
+                <Typography variant="h6" gutterBottom>
+                  $ {this.state.budget}
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  Presupuesto consumido:
                   </Typography>
-
+                <Typography variant="h6" gutterBottom>
+                  $ {this.state.budget}
+                </Typography>
               </Paper>
               <PanelStatuses title="Últimos estados" projectSlug={data.slug} data={projectStatuses} />
               <PanelMembers title="Miembros" projectSlug={data.slug} data={members} />
-              {/*  <Paper className={"paper"}>
-                <Panel
-                  id="id"
-                  property="name"
-                  title="Sectores de Impacto"
-                  data={this.state.data["sectors"]}
-                />
-              </Paper> */}
             </Grid>
           </Grid>
 

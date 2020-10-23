@@ -3,6 +3,7 @@ import Joi from "@hapi/joi";
 import { withSnackbar } from "notistack";
 import Breadcrumb from "../common/breadcum";
 import Form from "../common/form";
+import auth from "../../services/authService";
 import RolesCheckboxes from "./roles/checkboxes";
 import PermissionsCheckboxes from "./permissions/checkboxes";
 import { getUser, saveUser } from "../../services/userService";
@@ -209,10 +210,12 @@ class UserAddForm extends Form {
                 {this.renderInput("name", "Nombre")}
                 {this.renderInput("lastname", "Apellido")}
                 {this.renderInput("email", "Correo")}
-                <div className="checkboxes">
-                  <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} />
-                  <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} label="Permisos extra" />
-                </div>
+                {auth.getCurrentUser() !== null && (
+                  <div className="checkboxes">
+                    <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} />
+                    <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} label="Permisos extra" />
+                  </div>
+                )}
                 {this.renderButton("Crear usuario")}
               </form>
             </Paper>
