@@ -9,10 +9,12 @@ import { getDependencies } from "../../services/dependencyService";
 import { getGroupTypes } from "../../services/groupTypeService";
 import { getGroup, saveGroup } from "../../services/groupService";
 import { getLines } from "../../services/lineService";
-import { Container, Typography, Paper, Grid } from "@material-ui/core";
+import { Container, Paper, Grid } from "@material-ui/core";
 import { getPrograms } from "../../services/programService";
 import TitleComponent from "../common/titleComponent";
 import Loading from '../common/loading';
+import {getMembers} from "../../services/groupMemberService";
+import GroupMembers from "./member/groupMembers";
 
 class GroupForm extends Form {
   state = {
@@ -31,6 +33,7 @@ class GroupForm extends Form {
     groupTypes: [],
     lines: [],
     programs: [],
+    members: [],
     errors: {},
     isLoading: false,
   };
@@ -68,12 +71,19 @@ class GroupForm extends Form {
     this.setState({ programs });
   }
 
+  async populateMembers() {
+    const groupId = this.state.data.id;
+    const { data: members } = await getMembers(groupId);
+    this.setState({ members });
+  }
+
   async populateGroup() {
     try {
       const groupId = this.props.match.params.id; //Pasando por URL id movie
       if (groupId === "new") return; //Si si
       const { data: group } = await getGroup(groupId); //Si no.
       this.setState({ data: this.mapToViewModel(group) });
+      await this.populateMembers();
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
@@ -124,7 +134,7 @@ class GroupForm extends Form {
   };
 
   render() {
-    const { isLoading, dependencies, lines, programs, groupTypes } = this.state;
+    const { isLoading, dependencies, lines, programs, groupTypes, data, members } = this.state;
     // const optionsSelected = this.getLinesSelected();
     const listBreadcrumbs = [
       {
@@ -136,13 +146,6 @@ class GroupForm extends Form {
         label: "Grupos Investigación",
       },
     ];
-
-    const classes = {
-      paper: {
-        padding: "2em",
-        color: "secondary",
-      },
-    };
     return (
       <Container maxWidth="lg">
         <Loading open={isLoading} />
@@ -213,26 +216,9 @@ class GroupForm extends Form {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Paper className="paper">
-                <Typography variant="h6" gutterBottom>
-                  Miembros
-                </Typography>
-                <div style={classes.demo}></div>
-              </Paper>
+              {this.props.match.params.id !== 'new' &&(<GroupMembers title="Miembros" groupId={data.id} data={members} />)}
             </Grid>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper className="paper">xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper className="paper">xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper className="paper">xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper className="paper">xs=6 sm=3</Paper>
-          </Grid>
+          </Grid>          
         </Grid>
       </Container>
     );

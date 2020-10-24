@@ -2,7 +2,7 @@ import { Component } from "react";
 
 class Logout extends Component {
   componentDidMount() {
-    window.location = "/";
+    window.location = "/spirit";
   }
 
   render() {

@@ -12,6 +12,7 @@ import ProjectComponents from './components/projectComponents';
 import { getProjectComponents } from '../../services/projectComponentService';
 import AddComponentForm from './components/addComponentForm';
 import { getProjectBudget } from '../../services/budgetProject';
+import BudgetLinearProgress from './BudgetLinearProgress';
 
 class ProjectMain extends Component {
 
@@ -91,23 +92,24 @@ class ProjectMain extends Component {
             <ProjectForm projectSlug={data.slug} history={this.props.history} populateStatuses={() => this.populateProjectStatuses()} />
             <AddComponentForm projectSlug={data.slug} populateComponents={() => this.populateProjectComponents()} />
             {projectComponents.length > 0 &&
-              <ProjectComponents data={projectComponents} />
+              <ProjectComponents data={projectComponents} budget={this.populateBudget}/>
             }
           </Grid>
           <Grid container item xs={12} sm={12} md={4} xl={3}>
             <Grid item xs={12} sm={12}>
               <Paper className="paper">
                 <Typography variant="h6" gutterBottom>
-                  Presupuesto aprobado:
+                  Presupuesto asignado:
                   </Typography>
                 <Typography variant="h6" gutterBottom>
                   $ {this.state.budget}
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  Presupuesto consumido:
+                  Presupuesto ejecutado:
                   </Typography>
                 <Typography variant="h6" gutterBottom>
-                  $ {this.state.budget}
+                  $ 0
+                  <BudgetLinearProgress/>
                 </Typography>
               </Paper>
               <PanelStatuses title="Últimos estados" projectSlug={data.slug} data={projectStatuses} />

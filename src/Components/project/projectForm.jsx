@@ -66,7 +66,7 @@ class ProjectForm extends Form {
 
 
   getSteps = () => {
-    return ['Inf. General', 'Perfil'];
+    return ['Inf. General', 'Inf. Adicional'];
   }
 
   getStepContent = (step) => {

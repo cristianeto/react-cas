@@ -4,7 +4,7 @@ import { getComponentRequirements } from '../../../services/componentRequirement
 import ActivitiesTable from './activities/activitiesTable';
 import RequirementsTable from './requirements/requirementsTable';
 
-function SingleComponent({ comp: component }) {
+function SingleComponent({ comp: component, budget }) {
 
   const [activities, setActivities] = useState([]);
   const [requirements, setRequirements] = useState([]);
@@ -52,7 +52,7 @@ function SingleComponent({ comp: component }) {
       <ActivitiesTable datas={activities} component={component} populateActivities={populateActivities}/>
       <div className="separator"></div>
       {/* table requirement */}
-      <RequirementsTable datas={requirements} activities={activities} populateRequirements={populateRequirements}/>
+      <RequirementsTable datas={requirements} activities={activities} populateRequirements={populateRequirements} budget={budget}/>
     </div>
   )
 }

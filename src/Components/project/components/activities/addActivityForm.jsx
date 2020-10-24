@@ -93,7 +93,7 @@ function AddActivityForm(props) {
             autoFocus
             margin="dense"
             name="name"
-            label="Nombre de la actividad"
+            label="Nombre *"
             type="text"
             fullWidth
             multiline
@@ -105,7 +105,7 @@ function AddActivityForm(props) {
           <TextField
             margin="dense"
             name="responsable"
-            label="Nombre del responsable"
+            label="Responsable *"
             type="text"
             fullWidth
             variant="outlined"            
@@ -118,7 +118,7 @@ function AddActivityForm(props) {
               <DatePicker
                 margin="normal"
                 id="start_date"
-                label="Fecha de inicio"
+                label="Fecha de inicio *"
                 format="yyyy/MM/dd"
                 openTo="year"
                 views={["year", "month", "date"]}
@@ -129,7 +129,7 @@ function AddActivityForm(props) {
               <DatePicker
                 margin="normal"
                 id="end_date"
-                label="Fecha de fin"
+                label="Fecha de fin *"
                 openTo="year"
                 views={["year", "month", "date"]}
                 format="yyyy/MM/dd"

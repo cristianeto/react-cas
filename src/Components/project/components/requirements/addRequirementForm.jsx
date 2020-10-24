@@ -16,7 +16,7 @@ import CheckBoxOutlineBlankIcon  from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { saveRequirement } from '../../../../services/requirementService';
 
-function AddRequirementForm({activities, populateRequirements}) {
+function AddRequirementForm({activities, populateRequirements, budget}) {
   const initialState = {
     data: {
       name: '',
@@ -81,6 +81,7 @@ function AddRequirementForm({activities, populateRequirements}) {
     try {      
       await saveRequirement(state.data);
       populateRequirements();
+      //budget();
       enqueueSnackbar(notifications.SUCCESS, { variant: 'success', });
       setState({ ...initialState });
       handleClose();
@@ -115,7 +116,7 @@ function AddRequirementForm({activities, populateRequirements}) {
             autoFocus
             margin="dense"
             name="name"
-            label="Descripción"
+            label="Descripción *"
             type="text"
             fullWidth
             multiline
@@ -129,7 +130,7 @@ function AddRequirementForm({activities, populateRequirements}) {
             error={state.errors['quantity'] === undefined ? false:true}
             margin="dense"
             name="quantity"
-            label="Cantidad"
+            label="Cantidad *"
             type="text"
             fullWidth
             variant="outlined"            
@@ -141,7 +142,7 @@ function AddRequirementForm({activities, populateRequirements}) {
             error={state.errors['price'] === undefined ? false:true}
             margin="dense"
             name="price"
-            label="Precio unitario"
+            label="Precio unitario *"
             type="text"
             fullWidth
             variant="outlined"            
@@ -153,7 +154,7 @@ function AddRequirementForm({activities, populateRequirements}) {
             error={state.errors['total_price'] === undefined ? false:true}
             margin="dense"
             name="total_price"            
-            label="Precio total"
+            label="Precio total *"
             type="text"
             fullWidth
             variant="outlined"            
@@ -164,49 +165,49 @@ function AddRequirementForm({activities, populateRequirements}) {
             helperText={state.errors['total_price']}
           />
           <Autocomplete
-                    //multiple
-                    id={'activity'}
+            //multiple
+            id={'activity'}
+            name={'activity'}
+            limitTags={2}
+            options={activities}
+            //disableCloseOnSelect
+            disableClearable
+            getOptionLabel={(activity) => activity.name}
+            onChange={(event, values) => handleChangeSelect(event, values, 'activity_id')}
+            label={'Actividad *'}
+            //value={this.state.data.user}
+            renderOption={(option, { selected, inputValue }) => {
+              //console.log("inputvalue:" + selected + "; " + inputValue);
+              return (
+                <React.Fragment>
+                  <Checkbox
                     name={'activity'}
-                    limitTags={2}
-                    options={activities}
-                    //disableCloseOnSelect
-                    disableClearable
-                    getOptionLabel={(activity) => activity.name}
-                    onChange={(event, values) => handleChangeSelect(event, values, 'activity_id')}
-                    label={'Actividad'}
-                    //value={this.state.data.user}
-                    renderOption={(option, { selected, inputValue }) => {
-                      //console.log("inputvalue:" + selected + "; " + inputValue);
-                      return (
-                        <React.Fragment>
-                          <Checkbox
-                            name={'activity'}
-                            icon={icon}
-                            checkedIcon={checkedIcon}
-                            style={{ marginRight: 8 }}
-                            checked={selected}
-                          />
-                          {option.name}
-                        </React.Fragment>
-                      );
-                    }}
-                    getOptionSelected={(option, value) => {
-                      return option.id === value.id;
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        //error={validation}
-                        margin="normal"
-                        variant="outlined"
-                        label={'Actividad'}
-                        size="small"
-                        placeholder="Actividad a la que pertenece"
-                        fullWidth
-                      //helperText={error}
-                      />
-                    )}
-                  />          
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.name}
+                </React.Fragment>
+              );
+            }}
+            getOptionSelected={(option, value) => {
+              return option.id === value.id;
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                //error={validation}
+                margin="normal"
+                variant="outlined"
+                label={'Actividad *'}
+                size="small"
+                placeholder="Actividad a la que pertenece"
+                fullWidth
+              //helperText={error}
+              />
+            )}
+          />          
           <Button onClick={handleSubmit} color="primary" className="btn btn-guardar" variant="contained" margin="normal" size="medium">
             Guardar
           </Button>

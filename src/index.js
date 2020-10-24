@@ -22,7 +22,7 @@ ReactDOM.render(
       </Button>
     )}
   >
-    <BrowserRouter>
+    <BrowserRouter basename="/spirit">
       <App />
     </BrowserRouter>
   </SnackbarProvider>,

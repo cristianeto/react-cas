@@ -20,6 +20,7 @@ import Welcome from "./Components/welcome";
 import Projects from "./Components/project/projects";
 import ProjectMain from './Components/project/projectMain';
 import Members from "./Components/project/member/members";
+import GroupMembers from "./Components/group/member/members";
 import Dependencies from "./Components/dependency/dependencies";
 import DependencyForm from "./Components/dependency/dependencyForm";
 import Logout from "./Components/logout";
@@ -145,6 +146,7 @@ class App extends Component {
             <Route path="/proyectos" exact component={Projects} />
             <Route path="/dependencias" exact component={Dependencies} />
             <Route path="/dependencia/:id" component={DependencyForm} />
+            <Route path="/grupo/:id/miembros" exact component={GroupMembers} />
             <Route path="/grupos-investigacion" component={Groups} />
             <Route path="/grupo/:id" component={GroupForm} />
             {auth.getCurrentUser() !== null && (

@@ -5,7 +5,6 @@ import { TEXT_LABELS } from '../../../common/configTable';
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Typography, Tooltip } from "@material-ui/core";
-import { People as PeopleIcon } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddRequirementForm from './addRequirementForm';
@@ -101,7 +100,7 @@ class RequirementsTable extends Component {
       },
       {
         name: "price",
-        label: "Precio",
+        label: "Precio ($)",
         options: {
           filter: true,
           sort: true,
@@ -109,7 +108,7 @@ class RequirementsTable extends Component {
       },
       {
         name: "total_price",
-        label: "Precio Total",
+        label: "Total ($)",
         options: {
           filter: true,
           sort: true,
@@ -203,7 +202,7 @@ class RequirementsTable extends Component {
                 Lista de requerimientos
               </Typography>
               <div className="separate"></div>              
-              <AddRequirementForm activities={activities} populateRequirements={populateRequirements}/>
+              <AddRequirementForm activities={activities} populateRequirements={populateRequirements} budget={this.props.budget}/>
             </React.Fragment>
           }
           data={datas}

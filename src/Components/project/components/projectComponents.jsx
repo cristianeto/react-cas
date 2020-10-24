@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProjectComponents({ data: components }) {
+function ProjectComponents({ data: components, budget }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -43,7 +43,7 @@ function ProjectComponents({ data: components }) {
       </AppBar>
       {components.map((comp, index) =>
         <TabPanel key={comp.id} value={value} index={index}>
-          <SingleComponent comp={comp} />
+          <SingleComponent comp={comp} budget={budget} />
         </TabPanel>
       )}
     </Paper>
