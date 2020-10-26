@@ -17,6 +17,7 @@ import RoleForm from "./Components/role/roleForm";
 import Pemissions from "./Components/permission/permissions";
 import PemissionForm from "./Components/permission/permissionForm";
 import Welcome from "./Components/welcome";
+import MainPage from "./Components/home";
 import Projects from "./Components/project/projects";
 import ProjectMain from './Components/project/projectMain';
 import Members from "./Components/project/member/members";
@@ -25,8 +26,8 @@ import Dependencies from "./Components/dependency/dependencies";
 import DependencyForm from "./Components/dependency/dependencyForm";
 import Logout from "./Components/logout";
 import { getRolesByUser } from "./services/userRolesService";
-import { StylesProvider } from '@material-ui/core/styles';
-import './app.scss';
+
+import './App.scss';
 
 class App extends Component {
   constructor(props) {
@@ -118,60 +119,60 @@ class App extends Component {
   render() {
     const { user, roles } = this.state;
     return (
-      <StylesProvider injectFirst>
-        <div
-          style={{
-            display: "flex",
-            padding: "5em 2em",
-            backgroundColor: "#f5f5f5",
-            minHeight: "100vh",
-          }}
-        >
-          <NavBar
-            user={user}
-            roles={roles}
-            onLogin={this.handleLogin}
-            onChangeRole={this.handleChangeRole}
-            onLogout={this.handleLogout}
-            selectedRole={this.state.selectedRole}
-          />
+      <React.Fragment>
+        {user !== null ?
+          <div style={{
+            display: 'flex',
+          }} className="app">
+            <NavBar
+              user={user}
+              roles={roles}
+              onLogin={this.handleLogin}
+              onChangeRole={this.handleChangeRole}
+              onLogout={this.handleLogout}
+              selectedRole={this.state.selectedRole}
+            />
 
-          <Switch>
-            {/* <Route path="/login" component={LoginForm} />
+            <Switch>
+              {/* <Route path="/login" component={LoginForm} />
                 <Route path="/customers" component={Customers} />
               <Route path="/rentals" component={Rentals} /> */}
-            <Route path="/" exact component={Welcome} />
-            <Route path="/proyecto/:slug/miembros" exact component={Members} />
-            <Route path="/proyecto/:slug" exact component={ProjectMain} />
-            <Route path="/proyectos" exact component={Projects} />
-            <Route path="/dependencias" exact component={Dependencies} />
-            <Route path="/dependencia/:id" component={DependencyForm} />
-            <Route path="/grupo/:id/miembros" exact component={GroupMembers} />
-            <Route path="/grupos-investigacion" component={Groups} />
-            <Route path="/grupo/:id" component={GroupForm} />
-            {auth.getCurrentUser() !== null && (
-              <Route path="/mi/perfil" component={MeProfile} />
-            )}
-            <Route path="/usuario/new" component={UserAddForm} />
-            <Route path="/usuario/:id" component={UserUpdateForm} />
-            <Route path="/registrar/:id" component={UserAddForm} />
-            {this.state.selectedRole.id === 1 && (
-              <Route path="/usuarios" exact component={Users} />
-            )}
-            <Route path="/roles" exact component={Roles} />
-            <Route path="/role/:id" component={RoleForm} />
-            <Route path="/permisos" exact component={Pemissions} />
-            <Route path="/permiso/:id" exact component={PemissionForm} />
+              <Route path="/" exact component={Welcome} />
+              <Route path="/proyecto/:slug/miembros" exact component={Members} />
+              <Route path="/proyecto/:slug" exact component={ProjectMain} />
+              <Route path="/proyectos" exact component={Projects} />
+              <Route path="/grupo/:id/miembros" exact component={GroupMembers} />
+              <Route path="/grupos-investigacion" component={Groups} />
+              <Route path="/grupo/:id" component={GroupForm} />
 
-            <Route path="/logout" exact component={Logout} />
-            <Route path="/not-found" component={NotFound} />
-            <Route path="/not-authorized" component={NotAuthorized} />
-            {/* <Redirect from="/" exact to="/" /> */}
-            <Redirect to="/not-found" />
-            <Redirect to="/not-authorized" />
-          </Switch>
-        </div>
-      </StylesProvider>
+              <Route path="/mi/perfil" component={MeProfile} />
+
+              <Route path="/usuario/new" component={UserAddForm} />
+              <Route path="/usuario/:id" component={UserUpdateForm} />
+              <Route path="/registrar/:id" component={UserAddForm} />
+              {this.state.selectedRole.id === 1 && (
+                <React.Fragment>
+                  <Route path="/dependencias" exact component={Dependencies} />
+                  <Route path="/dependencia/:id" component={DependencyForm} />
+                  <Route path="/usuarios" exact component={Users} />
+                  <Route path="/roles" exact component={Roles} />
+                  <Route path="/role/:id" component={RoleForm} />
+                  <Route path="/permisos" exact component={Pemissions} />
+                  <Route path="/permiso/:id" exact component={PemissionForm} />
+                </React.Fragment>
+              )}
+
+              <Route path="/logout" component={Logout} />
+              <Route path="/not-found" component={NotFound} />
+              <Route path="/not-authorized" component={NotAuthorized} />
+              {/* <Redirect from="/" exact to="/" /> */}
+              <Redirect to="/not-found" />
+              <Redirect to="/not-authorized" />
+            </Switch>
+          </div> :
+          <MainPage onLogin={this.handleLogin} />
+        }
+      </React.Fragment>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MenuRoles from "./menuRoles";
 import Button from "@material-ui/core/Button";
 import clsx from "clsx";
@@ -7,7 +7,6 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -15,19 +14,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import PanToolIcon from '@material-ui/icons/PanTool';
-// import InboxIcon from "@material-ui/icons/MoveToInbox";
-import GroupIcon from "@material-ui/icons/Group";
-import WorkIcon from '@material-ui/icons/Work';
-import BusinessIcon from "@material-ui/icons/Business";
-import FolderIcon from "@material-ui/icons/Folder";
-import SettingsIcon from "@material-ui/icons/Settings";
-import FingerprintIcon from '@material-ui/icons/Fingerprint';
-import ImageProfile from "./common/imageProfile";
-import avatar from "../static/img/img_avatar.png";
+import MenuList from "./menuList";
 
 const drawerWidth = 240;
 
@@ -141,16 +128,16 @@ export default function MiniDrawer(props) {
             </Link>
           </Typography>
           {!user && (
-            <Button color="inherit">
-              <Link to="/registrar/se" className={classes.navLink}>
-                Registrarse
-              </Link>
-            </Button>
-          )}
-          {!user && (
-            <Button color="inherit" onClick={onLogin}>
-              Login
-            </Button>
+            <React.Fragment>
+              <Button color="inherit">
+                <Link to="/registrar/se" className={classes.navLink}>
+                  Registrarse
+                </Link>
+              </Button>
+              <Button color="inherit" onClick={onLogin}>
+                Login
+              </Button>
+            </React.Fragment>
           )}
           {user && (
             <MenuRoles
@@ -186,78 +173,9 @@ export default function MiniDrawer(props) {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          <ListItem style={{ display: "flex", justifyContent: "center" }}>
-            <ImageProfile alt={"avatar"} location={avatar} size={"small"} />
-          </ListItem>
-          <NavLink to="/proyectos" className={classes.navLink}>
-            <ListItem button>
-              <ListItemIcon>
-                <FolderIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Proyectos"} />
-            </ListItem>
-          </NavLink>
-          <NavLink to="/dependencias" className={classes.navLink}>
-            <ListItem button>
-              <ListItemIcon>
-                <BusinessIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Dependencias"} />
-            </ListItem>
-          </NavLink>
-          <NavLink to="/grupos-investigacion" className={classes.navLink}>
-            <ListItem button>
-              <ListItemIcon>
-                <WorkIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Grupos invest..."} />
-            </ListItem>
-          </NavLink>
-        </List>
-        <Divider />
-        {selectedRole.id === 1 && (
-          <List>
-            <NavLink to="/usuarios" className={classes.navLink}>
-              <ListItem button>
-                <ListItemIcon>
-                  <GroupIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Usuarios"} />
-              </ListItem>
-            </NavLink>
-            <NavLink to="/roles" className={classes.navLink}>
-              <ListItem button>
-                <ListItemIcon>
-                  <FingerprintIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Roles"} />
-              </ListItem>
-            </NavLink>
-            <NavLink to="/permisos" className={classes.navLink}>
-              <ListItem button>
-                <ListItemIcon>
-                  <PanToolIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Permisos"} />
-              </ListItem>
-            </NavLink>
-            <NavLink to="/configuracion" className={classes.navLink}>
-              <ListItem button>
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Configuración"} />
-              </ListItem>
-            </NavLink>
-          </List>
-        )}
-        <List
-          style={{
-            alignSelf: "flex-end",
-          }}
-        ></List>
+        <MenuList selectedRole={selectedRole} />
       </Drawer>
+
     </React.Fragment>
   );
 }
