@@ -113,12 +113,12 @@ class Members extends Form {
     const { data: staffs } = await getStaffs();
     this.setState({ staffs });
   }
-/*   async populateProject() {
-    const { data: project } = await getProject(this.props.match.params.slug);
-    const data = { ...this.state.data }
-    data.project_name = project.name;
-    this.setState({ data });
-  } */
+  /*   async populateProject() {
+      const { data: project } = await getProject(this.props.match.params.slug);
+      const data = { ...this.state.data }
+      data.project_name = project.name;
+      this.setState({ data });
+    } */
   async populateMembers() {
     const groupId = this.props.match.params.id
     const { data: members } = await getMembers(groupId);
@@ -172,13 +172,13 @@ class Members extends Form {
           <Loading open={isLoading} />
           <Breadcrumb
             onListBreadcrumbs={listBreadcrumbs}
-            lastLabel={"Miembros proyecto"}
+            lastLabel={"Miembros del grupo"}
           />
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={6} lg={4}>
               <Paper className="paper">
 
-                <TitleComponent entity={"Agregar miembros del proyecto"} />
+                <TitleComponent entity={"Agregar miembros al grupo"} />
                 <form onSubmit={this.doSubmit}>
                   <Autocomplete
                     //multiple

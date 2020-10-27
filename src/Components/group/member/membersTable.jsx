@@ -181,7 +181,7 @@ class MembersTable extends Component {
         <MUIDataTable
           title={
             <Typography variant="h6">
-              Miembros del Proyecto
+              Miembros del Grupo
               {onLoading && <LinearProgress color="secondary" />}
             </Typography>
           }

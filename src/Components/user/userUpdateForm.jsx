@@ -236,11 +236,11 @@ class UserUpdateForm extends Form {
               </Typography>
               <Divider />
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("identification_card", "C.I.")}
-                {this.renderInput("name", "Nombre")}
-                {this.renderInput("lastname", "Apellido")}
-                {this.renderInput("email", "Correo")}
-                {this.renderButton("Actualizar")}
+                {this.renderInput("identification_card", "Cédula", 'text', true)}
+                {this.renderInput("name", "Nombre", 'text', true)}
+                {this.renderInput("lastname", "Apellido", 'text', true)}
+                {this.renderInput("email", "Correo", 'text', true)}
+                {/* {this.renderButton("Actualizar")} */}
               </form>
             </Paper>
           </Grid>

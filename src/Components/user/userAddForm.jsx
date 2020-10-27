@@ -11,6 +11,7 @@ import { getRoles } from '../../services/roleService';
 import { saveRolesByUser } from "../../services/userRolesService";
 import { getPermissions } from '../../services/permissionService';
 import { savePermissionsByUser } from "../../services/userPermissionsService";
+import { getEspochUser } from '../../services/espochUserService';
 import {
   Grid,
   Paper,
@@ -20,14 +21,18 @@ import {
 } from "@material-ui/core";
 import { messages } from '../common/es_ES';
 import Loading from '../common/loading';
+import SearchButton from '../common/searchButton';
+import { notifications } from '../../utils/messages'
 
 class UserAddForm extends Form {
   state = {
     data: {
+      belongsToEspoch: 'Sí',
       identification_card: "",
       name: "",
       lastname: "",
       fullname: "",
+      sex: '',
       email: "",
       roles: [],
       permissions: [],
@@ -42,6 +47,7 @@ class UserAddForm extends Form {
 
   schema = Joi.object({
     id: Joi.string(),
+    belongsToEspoch: Joi.string().label("Usuario ESPOCH").max(2).messages(messages),
     identification_card: Joi.string().label("C.I.").min(10).max(10).messages(messages),
     name: Joi.string().label("Nombre").max(100).messages(messages),
     lastname: Joi.string().label("Apellido").max(100).messages(messages),
@@ -53,6 +59,7 @@ class UserAddForm extends Form {
       })
       .label("Correo")
       .max(100).messages(messages),
+    sex: Joi.string().label("Sexo").max(10).messages(messages),
     roles: Joi.array().label("Roles").allow('').messages(messages),
     permissions: Joi.array().label("Permisos").allow('').messages(messages),
   });
@@ -71,6 +78,7 @@ class UserAddForm extends Form {
   mapToViewModel(user) {
     return {
       id: user.id,
+      belongsToEspoch: user.belongsToEspoch,
       identification_card: user.identification_card,
       name: user.name,
       lastname: user.lastname,
@@ -120,6 +128,28 @@ class UserAddForm extends Form {
     arrayChecked[indexItem].isChecked = event.target.checked;
     data[name] = arrayChecked.filter(a => a.isChecked);
     this.setState({ [name]: arrayChecked, data });
+  }
+
+  handleSearch = async () => {
+    console.log('searching...', this.state.data.identification_card);
+    try {
+      const { data: espochUser } = await getEspochUser(this.state.data.identification_card);
+      if (Object.keys(espochUser).length) {
+        const data = { ...this.state.data };
+        data['name'] = espochUser.per_nombres;
+        data['lastname'] = espochUser.per_primerApellido + ' ' + espochUser.per_segundoApellido;
+        data['email'] = espochUser.per_email;
+        data['sex'] = espochUser.sex_id === 1 ? 'hombre' : 'mujer';
+        this.setState({ data })
+      } else {
+        this.props.enqueueSnackbar(notifications.NOT_FOUND_USER, {
+          variant: "error"
+        });
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   doUpdateRoles = async (e) => {
@@ -192,12 +222,14 @@ class UserAddForm extends Form {
         label: "Mi perfil",
       },
     ];
+    const espochOptions = [{ 'id': 1, 'name': 'Sí' }, { id: 2, name: 'No' }];
+    const option = data.belongsToEspoch === 'Sí' ? true : false;
     return (
-      <Container maxWidth="lg" id="userAddForm">
+      <Container maxWidth="md" id="userAddForm">
         <Loading open={isLoading} />
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={data.fullname} />
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={6}>
+        <Grid container>
+          <Grid item xs={12} sm={12} md={12}>
             <Paper className="paper">
               <Typography variant="h5" gutterBottom>
                 {this.props.match.params.id === "se"
@@ -206,13 +238,15 @@ class UserAddForm extends Form {
               </Typography>
               <Divider />
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("identification_card", "C.I.")}
-                {this.renderInput("name", "Nombre")}
-                {this.renderInput("lastname", "Apellido")}
-                {this.renderInput("email", "Correo")}
+                {this.renderRadio("belongsToEspoch", "Pertenece  a la ESPOCH:", espochOptions)}
+                {this.renderInput("identification_card", "Cédula", 'text', false)}
+                {option ? <SearchButton onSearch={this.handleSearch} /> : ''}
+                {this.renderInput("name", "Nombre", 'text', option)}
+                {this.renderInput("lastname", "Apellido", 'text', option)}
+                {this.renderInput("email", "Correo", 'text', option)}
                 {auth.getCurrentUser() !== null && (
                   <div className="checkboxes">
-                    <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} />
+                    <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} label="Roles" />
                     <PermissionsCheckboxes permissions={permissionsChecked} onChange={this.handleChangeCheckbox} label="Permisos extra" />
                   </div>
                 )}

@@ -57,7 +57,7 @@ class UsersTable extends Component {
       },
       {
         name: "identification_card",
-        label: "C.I.",
+        label: "Cédula",
         options: {
           filter: true,
           sort: true,
