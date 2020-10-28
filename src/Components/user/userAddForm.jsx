@@ -27,7 +27,7 @@ import { notifications } from '../../utils/messages'
 class UserAddForm extends Form {
   state = {
     data: {
-      belongsToEspoch: 'Sí',
+      belongs_espoch: 'Sí',
       identification_card: "",
       name: "",
       lastname: "",
@@ -47,8 +47,8 @@ class UserAddForm extends Form {
 
   schema = Joi.object({
     id: Joi.string(),
-    belongsToEspoch: Joi.string().label("Usuario ESPOCH").max(2).messages(messages),
-    identification_card: Joi.string().label("C.I.").min(10).max(10).messages(messages),
+    belongs_espoch: Joi.string().label("Usuario ESPOCH").max(2).messages(messages),
+    identification_card: Joi.string().label("Cédula").min(10).max(10).messages(messages),
     name: Joi.string().label("Nombre").max(100).messages(messages),
     lastname: Joi.string().label("Apellido").max(100).messages(messages),
     fullname: Joi.string().allow('').label("Nombre Completo").max(100),
@@ -78,7 +78,7 @@ class UserAddForm extends Form {
   mapToViewModel(user) {
     return {
       id: user.id,
-      belongsToEspoch: user.belongsToEspoch,
+      belongs_espoch: user.belongs_espoch,
       identification_card: user.identification_card,
       name: user.name,
       lastname: user.lastname,
@@ -139,7 +139,7 @@ class UserAddForm extends Form {
         data['name'] = espochUser.per_nombres;
         data['lastname'] = espochUser.per_primerApellido + ' ' + espochUser.per_segundoApellido;
         data['email'] = espochUser.per_email;
-        data['sex'] = espochUser.sex_id === 1 ? 'hombre' : 'mujer';
+        data['sex'] = espochUser.sex_id === 1 ? 'Hombre' : 'Mujer';
         this.setState({ data })
       } else {
         this.props.enqueueSnackbar(notifications.NOT_FOUND_USER, {
@@ -179,7 +179,9 @@ class UserAddForm extends Form {
 
   doSubmit = async () => {
     try {
-      await saveUser(this.state.data);
+      const data = { ...this.state.data };
+      data['belongs_espoch'] === 'Sí' ? data['belongs_espoch'] = true : data['belongs_espoch'] = false;
+      await saveUser(data);
       this.successMessage();
       if (this.props.match.params.id !== "se") {
         this.props.history.push("/usuarios");
@@ -218,16 +220,17 @@ class UserAddForm extends Form {
         label: "Inicio",
       },
       {
-        path: "/mi/perfil",
-        label: "Mi perfil",
+        path: "/usuarios",
+        label: "Usuarios",
       },
     ];
     const espochOptions = [{ 'id': 1, 'name': 'Sí' }, { id: 2, name: 'No' }];
-    const option = data.belongsToEspoch === 'Sí' ? true : false;
+    const sexOptions = [{ 'id': 1, 'name': 'Mujer' }, { id: 2, name: 'Hombre' }];
+    const option = data.belongs_espoch === 'Sí' ? true : false;
     return (
       <Container maxWidth="md" id="userAddForm">
         <Loading open={isLoading} />
-        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={data.fullname} />
+        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={'Agregar usuario'} />
         <Grid container>
           <Grid item xs={12} sm={12} md={12}>
             <Paper className="paper">
@@ -238,12 +241,13 @@ class UserAddForm extends Form {
               </Typography>
               <Divider />
               <form onSubmit={this.handleSubmit}>
-                {this.renderRadio("belongsToEspoch", "Pertenece  a la ESPOCH:", espochOptions)}
+                {this.renderRadio("belongs_espoch", "Pertenece  a la ESPOCH:", espochOptions)}
                 {this.renderInput("identification_card", "Cédula", 'text', false)}
                 {option ? <SearchButton onSearch={this.handleSearch} /> : ''}
                 {this.renderInput("name", "Nombre", 'text', option)}
                 {this.renderInput("lastname", "Apellido", 'text', option)}
                 {this.renderInput("email", "Correo", 'text', option)}
+                {this.renderRadio("sex", "Sexo:", sexOptions)}
                 {auth.getCurrentUser() !== null && (
                   <div className="checkboxes">
                     <RolesCheckboxes roles={rolesChecked} onChange={this.handleChangeCheckbox} label="Roles" />

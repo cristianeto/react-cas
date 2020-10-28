@@ -217,15 +217,15 @@ class UserUpdateForm extends Form {
         label: "Inicio",
       },
       {
-        path: "/mi/perfil",
-        label: "Mi perfil",
+        path: "/usuarios",
+        label: "Usuarios",
       },
     ];
     const role = auth.getSelectedRole();
     return (
       <Container maxWidth="lg">
         <Loading open={isLoading} />
-        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={data.fullname} />
+        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={`${data.name} ${data.lastname}`} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={5}>
             <Paper className="paper">

@@ -10,9 +10,14 @@ const Radios = ({ name, value, label, options, onChange, error }) => {
   let validation;
   error === undefined ? (validation = false) : (validation = true);
   return (
-    <FormControl component="fieldset" error={validation} style={{ width: '100%' }} >
+    <FormControl component="fieldset" error={validation} style={{ width: '100%' }} margin="normal">
       <FormLabel component="legend">{label} </FormLabel>
-      <RadioGroup aria-label="quiz" name={name} value={value} onChange={onChange} style={{ flexDirection: 'row' }}>
+      <RadioGroup aria-label="quiz"
+        name={name}
+        value={value}
+        onChange={onChange}
+        style={{ flexDirection: 'row' }}
+      >
         {options.map(option =>
           <FormControlLabel key={option.id} value={option.name} control={<Radio />} label={option.name} />
         )}

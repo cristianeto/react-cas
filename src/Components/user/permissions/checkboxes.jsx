@@ -3,7 +3,7 @@ import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, FormHelp
 
 const Checkboxes = ({ permissions, onChange, label }) => {
   return (
-    <FormControl component="fieldset">
+    <FormControl component="fieldset" margin="normal">
       <FormLabel error={false} component="legend">{label}</FormLabel>
       <FormGroup>
         {permissions.map(permission =>
