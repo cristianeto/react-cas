@@ -163,7 +163,7 @@ class Form extends Component {
     );
   }
 
-  renderRadio(name, label, options) {
+  renderRadio(name, label, options, disabled = false) {
     const { data, errors } = this.state;
     return (
       <Radios
@@ -173,6 +173,7 @@ class Form extends Component {
         options={options}
         onChange={this.handleChange}
         error={errors[name]}
+        disabled={disabled}
       />
     )
   }

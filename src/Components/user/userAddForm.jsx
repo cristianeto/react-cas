@@ -228,7 +228,7 @@ class UserAddForm extends Form {
     const sexOptions = [{ 'id': 1, 'name': 'Mujer' }, { id: 2, name: 'Hombre' }];
     const option = data.belongs_espoch === 'Sí' ? true : false;
     return (
-      <Container maxWidth="md" id="userAddForm">
+      <Container maxWidth="sm" id="userAddForm">
         <Loading open={isLoading} />
         <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={'Agregar usuario'} />
         <Grid container>
@@ -242,11 +242,11 @@ class UserAddForm extends Form {
               <Divider />
               <form onSubmit={this.handleSubmit}>
                 {this.renderRadio("belongs_espoch", "Pertenece  a la ESPOCH:", espochOptions)}
-                {this.renderInput("identification_card", "Cédula", 'text', false)}
+                {this.renderInput("identification_card", "Cédula *", 'text', false)}
                 {option ? <SearchButton onSearch={this.handleSearch} /> : ''}
-                {this.renderInput("name", "Nombre", 'text', option)}
-                {this.renderInput("lastname", "Apellido", 'text', option)}
-                {this.renderInput("email", "Correo", 'text', option)}
+                {this.renderInput("name", "Nombre *", 'text', option)}
+                {this.renderInput("lastname", "Apellido *", 'text', option)}
+                {this.renderInput("email", "Correo *", 'text', option)}
                 {this.renderRadio("sex", "Sexo:", sexOptions)}
                 {auth.getCurrentUser() !== null && (
                   <div className="checkboxes">

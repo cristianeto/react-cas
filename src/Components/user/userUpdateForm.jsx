@@ -34,6 +34,7 @@ class UserUpdateForm extends Form {
       lastname: "",
       fullname: "",
       email: "",
+      sex: "",
       roles: [],
       projects: [],
       permissions: [],
@@ -59,6 +60,7 @@ class UserUpdateForm extends Form {
       })
       .label("Correo")
       .max(100).messages(messages),
+    sex: Joi.string().label("Sexo").max(10).messages(messages),
     roles: Joi.array().label("Roles").messages(messages),
     permissions: Joi.array().label("Permisos").messages(messages),
   });
@@ -85,6 +87,7 @@ class UserUpdateForm extends Form {
       lastname: user.lastname,
       fullname: user.fullname,
       email: user.email,
+      sex: user.sex,
       roles: user.roles,
       permissions: user.permissions,
     };
@@ -222,6 +225,7 @@ class UserUpdateForm extends Form {
       },
     ];
     const role = auth.getSelectedRole();
+    const sexOptions = [{ 'id': 1, 'name': 'Mujer' }, { id: 2, name: 'Hombre' }];
     return (
       <Container maxWidth="lg">
         <Loading open={isLoading} />
@@ -240,6 +244,7 @@ class UserUpdateForm extends Form {
                 {this.renderInput("name", "Nombre", 'text', true)}
                 {this.renderInput("lastname", "Apellido", 'text', true)}
                 {this.renderInput("email", "Correo", 'text', true)}
+                {this.renderRadio("sex", "Sexo:", sexOptions, true)}
                 {/* {this.renderButton("Actualizar")} */}
               </form>
             </Paper>

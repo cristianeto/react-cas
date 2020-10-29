@@ -6,7 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-const Radios = ({ name, value, label, options, onChange, error }) => {
+const Radios = ({ name, value, label, options, onChange, error, disabled }) => {
   let validation;
   error === undefined ? (validation = false) : (validation = true);
   return (
@@ -19,7 +19,7 @@ const Radios = ({ name, value, label, options, onChange, error }) => {
         style={{ flexDirection: 'row' }}
       >
         {options.map(option =>
-          <FormControlLabel key={option.id} value={option.name} control={<Radio />} label={option.name} />
+          <FormControlLabel key={option.id} value={option.name} control={<Radio disabled={disabled} />} label={option.name} />
         )}
       </RadioGroup>
       <FormHelperText>{error}</FormHelperText>
