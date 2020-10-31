@@ -13,6 +13,7 @@ import { getProjectComponents } from '../../services/projectComponentService';
 import AddComponentForm from './components/addComponentForm';
 import { getProjectBudget } from '../../services/budgetProject';
 import BudgetLinearProgress from './BudgetLinearProgress';
+import PanelFiles from './panelFiles';
 
 class ProjectMain extends Component {
 
@@ -92,7 +93,7 @@ class ProjectMain extends Component {
             <ProjectForm projectSlug={data.slug} history={this.props.history} populateStatuses={() => this.populateProjectStatuses()} />
             <AddComponentForm projectSlug={data.slug} populateComponents={() => this.populateProjectComponents()} />
             {projectComponents.length > 0 &&
-              <ProjectComponents data={projectComponents} budget={this.populateBudget}/>
+              <ProjectComponents data={projectComponents} budget={this.populateBudget} />
             }
           </Grid>
           <Grid container item xs={12} sm={12} md={4} xl={3}>
@@ -109,11 +110,13 @@ class ProjectMain extends Component {
                   </Typography>
                 <Typography variant="h6" gutterBottom>
                   $ 0
-                  <BudgetLinearProgress/>
+                  <BudgetLinearProgress />
                 </Typography>
               </Paper>
               <PanelStatuses title="Últimos estados" projectSlug={data.slug} data={projectStatuses} />
               <PanelMembers title="Miembros" projectSlug={data.slug} data={members} />
+              <PanelFiles projectSlug={data.slug} />
+
             </Grid>
           </Grid>
 
