@@ -20,7 +20,8 @@ const PanelFiles = ({ projectSlug }) => {
   // called every time a file's `status` changes
   const handleChangeStatus = ({ meta, remove, file }, status, fileWithMeta) => {
     if (status === 'done') {
-      enqueueSnackbar(`${meta.name} fue subido correctamente! Detalle: ${fileWithMeta[0].xhr.response}`, { variant: 'success' });
+      //enqueueSnackbar(`${meta.name} fue subido correctamente! Detalle: ${fileWithMeta[0].xhr.response}`, { variant: 'success' });
+      enqueueSnackbar(`${meta.name} fue subido correctamente!`, { variant: 'success' });
       setResolution(JSON.parse(fileWithMeta[0].xhr.response));
       remove();
     }
@@ -78,7 +79,7 @@ const PanelFiles = ({ projectSlug }) => {
           dropzone: { width: 400, height: 200 },
           dropzoneActive: { borderColor: 'green' },
         }}
-        inputContent="Arrastra el pdf aquí para subirlo"
+        inputContent="Arrastrar aquí el PDF para subirlo"
         maxSizeBytes={2000000} // 2MB          
         accept="application/pdf"
       />
