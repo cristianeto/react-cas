@@ -1,23 +1,26 @@
 {
   "files": {
-    "main.css": "/spirit/static/css/main.ebc21e4e.chunk.css",
-    "main.js": "/spirit/static/js/main.5478083b.chunk.js",
-    "main.js.map": "/spirit/static/js/main.5478083b.chunk.js.map",
-    "runtime-main.js": "/spirit/static/js/runtime-main.f3e2d983.js",
-    "runtime-main.js.map": "/spirit/static/js/runtime-main.f3e2d983.js.map",
-    "static/js/2.adb7b97c.chunk.js": "/spirit/static/js/2.adb7b97c.chunk.js",
-    "static/js/2.adb7b97c.chunk.js.map": "/spirit/static/js/2.adb7b97c.chunk.js.map",
-    "index.html": "/spirit/index.html",
-    "precache-manifest.3b0b96c5cc3cd88f6db1accd7c3a7027.js": "/spirit/precache-manifest.3b0b96c5cc3cd88f6db1accd7c3a7027.js",
-    "service-worker.js": "/spirit/service-worker.js",
-    "static/css/main.ebc21e4e.chunk.css.map": "/spirit/static/css/main.ebc21e4e.chunk.css.map",
-    "static/js/2.adb7b97c.chunk.js.LICENSE.txt": "/spirit/static/js/2.adb7b97c.chunk.js.LICENSE.txt",
-    "static/media/user.scss": "/spirit/static/media/home.bc3e981e.jpg"
+    "main.css": "/sgi-idi/static/css/main.00c7e21e.chunk.css",
+    "main.js": "/sgi-idi/static/js/main.4d27f1e4.chunk.js",
+    "main.js.map": "/sgi-idi/static/js/main.4d27f1e4.chunk.js.map",
+    "runtime-main.js": "/sgi-idi/static/js/runtime-main.dca38af2.js",
+    "runtime-main.js.map": "/sgi-idi/static/js/runtime-main.dca38af2.js.map",
+    "static/css/2.c301f1a7.chunk.css": "/sgi-idi/static/css/2.c301f1a7.chunk.css",
+    "static/js/2.f0106832.chunk.js": "/sgi-idi/static/js/2.f0106832.chunk.js",
+    "static/js/2.f0106832.chunk.js.map": "/sgi-idi/static/js/2.f0106832.chunk.js.map",
+    "index.html": "/sgi-idi/index.html",
+    "precache-manifest.3c7915714c0dae97d6be151e4ba3aeac.js": "/sgi-idi/precache-manifest.3c7915714c0dae97d6be151e4ba3aeac.js",
+    "service-worker.js": "/sgi-idi/service-worker.js",
+    "static/css/2.c301f1a7.chunk.css.map": "/sgi-idi/static/css/2.c301f1a7.chunk.css.map",
+    "static/css/main.00c7e21e.chunk.css.map": "/sgi-idi/static/css/main.00c7e21e.chunk.css.map",
+    "static/js/2.f0106832.chunk.js.LICENSE.txt": "/sgi-idi/static/js/2.f0106832.chunk.js.LICENSE.txt",
+    "static/media/user.scss": "/sgi-idi/static/media/home.bc3e981e.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.f3e2d983.js",
-    "static/js/2.adb7b97c.chunk.js",
-    "static/css/main.ebc21e4e.chunk.css",
-    "static/js/main.5478083b.chunk.js"
+    "static/js/runtime-main.dca38af2.js",
+    "static/css/2.c301f1a7.chunk.css",
+    "static/js/2.f0106832.chunk.js",
+    "static/css/main.00c7e21e.chunk.css",
+    "static/js/main.4d27f1e4.chunk.js"
   ]
 }

@@ -2,7 +2,7 @@
   "name": "spirit",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cimogsys.espoch.edu.ec/spirit",
+  "homepage": "https://cimogsys.espoch.edu.ec/sgi-idi",
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
     "@hapi/joi": "^17.1.1",

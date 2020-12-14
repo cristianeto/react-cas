@@ -22,7 +22,7 @@ ReactDOM.render(
       </Button>
     )}
   >
-    <BrowserRouter basename="/spirit">
+    <BrowserRouter basename="/sgi-idi">
       <App />
     </BrowserRouter>
   </SnackbarProvider>,

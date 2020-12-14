@@ -7,10 +7,8 @@ const Welcome = () => {
         Bienvenido
       </Typography>
       <Typography variant="body1">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam non at
-        qui quisquam voluptatum voluptatibus optio numquam aspernatur sit libero
-        temporibus sunt ea quibusdam, error asperiores. Dolore repudiandae quia
-        eum!
+        Este es el Sistema de Gestión de la Investigación y ponemos a disposición los diferentes servicios para su uso,
+        servicios como: administración de proyectos, grupos, dependencias, y perfiles de usuario!
       </Typography>
       <Typography variant="body1">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam non at

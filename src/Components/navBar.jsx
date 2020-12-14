@@ -124,7 +124,7 @@ export default function MiniDrawer(props) {
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.navLink}>
-              Spirit
+              SGI
             </Link>
           </Typography>
           {!user && (

@@ -21,6 +21,7 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 import './project.scss';
 import Loading from '../common/loading';
 import { Paper } from '@material-ui/core';
+import SwitchLabel from '../common/switchLabel';
 
 class ProjectForm extends Form {
   state = {
@@ -75,6 +76,7 @@ class ProjectForm extends Form {
     switch (step) {
       case 0:
         return (<React.Fragment>
+          <SwitchLabel openLabel="Abierto" closeLabel="Cerrado" />
           {/* {isLoading && <LinearProgress color="secondary" />} */}
           {/* <form onSubmit={this.handleSubmit}> */}
           {this.renderTextarea("name", "Nombre *")}

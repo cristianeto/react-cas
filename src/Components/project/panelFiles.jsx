@@ -76,7 +76,7 @@ const PanelFiles = ({ projectSlug }) => {
         multiple={false}
         canCancel={false}
         styles={{
-          dropzone: { width: 400, height: 200 },
+          dropzone: { width: '20em', height: '5em' },
           dropzoneActive: { borderColor: 'green' },
         }}
         inputContent="Arrastrar aquí el PDF para subirlo"
