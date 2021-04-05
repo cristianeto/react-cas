@@ -13,6 +13,7 @@ import { getResearchTypes } from "../../services/researchTypeService";
 import { getCoverageTypes } from "../../services/coverageTypeService";
 import { getPrograms } from "../../services/programService";
 import { getSectors } from "../../services/sectorService";
+import { saveProjectStatus } from '../../services/projectStatusService';
 import { messages } from "../common/es_ES";
 import SaveIcon from "@material-ui/icons/Save";
 import TitleComponent from '../common/titleComponent';
@@ -21,7 +22,7 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 import './project.scss';
 import Loading from '../common/loading';
 import { Paper } from '@material-ui/core';
-import SwitchLabel from '../common/switchLabel';
+import SwitchLabel from './status/switchLabel';
 
 class ProjectForm extends Form {
   state = {
@@ -210,6 +211,8 @@ class ProjectForm extends Form {
     aspects: Joi.string().label("Aspectos bioéticos y sociales").allow('').max(500).messages(messages),
   });
 
+
+
   async populateProjectTypes() {
     const { data: projectTypes } = await getProjectTypes();
     this.setState({ projectTypes });
@@ -234,7 +237,9 @@ class ProjectForm extends Form {
     this.setState({ sectors });
   }
 
-
+  async doOpenProjectStatus() {
+    const res = await saveProjectStatus(this.data.slug);
+  }
 
   async populateProject() {
     try {

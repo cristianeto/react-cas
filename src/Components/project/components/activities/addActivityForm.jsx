@@ -1,45 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 //import { saveComponent } from '../../../services/projectComponentService';
-import { notifications } from '../../../../utils/messages';
-import { useSnackbar } from 'notistack';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import AddIcon from '@material-ui/icons/Add';
-import Grid from '@material-ui/core/Grid';
+import { notifications } from "../../../../utils/messages";
+import { useSnackbar } from "notistack";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import AddIcon from "@material-ui/icons/Add";
+import Grid from "@material-ui/core/Grid";
 import esLocale from "date-fns/locale/es";
-import DateFnsUtils from '@date-io/date-fns';
-import { saveActivity } from '../../../../services/activityService';
-import { format } from "date-fns"
-import {
-  MuiPickersUtilsProvider,
-  DatePicker,
-} from '@material-ui/pickers';
+import DateFnsUtils from "@date-io/date-fns";
+import { saveActivity } from "../../../../services/activityService";
+import { format } from "date-fns";
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 
-function AddActivityForm(props) {
+const AddActivityForm = React.memo((props) => {
   const initialState = {
     data: {
-      name: '',
-      responsable: '',
-      start_date: format(new Date(), 'yyyy/MM/dd'),
-      end_date: format(new Date(), 'yyyy/MM/dd'),
+      name: "",
+      responsable: "",
+      start_date: format(new Date(), "yyyy/MM/dd"),
+      end_date: format(new Date(), "yyyy/MM/dd"),
       component_id: props.component.id,
     },
-  }  
+  };
   const [state, setState] = useState(initialState);
   const { enqueueSnackbar } = useSnackbar();
-  const [open, setOpen] = React.useState(false);  
+  const [open, setOpen] = React.useState(false);
 
   /* const handleDateChange = (date) => {
     setSelectedDate(date);
   }; */
   const handleDateChange = (date, name) => {
-    const data = { ...state.data }
-    data[name] = format(date, 'yyyy/MM/dd');
+    const data = { ...state.data };
+    data[name] = format(date, "yyyy/MM/dd");
     console.log(data[name]);
-    setState(prevState => ({ ...prevState, data }));
+    setState((prevState) => ({ ...prevState, data }));
     //setSelectedDate(date);
   };
 
@@ -51,29 +48,27 @@ function AddActivityForm(props) {
     setOpen(false);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    const data = { ...state.data }
+    const data = { ...state.data };
     data[name] = value;
-    setState(prevState => ({ ...prevState, data }));
+    setState((prevState) => ({ ...prevState, data }));
   };
 
   const handleSubmit = async () => {
     try {
       await saveActivity(state.data);
       props.populateActivities();
-      enqueueSnackbar(notifications.SUCCESS, { variant: 'success', });
+      enqueueSnackbar(notifications.SUCCESS, { variant: "success" });
       setState({ ...initialState });
       handleClose();
     } catch (ex) {
-      console.log("Catch error", ex.response)
-      enqueueSnackbar(`${ex.response.data.message}`, { variant: 'error', });
+      console.log("Catch error", ex.response);
+      enqueueSnackbar(`${ex.response.data.message}`, { variant: "error" });
     }
-  }
+  };
 
-  useEffect(()=>{
-    
-  },[]);
+  useEffect(() => {}, []);
 
   return (
     <div>
@@ -86,7 +81,11 @@ function AddActivityForm(props) {
       >
         Agregar Actividad
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
         <DialogTitle id="form-dialog-title">Datos de la actividad</DialogTitle>
         <DialogContent>
           <TextField
@@ -108,13 +107,13 @@ function AddActivityForm(props) {
             label="Responsable *"
             type="text"
             fullWidth
-            variant="outlined"            
+            variant="outlined"
             size="small"
             onChange={handleChange}
           />
 
           <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-            <Grid container justify="space-around">            
+            <Grid container justify="space-around">
               <DatePicker
                 margin="normal"
                 id="start_date"
@@ -124,7 +123,7 @@ function AddActivityForm(props) {
                 views={["year", "month", "date"]}
                 variant="outlined"
                 value={state.data.start_date}
-                onChange={(date) => handleDateChange(date, 'start_date')}                
+                onChange={(date) => handleDateChange(date, "start_date")}
               />
               <DatePicker
                 margin="normal"
@@ -135,18 +134,24 @@ function AddActivityForm(props) {
                 format="yyyy/MM/dd"
                 variant="outlined"
                 value={state.data.end_date}
-                onChange={(date) => handleDateChange(date, 'end_date')}
-
+                onChange={(date) => handleDateChange(date, "end_date")}
               />
             </Grid>
           </MuiPickersUtilsProvider>
-          <Button onClick={handleSubmit} color="primary" className="btn btn-guardar" variant="contained" margin="normal" size="medium">
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            className="btn btn-guardar"
+            variant="contained"
+            margin="normal"
+            size="medium"
+          >
             Guardar
           </Button>
         </DialogContent>
       </Dialog>
     </div>
   );
-}
+});
 
 export default AddActivityForm;

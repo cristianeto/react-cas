@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 /* import AddProjectForm from "./AddProjectForm"; */
-import { TEXT_LABELS } from '../../../common/configTable';
+import { TEXT_LABELS } from "../../../common/configTable";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Typography, Tooltip } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import AddActivityForm from "./addActivityForm";
 
 class ActivitiesTable extends Component {
@@ -27,7 +27,7 @@ class ActivitiesTable extends Component {
       overrides: {
         MUIDataTableBodyCell: {
           root: {
-            marginBottom: "2em"
+            marginBottom: "2em",
           },
         },
         MuiIconButton: {
@@ -50,12 +50,12 @@ class ActivitiesTable extends Component {
     const { datas, onDelete, component, populateActivities } = this.props;
     const columns = [
       {
-        name: 'count',
+        name: "count",
         label: "ID",
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1
+          customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1,
         },
       },
       {
@@ -125,14 +125,13 @@ class ActivitiesTable extends Component {
           customBodyRender: (value, tableMeta) => {
             return (
               <React.Fragment>
-                <Tooltip title={`${tableMeta.rowData[2]}`} style={{ cursor: "pointer" }}>
-                  <span
-                  >
-                    {`${value}`}
-                  </span>
+                <Tooltip
+                  title={`${tableMeta.rowData[2]}`}
+                  style={{ cursor: "pointer" }}
+                >
+                  <span>{`${value}`}</span>
                 </Tooltip>
               </React.Fragment>
-
             );
           },
         },
@@ -145,17 +144,20 @@ class ActivitiesTable extends Component {
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
-              <React.Fragment>                
-                <Tooltip title="Editar" style={{ cursor: "pointer" }}>                                                       
+              <React.Fragment>
+                <Tooltip title="Editar" style={{ cursor: "pointer" }}>
                   <Link
                     style={{ textDecoration: "none" }}
                     to={`/actividad/${tableMeta.rowData[1]}`}
                   >
-                    <EditIcon color={'primary'} />
-                  </Link>            
+                    <EditIcon color={"primary"} />
+                  </Link>
                 </Tooltip>
                 <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
-                  <DeleteIcon onClick={() => onDelete(tableMeta.rowData[2])} color={'primary'} />
+                  <DeleteIcon
+                    onClick={() => onDelete(tableMeta.rowData[2])}
+                    color={"primary"}
+                  />
                 </Tooltip>
               </React.Fragment>
             );
@@ -171,12 +173,12 @@ class ActivitiesTable extends Component {
       viewColumns: false, */
       enableNestedDataAccess: [],
       sort: true,
-      searchPlaceholder: 'Buscar',
+      searchPlaceholder: "Buscar",
       filterType: "dropdown",
       responsive: "scroll",
       rowsPerPage: 20,
       rowsPerPageOptions: [5, 10, 20],
-      selectableRows: 'none',
+      selectableRows: "none",
       textLabels: TEXT_LABELS,
       //selectableRows: "single",
       /* onRowsDelete: (rowsDeleted) => {
@@ -192,11 +194,12 @@ class ActivitiesTable extends Component {
         <MUIDataTable
           title={
             <React.Fragment>
-              <Typography variant="h6">
-                Lista de actividades
-              </Typography>
+              <Typography variant="h6">Lista de actividades</Typography>
               <div className="separate"></div>
-              <AddActivityForm component={component} populateActivities={populateActivities}/>
+              <AddActivityForm
+                component={component}
+                populateActivities={populateActivities}
+              />
             </React.Fragment>
           }
           data={datas}

@@ -145,8 +145,8 @@ class Members extends Form {
         label: "Inicio",
       },
       {
-        path: "/proyectos",
-        label: "Proyectos",
+        path: "/grupos-investigacion",
+        label: "Grupos",
       },
       {
         path: "/grupo/" + this.props.match.params.id,
@@ -177,11 +177,10 @@ class Members extends Form {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={6} lg={4}>
               <Paper className="paper">
-
                 <TitleComponent entity={"Agregar miembros al grupo"} />
                 <form onSubmit={this.doSubmit}>
                   <Autocomplete
-                    //multiple
+                    //mnmulti
                     id={'user'}
                     name={'user'}
                     limitTags={2}

@@ -10,3 +10,7 @@ function projectStatusesUrl(projectSlug) {
 export function getProjectStatuses(projectSlug) {
   return http.get(projectStatusesUrl(projectSlug));
 }
+
+export function saveProjectStatus(projectSlug, status) {
+  return http.post(apiEndpoint1 + '/' + projectSlug + apiEndpoint2 + '/' + status);
+}

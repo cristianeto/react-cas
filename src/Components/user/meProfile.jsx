@@ -28,6 +28,7 @@ class meProfile extends Form {
       email: "",
       roles: [],
       projects: [],
+      groups: [],
       permissions: [],
       selectedRole: "",
     },
@@ -62,6 +63,7 @@ class meProfile extends Form {
       email: user.email,
       roles: user.roles,
       projects: user.projects,
+      groups: user.groups,
       permissions: user.permissions,
       selectedRole: auth.getSelectedRole().id
     };
@@ -163,6 +165,46 @@ class meProfile extends Form {
                       <ListItem>
                         <ListItemText
                           primary={"No existen proyectos"}
+                        />
+                      </ListItem>
+                    }
+                  </List>
+                </div>
+              </Paper>
+              <Paper className="paper">
+                <TitleComponent entity={"Grupos"} />
+                <Divider />
+                <div className={classes.demo}>
+                  <List dense={true}>
+                    {data.groups.length > 0 ? data.groups.map(group => (
+                      <ListItem divider key={group.id}>
+                        <ListItemAvatar>
+                          <Avatar>
+                            <FolderIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            <React.Fragment>
+                              <Link to={"/grupo/" + group.slug} style={classes.navLink}>Grupo 1</Link>
+                            </React.Fragment>
+                          }
+                          secondary={
+                            <React.Fragment>
+                              <Tooltip title={group.updated_at}>
+                                <span variant="caption">
+                                  INVESTIGADOR
+                                </span>
+                              </Tooltip>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                    ))
+                      :
+                      <ListItem>
+                        <ListItemText
+                          primary={"No existen grupos asociados a tu perfil"}
                         />
                       </ListItem>
                     }

@@ -21,7 +21,7 @@ export function saveMember(member) {
     const body = {}
     delete body.group_id;
     delete body.user_id;
-    return http.put(memberUrl(member.group.id, member.user_id), body);
+    return http.put(memberUrl(member.group_id, member.user_id), body);
   }
   const body = { ...member };
   //body['group_id'] = member.group_id;
