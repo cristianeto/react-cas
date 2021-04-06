@@ -13,8 +13,8 @@ import { Container, Paper, Grid } from "@material-ui/core";
 import { getPrograms } from "../../services/programService";
 import TitleComponent from "../common/titleComponent";
 import Loading from '../common/loading';
-import {getMembers} from "../../services/groupMemberService";
-import GroupMembers from "./member/groupMembers";
+import {getGroupMembers} from "../../services/groupMemberService";
+import GroupMembers from "./groupMembers";
 
 class GroupForm extends Form {
   state = {
@@ -73,7 +73,7 @@ class GroupForm extends Form {
 
   async populateMembers() {
     const groupId = this.state.data.id;
-    const { data: members } = await getMembers(groupId);
+    const { data: members } = await getGroupMembers(groupId);
     this.setState({ members });
   }
 

@@ -48,19 +48,11 @@ class MembersTable extends Component {
         },
       },
       {
-        name: "project_id",
-        label: "Proyecto",
+        name: "group_id",
+        label: "Grupo",
         options: {
           filter: false,
           display: "excluded",
-        },
-      },
-      {
-        name: "project.slug",
-        label: "Slug",
-        options: {
-          filter: false,
-          display: "excluded"
         },
       },
       {
@@ -120,6 +112,7 @@ class MembersTable extends Component {
           filter: true,
           sort: false,
           customBodyRender: (value, tableMeta) => {
+            console.log('value: ', value)
             return (
               (value.id !== 1 || auth.getSelectedRole().id === 1) ?
                 <Autocomplete
@@ -130,7 +123,7 @@ class MembersTable extends Component {
                   style={{ width: 300 }}
                   value={value}
                   getOptionSelected={(staff, value) => { return (staff.id === value.id) }}
-                  onChange={(event, newValue) => onChange(event, newValue, 'staff_id', tableMeta.rowData[2], tableMeta.rowData[3])}
+                  onChange={(event, newValue) => onChange(event, newValue, 'staff_id', tableMeta.rowData[1], tableMeta.rowData[2])}
                   renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Cargo en el proyecto" variant="outlined" style={{ margin: '.25em' }} />}
                 />
                 :

@@ -21,7 +21,7 @@ import MainPage from "./Components/home";
 import Projects from "./Components/project/projects";
 import ProjectMain from './Components/project/projectMain';
 import Members from "./Components/project/member/members";
-import GroupMembers from "./Components/group/member/members";
+import GroupMembersForm from "./Components/group/member/groupMembersForm";
 import Dependencies from "./Components/dependency/dependencies";
 import DependencyForm from "./Components/dependency/dependencyForm";
 import Logout from "./Components/logout";
@@ -141,7 +141,7 @@ class App extends Component {
               <Route path="/proyecto/:slug/miembros" exact component={Members} />
               <Route path="/proyecto/:slug" exact component={ProjectMain} />
               <Route path="/proyectos" exact component={Projects} />
-              <Route path="/grupo/:id/miembros" exact component={GroupMembers} />
+              <Route path="/grupo/:id/miembros" exact component={GroupMembersForm} />
               <Route path="/grupos-investigacion" component={Groups} />
               <Route path="/grupo/:id" component={GroupForm} />
 

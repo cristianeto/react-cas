@@ -3,25 +3,26 @@ import http from "./httpService";
 const apiEndpoint1 = "/groups";
 const apiEndpoint2 = "/users";
 
-function membersUrl(groupId) {
+function groupMembersUrl(groupId) {
   return `${apiEndpoint1}/${groupId}${apiEndpoint2}`;
 }
 
-function memberUrl(groupId, userId) {
+function groupMemberUrl(groupId, userId) {
   return `${apiEndpoint1}/${groupId}${apiEndpoint2}/${userId}`;
 }
 
-export function getMembers(groupId) {
-  return http.get(membersUrl(groupId));
+export function getGroupMembers(groupId) {
+  return http.get(groupMembersUrl(groupId));
 }
 
-export function saveMember(member) {
+export function saveGroupMember(member) {
   if (member.group_id && member.user_id) {
     //const body = { "staff_id": member.staff_id }
-    const body = {}
+    console.log('ambos ids vienen')
+    const body = {staff_id: member.staff_id}
     delete body.group_id;
     delete body.user_id;
-    return http.put(memberUrl(member.group_id, member.user_id), body);
+    return http.post(groupMemberUrl(member.group_id, member.user_id), body);
   }
   const body = { ...member };
   //body['group_id'] = member.group_id;
@@ -30,6 +31,6 @@ export function saveMember(member) {
   return http.post(apiEndpoint1 + apiEndpoint2, body);
 }
 
-export function deleteMember(groupId, userId) {
-  return http.delete(memberUrl(groupId, userId));
+export function deleteGroupMember(groupId, userId) {
+  return http.delete(groupMemberUrl(groupId, userId));
 }

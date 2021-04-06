@@ -5,7 +5,7 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import { Autocomplete } from '@material-ui/lab';
 import { withSnackbar } from "notistack";
 import React from "react";
-import { deleteMember, getMembers, saveMember } from "../../../services/groupMemberService";
+import { deleteGroupMember, getGroupMembers, saveGroupMember } from "../../../services/groupMemberService";
 import { getStaffs } from "../../../services/staffService";
 //import { getDependencies } from "../../services/dependencyService";
 import { getUsers } from "../../../services/userService";
@@ -16,7 +16,7 @@ import TitleComponent from '../../common/titleComponent';
 import MembersTable from "./membersTable";
 import Loading from '../../common/loading';
 
-class Members extends Form {
+class GroupMembersForm extends Form {
   state = {
     data: {
       group_id: this.props.match.params.id,
@@ -65,7 +65,7 @@ class Members extends Form {
 
   doUpdate = async (member) => {
     try {
-      await saveMember(member);
+      await saveGroupMember(member);
       this.successMessage();
     } catch (ex) {
       this.errorMessage(ex);
@@ -75,7 +75,7 @@ class Members extends Form {
   doSubmit = async (e) => {
     e.preventDefault();
     try {
-      await saveMember(this.state.data);
+      await saveGroupMember(this.state.data);
       await this.populateMembers();
       this.successMessage();
 
@@ -91,7 +91,7 @@ class Members extends Form {
     const members = originalMembers.filter(member => member !== memberToRemove);
     this.setState({ members });
     try {
-      await deleteMember(memberToRemove.project.slug, memberToRemove.user_id);
+      await deleteGroupMember(memberToRemove.project.slug, memberToRemove.user_id);
       this.props.enqueueSnackbar(`Registro eliminado!`, {
         variant: 'success'
       });
@@ -120,13 +120,14 @@ class Members extends Form {
       this.setState({ data });
     } */
   async populateMembers() {
-    const groupId = this.props.match.params.id
-    const { data: members } = await getMembers(groupId);
+    const groupId = this.props.match.params.id;
+    const { data: members } = await getGroupMembers(groupId);
     this.setState({ members: this.mapToViewModel(members) });
     //this.setState({ members });
   }
 
   async componentDidMount() {
+    console.log('calling component did mount')
     this.setState({ isLoading: true });
     await this.populateUsers();
     await this.populateStaffs();
@@ -238,7 +239,7 @@ class Members extends Form {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={8}>
-              <MembersTable
+              {this.state.members.length>0 && <MembersTable
                 members={this.state.members}
                 //onGetGroup={this.getGroup}
                 onLoading={this.state.isLoading}
@@ -247,7 +248,7 @@ class Members extends Form {
                 staffs={this.state.staffs}
                 onChange={this.handleChangeAutocompleteSelect}
                 onDelete={this.handleDelete}
-              />
+              />}
             </Grid>
           </Grid>
 
@@ -259,4 +260,4 @@ class Members extends Form {
   }
 }
 
-export default withSnackbar(Members);
+export default withSnackbar(GroupMembersForm);
