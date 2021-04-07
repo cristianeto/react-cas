@@ -24,11 +24,12 @@ export function saveGroupMember(member) {
     delete body.user_id;
     return http.post(groupMemberUrl(member.group_id, member.user_id), body);
   }
-  const body = { ...member };
-  //body['group_id'] = member.group_id;
-  //body = {};
-  delete body.projectId;
-  return http.post(apiEndpoint1 + apiEndpoint2, body);
+}
+export function updateGroupMember(member) {
+  if (member.group_id && member.user_id) {    
+    const body = {staff_id: member.staff_id}   
+    return http.put(groupMemberUrl(member.group_id, member.user_id), body);
+  }
 }
 
 export function deleteGroupMember(groupId, userId) {

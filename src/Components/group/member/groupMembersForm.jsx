@@ -5,7 +5,7 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import { Autocomplete } from '@material-ui/lab';
 import { withSnackbar } from "notistack";
 import React from "react";
-import { deleteGroupMember, getGroupMembers, saveGroupMember } from "../../../services/groupMemberService";
+import { deleteGroupMember, getGroupMembers, saveGroupMember, updateGroupMember } from "../../../services/groupMemberService";
 import { getStaffs } from "../../../services/staffService";
 //import { getDependencies } from "../../services/dependencyService";
 import { getUsers } from "../../../services/userService";
@@ -65,7 +65,7 @@ class GroupMembersForm extends Form {
 
   doUpdate = async (member) => {
     try {
-      await saveGroupMember(member);
+      await updateGroupMember(member);
       this.successMessage();
     } catch (ex) {
       this.errorMessage(ex);
@@ -239,7 +239,7 @@ class GroupMembersForm extends Form {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={8}>
-              {this.state.members.length>0 && <MembersTable
+              <MembersTable
                 members={this.state.members}
                 //onGetGroup={this.getGroup}
                 onLoading={this.state.isLoading}
@@ -248,7 +248,7 @@ class GroupMembersForm extends Form {
                 staffs={this.state.staffs}
                 onChange={this.handleChangeAutocompleteSelect}
                 onDelete={this.handleDelete}
-              />}
+              />
             </Grid>
           </Grid>
 
