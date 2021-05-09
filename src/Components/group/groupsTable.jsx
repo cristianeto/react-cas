@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { TEXT_LABELS } from "../common/configTable";
-import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography } from "@material-ui/core";
-import Active from "../common/active";
-import ButtonAdd from "../common/buttonAdd";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { TEXT_LABELS } from '../common/configTable';
+import MUIDataTable from 'mui-datatables';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { LinearProgress, Typography } from '@material-ui/core';
+import Active from '../common/active';
+import ButtonAdd from '../common/buttonAdd';
 
 class GroupsTable extends Component {
   getMuiTheme = () =>
@@ -25,45 +25,45 @@ class GroupsTable extends Component {
       },
       props: {
         MuiTable: {
-          size: "small",
+          size: 'small',
         },
       },
     });
 
   getStatus = (value) => {
     if (value === 1) {
-      return "Activo";
+      return 'Activo';
     }
   };
   render() {
-    const { datas, onLoading } = this.props
+    const { datas, onLoading } = this.props;
     const columns = [
       {
-        name: "id",
-        label: "id",
+        name: 'id',
+        label: 'id',
         options: {
           filter: false,
-          display: "excluded",
+          display: 'excluded',
         },
       },
       {
-        name: "code",
-        label: "Código",
+        name: 'code',
+        label: 'Código',
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "name",
-        label: "Nombre",
+        name: 'name',
+        label: 'Nombre',
         options: {
           filter: true,
           sort: true,
           customBodyRender: (value, tableMeta) => {
             return (
               <Link
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: 'none' }}
                 to={`/grupo/${tableMeta.rowData[0]}`}
               >
                 {value}
@@ -73,24 +73,24 @@ class GroupsTable extends Component {
         },
       },
       {
-        name: "acronym",
-        label: "Siglas",
+        name: 'acronym',
+        label: 'Siglas',
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "dependency.name",
-        label: "Facultad",
+        name: 'dependency.name',
+        label: 'Facultad',
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "active",
-        label: "Estado",
+        name: 'active',
+        label: 'Estado',
         options: {
           filter: true,
           sort: true,
@@ -106,27 +106,30 @@ class GroupsTable extends Component {
       },
     ];
     const options = {
-      filterType: "dropdown",
-      responsive: "scroll",
+      filterType: 'dropdown',
+      responsive: 'scroll',
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
       // selectableRows:'none',
       textLabels: TEXT_LABELS,
-      onRowsDelete: (rowsDeleted) => {
+      onRowsDelete: (rowsDeleted, newTableData) => {
+        console.log(rowsDeleted);
+        console.log(newTableData);
         const items = datas; //lista de todos los proyectos
-        const itemsToDelete = rowsDeleted.data.map((item) => items[item.dataIndex]); //Array de todos los proyectos a borrar.
+        const itemsToDelete = rowsDeleted.data.map(
+          (item) => items[item.dataIndex]
+        ); //Array de todos los proyectos a borrar.
         this.props.onDelete(itemsToDelete);
       },
     };
-
 
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable
           title={
-            <Typography variant="h6">
-              Lista de grupos de investigación <ButtonAdd entity={"grupo"} />
-              {onLoading && <LinearProgress color="secondary" />}
+            <Typography variant='h6'>
+              Lista de grupos de investigación <ButtonAdd entity={'grupo'} />
+              {onLoading && <LinearProgress color='secondary' />}
             </Typography>
           }
           data={datas}
