@@ -78,7 +78,6 @@ class Groups extends Component {
   }
 
   handleDelete = async (groupsToDelete) => {
-    console.log(groupsToDelete);
     const originalGroups = this.state.groups;
     const groups = originalGroups.filter(
       (group) => !groupsToDelete.includes(group)

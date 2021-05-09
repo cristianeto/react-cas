@@ -1,6 +1,6 @@
-import http from "./httpService";
+import http from './httpService';
 
-const apiEndpoint = "/projects";
+const apiEndpoint = '/projects';
 
 function projectUrl(slug) {
   return `${apiEndpoint}/${slug}`;
@@ -20,6 +20,10 @@ export function saveProject(project) {
     return http.put(projectUrl(project.slug), body);
   }
   return http.post(apiEndpoint, project);
+}
+
+export function updateProject_isOpenField(slug) {
+  return http.patch(`${apiEndpoint}/${slug}`);
 }
 
 export function deleteProject(projectSlug) {

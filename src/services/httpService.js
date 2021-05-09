@@ -1,6 +1,6 @@
-import axios from "axios";
-import logger from "./logService";
-import { toast } from "react-toastify";
+import axios from 'axios';
+import logger from './logService';
+import { toast } from 'react-toastify';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -12,7 +12,7 @@ axios.interceptors.response.use(null, (error) => {
   if (!expectedError) {
     //Sentry.captureException(error);
     logger.log(error);
-    toast.error("An unexpected error ocurred.");
+    toast.error('An unexpected error ocurred.');
   }
   return Promise.reject(error);
 });
@@ -24,6 +24,7 @@ export default {
   get: axios.get,
   post: axios.post,
   put: axios.put,
+  patch: axios.patch,
   delete: axios.delete,
   setPassport,
 };

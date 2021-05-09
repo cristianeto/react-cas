@@ -113,8 +113,6 @@ class GroupsTable extends Component {
       // selectableRows:'none',
       textLabels: TEXT_LABELS,
       onRowsDelete: (rowsDeleted, newTableData) => {
-        console.log(rowsDeleted);
-        console.log(newTableData);
         const items = datas; //lista de todos los proyectos
         const itemsToDelete = rowsDeleted.data.map(
           (item) => items[item.dataIndex]
