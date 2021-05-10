@@ -3,8 +3,8 @@ import '../App.scss';
 
 function Home({ onLogin }) {
   return (
-    <div className="home">
-      <div className="button" onClick={onLogin}>
+    <div className='home'>
+      <div className='button' onClick={onLogin}>
         Iniciar sesión
       </div>
     </div>

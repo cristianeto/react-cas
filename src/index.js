@@ -1,32 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { SnackbarProvider } from "notistack";
-import Button from "@material-ui/core/Button";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-
-const notistackRef = React.createRef();
-const onClickDismiss = (key) => () => {
-  notistackRef.current.closeSnackbar(key);
-};
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
+import AppSnackbar from './Components/AppSnackbar';
 
 ReactDOM.render(
-  <SnackbarProvider
-    //preventDuplicate
-    maxSnack={3}
-    ref={notistackRef}
-    action={(key) => (
-      <Button onClick={onClickDismiss(key)} style={{ color: "#fff" }}>
-        CERRAR
-      </Button>
-    )}
-  >
-    <BrowserRouter basename="/sgi-idi">
+  <AppSnackbar>
+    <BrowserRouter basename='/sgi-idi'>
       <App />
     </BrowserRouter>
-  </SnackbarProvider>,
-  document.getElementById("root")
+  </AppSnackbar>,
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

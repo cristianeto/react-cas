@@ -23,7 +23,6 @@ import { getResearchTypes } from '../../services/researchTypeService';
 import { getCoverageTypes } from '../../services/coverageTypeService';
 import { getPrograms } from '../../services/programService';
 import { getSectors } from '../../services/sectorService';
-import { saveProjectStatus } from '../../services/projectStatusService';
 import { messages } from '../common/es_ES';
 import SaveIcon from '@material-ui/icons/Save';
 import TitleComponent from '../common/titleComponent';
@@ -331,10 +330,6 @@ class ProjectForm extends Form {
   async populateSectors() {
     const { data: sectors } = await getSectors();
     this.setState({ sectors });
-  }
-
-  async doOpenProjectStatus() {
-    const res = await saveProjectStatus(this.data.slug);
   }
 
   async populateProject() {
