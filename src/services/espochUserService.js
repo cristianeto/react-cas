@@ -1,6 +1,6 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndPoint = "/espochService";
+const apiEndPoint = '/espochService';
 
 function espochUserUrl(identificationCard) {
   return `${apiEndPoint}/${identificationCard}`;

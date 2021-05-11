@@ -1,11 +1,16 @@
-import React, { Component } from "react";
-import { TEXT_LABELS } from "../../common/configTable";
-import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { LinearProgress, Typography, Tooltip, TextField } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import React, { Component } from 'react';
+import { TEXT_LABELS } from '../../common/configTable';
+import MUIDataTable from 'mui-datatables';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import {
+  LinearProgress,
+  Typography,
+  Tooltip,
+  TextField,
+} from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import DeleteIcon from '@material-ui/icons/Delete';
-import auth from '../../../services/authService';
+import auth from '../../../auth/authService';
 
 class MembersTable extends Component {
   getMuiTheme = () =>
@@ -25,134 +30,157 @@ class MembersTable extends Component {
       },
       props: {
         MuiTable: {
-          size: "small",
+          size: 'small',
         },
       },
     });
 
   getStatus = (value) => {
     if (value === 1) {
-      return "Activo";
+      return 'Activo';
     }
   };
   render() {
-    const { members, staffs, onLoading, onChange, onDelete } = this.props
+    const { members, staffs, onLoading, onChange, onDelete } = this.props;
     const columns = [
       {
         name: 'count',
-        label: "ID",
+        label: 'ID',
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1
+          customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1,
         },
       },
       {
-        name: "group_id",
-        label: "Grupo",
+        name: 'group_id',
+        label: 'Grupo',
         options: {
           filter: false,
-          display: "excluded",
+          display: 'excluded',
         },
       },
       {
-        name: "user_id",
-        label: "Usuario",
+        name: 'user_id',
+        label: 'Usuario',
         options: {
           filter: false,
-          display: "excluded",
+          display: 'excluded',
         },
       },
       {
-        name: "staff_id",
-        label: "Staff",
+        name: 'staff_id',
+        label: 'Staff',
         options: {
           filter: false,
-          display: "excluded",
+          display: 'excluded',
         },
       },
       {
-        name: "created_at",
-        label: "Fecha Creación",
+        name: 'created_at',
+        label: 'Fecha Creación',
         options: {
           filter: false,
-          display: "excluded",
+          display: 'excluded',
         },
       },
       {
-        name: "user.fullname",
-        label: "Nombre",
+        name: 'user.fullname',
+        label: 'Nombre',
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "human_created_at",
-        label: "Miembro desde",
+        name: 'human_created_at',
+        label: 'Miembro desde',
         options: {
           filter: true,
           sort: false,
           customBodyRender: (value, tableMeta) => {
             return (
-              <Tooltip title={`${tableMeta.rowData[5]}`} style={{ cursor: "pointer" }}>
-                <span
-                >
-                  {`${value}`}
-                </span>
+              <Tooltip
+                title={`${tableMeta.rowData[5]}`}
+                style={{ cursor: 'pointer' }}
+              >
+                <span>{`${value}`}</span>
               </Tooltip>
-            )
-          }
+            );
+          },
         },
       },
       {
-        name: "staff",
-        label: "Cargo",
+        name: 'staff',
+        label: 'Cargo',
         options: {
           filter: true,
           sort: false,
           customBodyRender: (value, tableMeta) => {
-            console.log('value: ', value)
-            return (
-              (value.id !== 1 || auth.getSelectedRole().id === 1) ?
-                <Autocomplete
-                  name={'staff'}
-                  options={staffs}
-                  getOptionLabel={(staff) => staff.name}
-                  disableClearable
-                  style={{ width: 300 }}
-                  value={value}
-                  getOptionSelected={(staff, value) => { return (staff.id === value.id) }}
-                  onChange={(event, newValue) => onChange(event, newValue, 'staff_id', tableMeta.rowData[1], tableMeta.rowData[2])}
-                  renderInput={(params) => <TextField {...params} margin='normal' size="small" label="Cargo en el proyecto" variant="outlined" style={{ margin: '.25em' }} />}
+            console.log('value: ', value);
+            return value.id !== 1 || auth.getSelectedRole().id === 1 ? (
+              <Autocomplete
+                name={'staff'}
+                options={staffs}
+                getOptionLabel={(staff) => staff.name}
+                disableClearable
+                style={{ width: 300 }}
+                value={value}
+                getOptionSelected={(staff, value) => {
+                  return staff.id === value.id;
+                }}
+                onChange={(event, newValue) =>
+                  onChange(
+                    event,
+                    newValue,
+                    'staff_id',
+                    tableMeta.rowData[1],
+                    tableMeta.rowData[2]
+                  )
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin='normal'
+                    size='small'
+                    label='Cargo en el proyecto'
+                    variant='outlined'
+                    style={{ margin: '.25em' }}
+                  />
+                )}
+              />
+            ) : (
+              <span style={{ marginLeft: '1em' }}>{value.name}</span>
+            );
+          },
+        },
+      },
+      {
+        name: '',
+        label: 'Acciones',
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (value, tableMeta) => {
+            return tableMeta.rowData[4] !== 1 ? (
+              <Tooltip title='Eliminar' style={{ cursor: 'pointer' }}>
+                <DeleteIcon
+                  onClick={() =>
+                    onDelete(tableMeta.rowData[2], tableMeta.rowData[3])
+                  }
+                  color={'primary'}
                 />
-                :
-                <span style={{ marginLeft: '1em' }}>{value.name}</span>
-            )
-          }
-        },
-      },
-      {
-        name: "",
-        label: "Acciones",
-        options: {
-          filter: true,
-          sort: false,
-          customBodyRender: (value, tableMeta) => {
-            return (
-              tableMeta.rowData[4] !== 1 ?
-                <Tooltip title="Eliminar" style={{ cursor: "pointer" }}>
-                  <DeleteIcon onClick={() => onDelete(tableMeta.rowData[2], tableMeta.rowData[3])} color={'primary'} />
-                </Tooltip>
-                : ""
+              </Tooltip>
+            ) : (
+              ''
             );
           },
         },
       },
     ];
     const options = {
-      filterType: "dropdown",
-      responsive: "scroll",
+      filterType: 'dropdown',
+      responsive: 'scroll',
       rowsPerPage: 5,
       rowsPerPageOptions: [5, 10, 20],
       selectableRows: 'none',
@@ -168,14 +196,13 @@ class MembersTable extends Component {
        }, */
     };
 
-
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable
           title={
-            <Typography variant="h6">
+            <Typography variant='h6'>
               Miembros del Grupo
-              {onLoading && <LinearProgress color="secondary" />}
+              {onLoading && <LinearProgress color='secondary' />}
             </Typography>
           }
           data={members}

@@ -1,9 +1,9 @@
-import http from "./httpService";
+import http from './httpService';
 
-const apiEndpoint = "/auth";
-const tokenKey = "passport";
-const userKey = "user";
-const roleKey = "selectedRole";
+const apiEndpoint = '/auth';
+const tokenKey = 'passport';
+const userKey = 'user';
+const roleKey = 'selectedRole';
 
 http.setPassport(getPassport());
 
@@ -35,7 +35,7 @@ export function getPassport() {
 }
 
 export function setSelectedRole(role) {
-  return sessionStorage.setItem(roleKey, JSON.stringify(role));;
+  return sessionStorage.setItem(roleKey, JSON.stringify(role));
 }
 export function getSelectedRole() {
   return JSON.parse(sessionStorage.getItem(roleKey));
@@ -49,12 +49,12 @@ function isNotEmpty(obj) {
   return !isEmpty(obj);
 }
 function isEmpty(obj) {
-  return obj === undefined || obj == null || obj === "" || obj === " ";
+  return obj === undefined || obj == null || obj === '' || obj === ' ';
 }
 async function logout() {
   http.setPassport(getPassport());
   remove();
-  await http.get(apiEndpoint + "/logout");
+  await http.get(apiEndpoint + '/logout');
 }
 function remove() {
   window.sessionStorage.removeItem(tokenKey);

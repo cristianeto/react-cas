@@ -1,7 +1,7 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint1 = "/users";
-const apiEndpoint2 = "/roles";
+const apiEndpoint1 = '/users';
+const apiEndpoint2 = '/roles';
 
 function userRoleUrl(id) {
   return `${apiEndpoint1}/${id}${apiEndpoint2}`;
@@ -13,7 +13,7 @@ export function getRolesByUser(userId) {
 
 export function saveRolesByUser(userId, roles) {
   if (userId) {
-    const body = { "roles": roles }
+    const body = { roles: roles };
     return http.put(userRoleUrl(userId), body);
   }
   /* const body = { ...member };

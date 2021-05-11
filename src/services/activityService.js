@@ -1,6 +1,6 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint = "/activities";
+const apiEndpoint = '/activities';
 
 function activityUrl(id) {
   return `${apiEndpoint}/${id}`;

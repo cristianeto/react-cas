@@ -1,7 +1,7 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint1 = "/projects";
-const apiEndpoint2 = "/resolution";
+const apiEndpoint1 = '/projects';
+const apiEndpoint2 = '/resolution';
 
 function projectResolutionUrl(projectSlug) {
   return `${apiEndpoint1}/${projectSlug}${apiEndpoint2}`;

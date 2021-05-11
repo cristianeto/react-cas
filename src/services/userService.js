@@ -1,6 +1,6 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint = "/users";
+const apiEndpoint = '/users';
 
 function userUrl(id) {
   return `${apiEndpoint}/${id}`;

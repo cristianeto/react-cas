@@ -1,6 +1,6 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint = "/groups";
+const apiEndpoint = '/groups';
 
 function groupUrl(id) {
   return `${apiEndpoint}/${id}`;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import cas from './services/casService';
-import auth from './services/authService';
+import cas from './auth/casService';
+import auth from './auth/authService';
 import NavBar from './Components/navBar';
 import NotFound from './Components/error/notFound';
 import NotAuthorized from './Components/error/notAuthorized';
@@ -17,7 +17,6 @@ import RoleForm from './Components/role/roleForm';
 import Pemissions from './Components/permission/permissions';
 import PemissionForm from './Components/permission/permissionForm';
 import Welcome from './Components/welcome';
-import Home from './Components/home';
 import Projects from './Components/project/projects';
 import ProjectMain from './Components/project/projectMain';
 import Members from './Components/project/member/members';
@@ -25,6 +24,7 @@ import GroupMembersForm from './Components/group/member/groupMembersForm';
 import Dependencies from './Components/dependency/dependencies';
 import DependencyForm from './Components/dependency/dependencyForm';
 import Logout from './Components/logout';
+import LoginScreen from './login/LoginScreen';
 
 import './App.scss';
 
@@ -175,7 +175,7 @@ const App = () => {
           </Switch>
         </div>
       ) : (
-        <Home onLogin={handleLogin} />
+        <LoginScreen onLogin={handleLogin} />
       )}
     </React.Fragment>
   );

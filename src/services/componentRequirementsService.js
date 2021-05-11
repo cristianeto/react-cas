@@ -1,7 +1,7 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint1 = "/components";
-const apiEndpoint2 = "/requirements";
+const apiEndpoint1 = '/components';
+const apiEndpoint2 = '/requirements';
 
 function componentRequirementsUrl(componentId) {
   return `${apiEndpoint1}/${componentId}${apiEndpoint2}`;
@@ -16,7 +16,7 @@ export function getComponentRequirements(componentId) {
 }
 export function saveRequirement(requirement) {
   if (requirement.id) {
-    const body = { ...requirement }
+    const body = { ...requirement };
     delete body.id;
     return http.put(componentRequirementUrl(requirement.id), body);
   }

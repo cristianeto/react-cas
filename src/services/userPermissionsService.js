@@ -1,7 +1,7 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint1 = "/users";
-const apiEndpoint2 = "/permissions";
+const apiEndpoint1 = '/users';
+const apiEndpoint2 = '/permissions';
 
 function userPermissionUrl(id) {
   return `${apiEndpoint1}/${id}${apiEndpoint2}`;
@@ -13,7 +13,7 @@ export function getPermissionsByUser(userId) {
 
 export function savePermissionsByUser(userId, permissions) {
   if (userId) {
-    const body = { "permissions": permissions }
+    const body = { permissions: permissions };
     return http.put(userPermissionUrl(userId), body);
   }
   /* const body = { ...member };

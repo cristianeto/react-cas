@@ -1,6 +1,6 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndPoint = "/guards";
+const apiEndPoint = '/guards';
 
 export function getGuards() {
   return http.get(apiEndPoint);

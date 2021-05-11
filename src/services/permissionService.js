@@ -1,6 +1,6 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndPoint = "/permissions";
+const apiEndPoint = '/permissions';
 
 function permissionUrl(id) {
   return `${apiEndPoint}/${id}`;

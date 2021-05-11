@@ -1,6 +1,6 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint = "/requirements";
+const apiEndpoint = '/requirements';
 
 function requirementUrl(id) {
   return `${apiEndpoint}/${id}`;

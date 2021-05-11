@@ -1,7 +1,7 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint1 = "/components";
-const apiEndpoint2 = "/activities";
+const apiEndpoint1 = '/components';
+const apiEndpoint2 = '/activities';
 
 function componentActivitiesUrl(componentId) {
   return `${apiEndpoint1}/${componentId}${apiEndpoint2}`;
@@ -16,7 +16,7 @@ export function getComponentActivities(componentId) {
 }
 export function saveActivity(activity) {
   if (activity.id) {
-    const body = { ...activity }
+    const body = { ...activity };
     delete body.id;
     return http.put(componentActivityUrl(activity.id), body);
   }

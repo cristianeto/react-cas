@@ -1,7 +1,7 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint1 = "/projects";
-const apiEndpoint2 = "/members";
+const apiEndpoint1 = '/projects';
+const apiEndpoint2 = '/members';
 
 function membersUrl(projectSlug) {
   return `${apiEndpoint1}/${projectSlug}${apiEndpoint2}`;
@@ -17,7 +17,7 @@ export function getMembers(projectSlug) {
 
 export function saveMember(member) {
   if (member.project_id && member.user_id) {
-    const body = { "staff_id": member.staff_id }
+    const body = { staff_id: member.staff_id };
     delete body.project_id;
     delete body.user_id;
     return http.put(memberUrl(member.project.slug, member.user_id), body);

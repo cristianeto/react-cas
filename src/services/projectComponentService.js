@@ -1,7 +1,7 @@
-import http from "./httpService";
+import http from '../auth/httpService';
 
-const apiEndpoint1 = "/projects";
-const apiEndpoint2 = "/components";
+const apiEndpoint1 = '/projects';
+const apiEndpoint2 = '/components';
 
 function projectComponentsUrl(projectSlug) {
   return `${apiEndpoint1}/${projectSlug}${apiEndpoint2}`;
@@ -16,7 +16,7 @@ export function getProjectComponents(projectSlug) {
 }
 export function saveComponent(component) {
   if (component.id) {
-    const body = { ...component }
+    const body = { ...component };
     delete body.id;
     return http.put(projectComponentUrl(component.id), body);
   }
