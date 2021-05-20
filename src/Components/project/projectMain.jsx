@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Breadcrumb from "../common/breadcum";
-import { Container, Grid, Paper } from "@material-ui/core";
+import Breadcrumb from '../common/breadcum';
+import { Container, Grid, Paper } from '@material-ui/core';
 import PanelMembers from './panelMembers';
 //import Panel from '../common/panel';
 import ProjectForm from './projectForm';
@@ -16,17 +16,16 @@ import BudgetLinearProgress from './BudgetLinearProgress';
 import PanelFiles from './panelFiles';
 
 class ProjectMain extends Component {
-
   state = {
     data: {
       slug: this.props.match.params.slug,
     },
-    budget: 0.00,
+    budget: 0.0,
     members: [],
     projectStatuses: [],
     projectComponents: [],
     isLoading: false,
-  }
+  };
 
   async populateProjectStatuses() {
     const projectSlug = this.state.data.slug;
@@ -49,8 +48,7 @@ class ProjectMain extends Component {
   async populateBudget() {
     const projectSlug = this.state.data.slug;
     const { data: project } = await getProjectBudget(projectSlug);
-    if (project.budget)
-      this.setState({ budget: project.budget });
+    if (project.budget) this.setState({ budget: project.budget });
   }
 
   async componentDidMount() {
@@ -64,62 +62,75 @@ class ProjectMain extends Component {
     await this.populateBudget();
 
     if (this._isMounted) this.setState({ isLoading: false });
-
   }
 
   render() {
     const { data, projectComponents, projectStatuses, members } = this.state;
     const listBreadcrumbs = [
       {
-        path: "/",
-        label: "Inicio",
+        path: '/',
+        label: 'Inicio',
       },
       {
-        path: "/proyectos",
-        label: "Proyectos",
+        path: '/proyectos',
+        label: 'Proyectos',
       },
     ];
     return (
-
-      <Container maxWidth="xl" id="projectMain">
-
+      <Container maxWidth='xl' id='projectMain'>
         <Breadcrumb
           onListBreadcrumbs={listBreadcrumbs}
-          lastLabel={"Proyecto"}
+          lastLabel={'Proyecto'}
         />
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={8} xl={9}>
-            <ProjectForm projectSlug={data.slug} history={this.props.history} populateStatuses={() => this.populateProjectStatuses()} />
-            <AddComponentForm projectSlug={data.slug} populateComponents={() => this.populateProjectComponents()} />
-            {projectComponents.length > 0 &&
-              <ProjectComponents data={projectComponents} budget={this.populateBudget} />
-            }
+            <ProjectForm
+              projectSlug={data.slug}
+              history={this.props.history}
+              populateStatuses={() => this.populateProjectStatuses()}
+            />
+            <AddComponentForm
+              projectSlug={data.slug}
+              populateComponents={() => this.populateProjectComponents()}
+            />
+            {projectComponents.length > 0 && (
+              <ProjectComponents
+                data={projectComponents}
+                budget={this.populateBudget}
+              />
+            )}
           </Grid>
           <Grid container item xs={12} sm={12} md={4} xl={3}>
             <Grid item xs={12} sm={12}>
-              <Paper className="paper">
-                <Typography variant="h6" gutterBottom>
+              <Paper className='paper'>
+                <Typography variant='h6' gutterBottom>
                   Presupuesto asignado:
-                  </Typography>
-                <Typography variant="h6" gutterBottom>
+                </Typography>
+                <Typography variant='h6' gutterBottom>
                   $ {this.state.budget}
                 </Typography>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant='h6' gutterBottom>
                   Presupuesto ejecutado:
-                  </Typography>
-                <Typography variant="h6" gutterBottom>
+                </Typography>
+                <Typography variant='h6' gutterBottom>
                   $ 0
                   <BudgetLinearProgress />
                 </Typography>
               </Paper>
-              <PanelStatuses title="Últimos estados" projectSlug={data.slug} data={projectStatuses} />
-              <PanelMembers title="Miembros" projectSlug={data.slug} data={members} />
+              <PanelStatuses
+                title='Últimos estados'
+                projectSlug={data.slug}
+                data={projectStatuses}
+              />
+              <PanelMembers
+                title='Miembros'
+                projectSlug={data.slug}
+                data={members}
+              />
               <PanelFiles projectSlug={data.slug} />
-
             </Grid>
           </Grid>
-
         </Grid>
       </Container>
     );

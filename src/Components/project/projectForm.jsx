@@ -32,6 +32,7 @@ import './project.scss';
 import Loading from '../common/loading';
 import { Paper } from '@material-ui/core';
 import SwitchLabel from './status/switchLabel';
+import { getDependenciesByType } from '../../services/dependencyTypeService';
 
 class ProjectForm extends Form {
   state = {
@@ -40,6 +41,7 @@ class ProjectForm extends Form {
       name: '',
       slug: '',
       kind: '',
+      dependencies: [],
       startDate: '',
       endDate: '',
       endDateReal: '',
@@ -67,6 +69,7 @@ class ProjectForm extends Form {
     researchTypes: [],
     coverageTypes: [],
     programs: [],
+    dependencies: [],
     sectors: [],
     errors: {},
     isLoading: false,
@@ -86,6 +89,7 @@ class ProjectForm extends Form {
       coverageTypes,
       programs,
       sectors,
+      dependencies,
     } = this.state;
     const kinds = [
       { id: 1, name: 'Institucional' },
@@ -106,6 +110,13 @@ class ProjectForm extends Form {
             {this.renderTextarea('name', 'Nombre *')}
             {/* {this.renderInputDate("startDate", "Fecha Inicio")} */}
             {this.renderRadio('kind', 'Tipo:', kinds)}
+            {this.renderMultiSelect(
+              'dependencies',
+              'Dependencia/Facultad *',
+              'id',
+              'name',
+              dependencies
+            )}
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               {this.renderDatePicker(
                 'startDate',
@@ -218,6 +229,10 @@ class ProjectForm extends Form {
     name: Joi.string().label('Nombre').max(500).messages(messages),
     slug: Joi.string().label('Slug').max(60).messages(messages),
     kind: Joi.string().label('Tipo').max(60).messages(messages),
+    dependencies: Joi.array()
+      .label('Dependencias/Facultad')
+      .min(1)
+      .messages(messages),
     startDate: Joi.date().label('Fecha Inicio'),
     endDate: Joi.date().label('Fecha Fin'),
     endDateReal: Joi.date().allow('', null).label('Fecha Final Real'),
@@ -327,6 +342,13 @@ class ProjectForm extends Form {
     const { data: programs } = await getPrograms();
     this.setState({ programs });
   }
+  async populateDependencies() {
+    const { kind } = this.state.data;
+    if (kind === '') return;
+    const { data: dependencies } = await getDependenciesByType(kind);
+    this.setState({ dependencies });
+  }
+
   async populateSectors() {
     const { data: sectors } = await getSectors();
     this.setState({ sectors });
@@ -359,7 +381,15 @@ class ProjectForm extends Form {
     await this.populatePrograms();
     await this.populateSectors();
     await this.populateProject();
+    await this.populateDependencies();
     if (this._isMounted) this.setState({ isLoading: false });
+  }
+
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.data.kind !== prevState.data.kind) {
+      console.log('diferent kind!');
+      await this.populateDependencies();
+    }
   }
 
   mapToViewModel(project) {
@@ -369,6 +399,7 @@ class ProjectForm extends Form {
       name: project.name,
       slug: project.slug,
       kind: project.kind === null ? '' : project.kind,
+      dependencies: project.dependencies,
       startDate: project.startDate === null ? '' : project.startDate,
       endDate: project.endDate === null ? '' : project.endDate,
       endDateReal: project.endDateReal === null ? '' : project.endDateReal,
@@ -429,10 +460,10 @@ class ProjectForm extends Form {
   };
   doSubmit = async () => {
     try {
+      this.props.populateStatuses();
       const res = await saveProject(this.state.data);
       this.handleChangeSlug(res.data.slug);
       this.successMessage();
-      this.props.populateStatuses();
       this.props.history.push(`/proyecto/${this.state.data.slug}`);
     } catch (ex) {
       console.log(ex);

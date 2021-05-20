@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import Input from "./input";
-import MySelect from "./select";
-import MyMultiSelect from "./multiSelect";
-import Textarea from "./textarea";
-import Button from "@material-ui/core/Button";
-import SaveIcon from "@material-ui/icons/Save";
-import InputDate from "./inputDate";
+import React, { Component } from 'react';
+import Input from './input';
+import MySelect from './select';
+import MyMultiSelect from './multiSelect';
+import Textarea from './textarea';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
+import InputDate from './inputDate';
 // import { messages } from "./es_ES.js";
 import Radios from '../common/radio';
 
@@ -48,6 +48,7 @@ class Form extends Component {
     else delete errors[input.name];
 
     const data = { ...this.state.data };
+    if (input.name === 'kind') data['dependencies'] = [];
     data[input.name] = input.value;
     this.setState({ data, errors });
   };
@@ -75,21 +76,21 @@ class Form extends Component {
 
     const data = { ...this.state.data };
     const formatDate = this.formatDate(new Date(date));
-    console.log("formatDate: " + formatDate);
+    console.log('formatDate: ' + formatDate);
     data[input] = formatDate; //this.formatDate(new Date(date));
-    console.log("data[" + input + "]" + data[input]);
+    console.log('data[' + input + ']' + data[input]);
     this.setState({ data, errors });
   };
 
   formatDate(date) {
     try {
       var d = new Date(date),
-        month = "" + (d.getMonth() + 1),
-        day = "" + d.getDate(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
         year = d.getFullYear();
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-      return [year, month, day].join("-");
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      return [year, month, day].join('-');
     } catch (error) {
       return null;
     }
@@ -101,20 +102,20 @@ class Form extends Component {
     return (
       <Button
         disabled={false}
-        type="submit"
-        size="medium"
-        variant="contained"
-        color="primary"
-        margin="normal"
+        type='submit'
+        size='medium'
+        variant='contained'
+        color='primary'
+        margin='normal'
         startIcon={<SaveIcon />}
-        className="btn btn-guardar"
+        className='btn btn-guardar'
       >
         {label}
       </Button>
     );
   }
 
-  renderInput(name, label, type = "text", disabled = false) {
+  renderInput(name, label, type = 'text', disabled = false) {
     const { data, errors } = this.state;
 
     return (
@@ -175,7 +176,7 @@ class Form extends Component {
         error={errors[name]}
         disabled={disabled}
       />
-    )
+    );
   }
 
   renderMultiSelect(name, label, property1, property2, options) {
@@ -216,14 +217,14 @@ class Form extends Component {
 
   successMessage() {
     this.props.enqueueSnackbar(`Registro guardado correctamente!`, {
-      variant: 'success'
+      variant: 'success',
     });
   }
 
   errorMessage(ex) {
-    console.error("Error Message: ", ex)
+    console.error('Error Message: ', ex);
     this.props.enqueueSnackbar(`${ex.response.data.message}`, {
-      variant: "error"
+      variant: 'error',
     });
   }
 }

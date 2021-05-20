@@ -1,11 +1,11 @@
-import React from "react";
-import { Checkbox, TextField } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import React from 'react';
+import { Checkbox, TextField } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
+const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
+const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const MyMultiSelect = ({
   name,
@@ -27,11 +27,11 @@ const MyMultiSelect = ({
       name={name}
       limitTags={2}
       options={options}
-      disableCloseOnSelect
       getOptionLabel={(option) => option[property2]}
       onChange={(event, values) => onChange(event, values, name)}
       {...rest}
       value={optionsSelected}
+      filterSelectedOptions
       renderOption={(option, { selected, inputValue }) => {
         //console.log("inputvalue:" + selected + "-" + inputValue);
         return (
@@ -54,11 +54,11 @@ const MyMultiSelect = ({
         <TextField
           {...params}
           error={validation}
-          margin="normal"
-          variant="outlined"
+          margin='normal'
+          variant='outlined'
           label={label}
-          size="small"
-          placeholder="Elegir"
+          size='small'
+          placeholder='Elegir'
           fullWidth
           helperText={error}
         />
