@@ -27,6 +27,7 @@ import Logout from './Components/logout';
 import LoginScreen from './login/LoginScreen';
 
 import './App.scss';
+import Loading from './Components/common/loading';
 
 const App = () => {
   const [emailCas, setEmailCas] = useState(cas.getLogin());
@@ -35,6 +36,7 @@ const App = () => {
   const [selectedRole, setSelectedRole] = useState('');
   const [keyLostConection, setKeyLostConection] = useState('');
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     tryLogin();
@@ -42,6 +44,8 @@ const App = () => {
 
   const tryLogin = async () => {
     try {
+      setIsLoading(true);
+
       if (!emailCas) {
         cas.saveTicket();
         await cas.getTicketCAS();
@@ -60,6 +64,7 @@ const App = () => {
 
       const key = detectedOffline();
       detectedOnLine(key);
+      setIsLoading(false);
     } catch (ex) {
       console.log(ex);
       enqueueSnackbar(`Se produjo un error. ${ex}`, {
@@ -117,6 +122,7 @@ const App = () => {
 
   return (
     <React.Fragment>
+      <Loading open={isLoading} />
       {user !== null ? (
         <div
           style={{

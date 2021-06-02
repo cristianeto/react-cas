@@ -31,7 +31,7 @@ const MyMultiSelect = ({
       onChange={(event, values) => onChange(event, values, name)}
       {...rest}
       value={optionsSelected}
-      filterSelectedOptions
+      // filterSelectedOptions
       renderOption={(option, { selected, inputValue }) => {
         //console.log("inputvalue:" + selected + "-" + inputValue);
         return (

@@ -1,33 +1,34 @@
-import React from "react";
-import Joi from "@hapi/joi";
-import { withSnackbar } from "notistack";
-import Breadcrumb from "../common/breadcum";
-import Form from "../common/form";
-import Panel from "../common/panel";
+import React from 'react';
+import Joi from '@hapi/joi';
+import { withSnackbar } from 'notistack';
+import Breadcrumb from '../common/breadcum';
+import Form from '../common/form';
+import Panel from '../common/panel';
 
-import { getDependencies } from "../../services/dependencyService";
-import { getGroupTypes } from "../../services/groupTypeService";
-import { getGroup, saveGroup } from "../../services/groupService";
-import { getLines } from "../../services/lineService";
-import { Container, Paper, Grid } from "@material-ui/core";
-import { getPrograms } from "../../services/programService";
-import TitleComponent from "../common/titleComponent";
+import { getDependencies } from '../../services/dependencyService';
+import { getGroupTypes } from '../../services/groupTypeService';
+import { getGroup, saveGroup } from '../../services/groupService';
+import { getLines } from '../../services/lineService';
+import { Container, Paper, Grid } from '@material-ui/core';
+import { getPrograms } from '../../services/programService';
+import TitleComponent from '../common/titleComponent';
 import Loading from '../common/loading';
-import {getGroupMembers} from "../../services/groupMemberService";
-import GroupMembers from "./groupMembers";
+import { getGroupMembers } from '../../services/groupMemberService';
+import GroupMembers from './groupMembers';
+import { Link } from 'react-router-dom';
 
 class GroupForm extends Form {
   state = {
     data: {
-      acronym: "",
-      code: "",
-      name: "",
-      mission: "",
-      vision: "",
-      dependency_id: "",
+      acronym: '',
+      code: '',
+      name: '',
+      mission: '',
+      vision: '',
+      dependency_id: '',
       lines: [],
       programs: [],
-      group_type_id: "",
+      group_type_id: '',
     },
     dependencies: [],
     groupTypes: [],
@@ -40,15 +41,15 @@ class GroupForm extends Form {
 
   schema = Joi.object({
     id: Joi.string(),
-    code: Joi.string().label("Código").max(10),
-    acronym: Joi.string().alphanum().label("Siglas").max(10),
-    name: Joi.string().label("Nombre"),
-    mission: Joi.string().max(500).label("Misión"),
-    vision: Joi.string().max(500).label("Visión"),
-    dependency_id: Joi.number().integer().label("Dependencia"),
-    group_type_id: Joi.number().integer().label("Tipo"),
-    lines: Joi.array().label("Líneas").min(1),
-    programs: Joi.array().label("Programas").min(1),
+    code: Joi.string().label('Código').max(10),
+    acronym: Joi.string().alphanum().label('Siglas').max(10),
+    name: Joi.string().label('Nombre'),
+    mission: Joi.string().max(500).label('Misión'),
+    vision: Joi.string().max(500).label('Visión'),
+    dependency_id: Joi.number().integer().label('Dependencia'),
+    group_type_id: Joi.number().integer().label('Tipo'),
+    lines: Joi.array().label('Líneas').min(1),
+    programs: Joi.array().label('Programas').min(1),
   });
 
   async populateDependencies() {
@@ -80,13 +81,13 @@ class GroupForm extends Form {
   async populateGroup() {
     try {
       const groupId = this.props.match.params.id; //Pasando por URL id movie
-      if (groupId === "new") return; //Si si
+      if (groupId === 'new') return; //Si si
       const { data: group } = await getGroup(groupId); //Si no.
       this.setState({ data: this.mapToViewModel(group) });
       await this.populateMembers();
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
-        this.props.history.replace("/not-found");
+        this.props.history.replace('/not-found');
     }
   }
 
@@ -119,7 +120,7 @@ class GroupForm extends Form {
     try {
       await saveGroup(this.state.data);
       this.successMessage();
-      this.props.history.push("/grupos-investigacion");
+      this.props.history.push('/grupos-investigacion');
     } catch (ex) {
       this.errorMessage(ex);
       const errors = { ...this.state.errors };
@@ -134,91 +135,110 @@ class GroupForm extends Form {
   };
 
   render() {
-    const { isLoading, dependencies, lines, programs, groupTypes, data, members } = this.state;
+    const {
+      isLoading,
+      dependencies,
+      lines,
+      programs,
+      groupTypes,
+      data,
+      members,
+    } = this.state;
     // const optionsSelected = this.getLinesSelected();
     const listBreadcrumbs = [
       {
-        path: "/",
-        label: "Inicio",
+        path: '/',
+        label: 'Inicio',
       },
       {
-        path: "/grupos-investigacion",
-        label: "Grupos Investigación",
+        path: '/grupos-investigacion',
+        label: 'Grupos Investigación',
       },
     ];
     return (
-      <Container maxWidth="lg">
+      <Container maxWidth='lg'>
         <Loading open={isLoading} />
-        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={"Grupo"} />
+        <Breadcrumb onListBreadcrumbs={listBreadcrumbs} lastLabel={'Grupo'} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7} md={8}>
-            <Paper className="paper" >
-              <TitleComponent entity={"Grupo"} />
+            <Paper className='paper'>
+              <TitleComponent entity={'Grupo'} />
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("code", "Código")}
-                {this.renderInput("acronym", "Siglas")}
-                {this.renderInput("name", "Nombre")}
-                {this.renderTextarea("mission", "Misión")}
-                {this.renderTextarea("vision", "Visión")}
+                {this.renderInput('code', 'Código')}
+                {this.renderInput('acronym', 'Siglas')}
+                {this.renderInput('name', 'Nombre')}
+                {this.renderTextarea('mission', 'Misión')}
+                {this.renderTextarea('vision', 'Visión')}
                 {this.renderSelect(
-                  "dependency_id",
-                  "Facultad",
+                  'dependency_id',
+                  'Facultad',
                   75,
-                  "id",
-                  "name",
+                  'id',
+                  'name',
                   dependencies
                 )}
+                <output>
+                  No la encuentra? agregue una{' '}
+                  <Link to='/dependencia/new'>aquí</Link>
+                  <br />
+                </output>
                 {this.renderMultiSelect(
-                  "lines",
-                  "Líneas de investigación",
-                  "id",
-                  "name",
+                  'lines',
+                  'Líneas de investigación',
+                  'id',
+                  'name',
                   lines
                 )}
                 {this.renderMultiSelect(
-                  "programs",
-                  "Programas",
-                  "id",
-                  "name",
+                  'programs',
+                  'Programas',
+                  'id',
+                  'name',
                   programs
                 )}
                 {this.renderSelect(
-                  "group_type_id",
-                  "Tipo Grupo",
+                  'group_type_id',
+                  'Tipo Grupo',
                   115,
-                  "id",
-                  "name",
+                  'id',
+                  'name',
                   groupTypes
                 )}
-                {this.renderButton("Guardar")}
+                {this.renderButton('Guardar')}
               </form>
             </Paper>
           </Grid>
           <Grid container item xs={12} sm={5} md={4} spacing={3}>
             <Grid item xs={12} sm={12}>
-              <Paper className="paper">
+              <Paper className='paper'>
                 <Panel
-                  id="id"
-                  property="name"
-                  title="Líneas de Investigación"
-                  data={this.state.data["lines"]}
+                  id='id'
+                  property='name'
+                  title='Líneas de Investigación'
+                  data={this.state.data['lines']}
                 />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Paper className="paper">
+              <Paper className='paper'>
                 <Panel
-                  id="id"
-                  property="name"
-                  title="Programas"
-                  data={this.state.data["programs"]}
+                  id='id'
+                  property='name'
+                  title='Programas'
+                  data={this.state.data['programs']}
                 />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={12}>
-              {this.props.match.params.id !== 'new' &&(<GroupMembers title="Miembros" groupId={data.id} data={members} />)}
+              {this.props.match.params.id !== 'new' && (
+                <GroupMembers
+                  title='Miembros'
+                  groupId={data.id}
+                  data={members}
+                />
+              )}
             </Grid>
-          </Grid>          
+          </Grid>
         </Grid>
       </Container>
     );

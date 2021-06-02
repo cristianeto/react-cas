@@ -24,6 +24,7 @@ import { Link } from 'react-router-dom';
 import './user.scss';
 import TitleComponent from '../common/titleComponent';
 import Loading from '../common/loading';
+import WorkIcon from '@material-ui/icons/Work';
 
 class meProfile extends Form {
   state = {
@@ -135,8 +136,12 @@ class meProfile extends Form {
                   )}
                 </ListItem>
                 <ListItem divider>
-                  <ListItemText primary='Cantidad de proyectos:' />
+                  <ListItemText primary='Proyectos:' />
                   <Chip label={data.projects.length} color='primary' />
+                </ListItem>
+                <ListItem divider>
+                  <ListItemText primary='Grupos:' />
+                  <Chip label={data.groups.length} color='primary' />
                 </ListItem>
                 <ListItem divider>
                   <ListItemText
@@ -219,24 +224,27 @@ class meProfile extends Form {
                         <ListItem divider key={group.id}>
                           <ListItemAvatar>
                             <Avatar>
-                              <FolderIcon />
+                              <WorkIcon />
                             </Avatar>
                           </ListItemAvatar>
                           <ListItemText
                             primary={
                               <React.Fragment>
                                 <Link
-                                  to={'/grupo/' + group.slug}
+                                  to={'/grupo/' + group.id}
                                   style={classes.navLink}
                                 >
-                                  Grupo 1
+                                  {group.name}
                                 </Link>
                               </React.Fragment>
                             }
                             secondary={
                               <React.Fragment>
                                 <Tooltip title={group.updated_at}>
-                                  <span variant='caption'>INVESTIGADOR</span>
+                                  <span variant='caption'>
+                                    Última actualización:{' '}
+                                    {group.human_updated_at}
+                                  </span>
                                 </Tooltip>
                               </React.Fragment>
                             }
